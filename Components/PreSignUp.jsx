@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {View, Text, StyleSheet,Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import {getUserByHouse,testingLambda} from '../common/api'
+import {getUserByHouse} from '../common/api'
 function PreSignUp({ navigation }) {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);

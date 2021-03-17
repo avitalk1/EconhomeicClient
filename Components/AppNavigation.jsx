@@ -9,6 +9,7 @@ import PreSignUp from './PreSignUp';
 import SignupConfirmation from './SignupConfirmation';
 import UserForm from './UserForm';
 import HomePage from './HomePage';
+import MainStatisticsPage from './StatisticsComponents/MainStatisticsPage';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ const AppNavigation = () => {
                 <Stack.Screen name="SUCONFIRM" component={SignupConfirmation}/>
                 <Stack.Screen name="USERFORM" component={UserForm}/>
                 <Stack.Screen name="HOMEPAGE" component={HomePage}/>
+                <Stack.Screen name="MAIN_STATISTICS_PAGE" component={MainStatisticsPage}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

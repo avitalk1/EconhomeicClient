@@ -15,17 +15,16 @@ function UserForm({ route, navigation }) {
     apartment: 0
   })
   const [userInfo, setUserInfo] = useState({
-    firstName: '',
-    lastName: '',
+    firstName: "Avital",
+    lastName: "Kahani",
     email: route.params.email,
-    PhoneNumber: '',
-    Address: address
+    PhoneNumber: "054-8073866",
   })
   //const houseID = route.params.houseID;  <= look at line 45
   const [constaints, setConstaints] = useState({
-    numberOfHouseMembers: 0,
-    electricityBudget: 0,
-    waterBudget: 0
+    numberOfHouseMembers: 5,
+    electricityBudget: 500,
+    waterBudget: 500
   })
 
 
@@ -51,10 +50,10 @@ function UserForm({ route, navigation }) {
   const handleSubmit = async () => {
     try {
       const  result = await registrUser({
-        firstName: "Avital",
-        lastName: "Kahani",
+        firstName: userInfo.first,
+        lastName: userInfo.lastName,
         email: userInfo.email,
-        PhoneNumber: "054-8073866",
+        PhoneNumber:userInfo.PhoneNumber ,
         AddressState: address.state,
         AddressCity: address.city,
         AddressStreet: address.street,
@@ -62,9 +61,9 @@ function UserForm({ route, navigation }) {
         AddressEntrance: address.entrance,
         AddressApartment: address.apartment,
         houseID: route.params.houseID,
-        numberOfHouseMembers: 5,
-        electricityBudget: 500,
-        waterBudget: 500
+        numberOfHouseMembers: constaints.numberOfHouseMembers,
+        electricityBudget: constaints.electricityBudget,
+        waterBudget: constaints.waterBudget
       });
       //   const { result } = await registrUser({
       //     firstName:userInfo.firstName,
@@ -79,7 +78,14 @@ function UserForm({ route, navigation }) {
       // });
       console.log(result)
       if (result) {
-        navigation.navigate('HOMEPAGE')
+        navigation.navigate('HOMEPAGE',{
+          newUser:true,
+          userInfo:{
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName
+          }
+        }
+        )
       } else {
         console.log("opsiiii2")
         navigation.navigate('LANDING_PAGE')
