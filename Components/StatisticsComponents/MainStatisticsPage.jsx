@@ -53,7 +53,7 @@ function MainStatisticsPage({ route, navigation }) {
                                 <TouchableOpacity onPress={() => { setProgressView(1) }}>
                                     <Text style={styles.numbersTextStyle}>Water</Text>
                                     <AnimatedCircularProgress
-                                        size={100}
+                                        size={150}
                                         width={3}
                                         fill={currentMonthStats.WaterExpensesPercentageCalculation}
                                         tintColor="#00e0ff"
@@ -73,7 +73,7 @@ function MainStatisticsPage({ route, navigation }) {
                                     </AnimatedCircularProgress>
                                     <Text style={styles.numbersTextStyle}>Electricity</Text>
                                     <AnimatedCircularProgress
-                                        size={100}
+                                        size={150}
                                         width={3}
                                         fill={currentMonthStats.ElectricityExpensesPercentageCalculation}
                                         tintColor="#00e0ff"
