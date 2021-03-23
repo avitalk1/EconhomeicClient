@@ -22,7 +22,25 @@ const awsconfigsclient = {
             }
             
         ]
+    }, 
+    Analytics: {
+        // OPTIONAL - disable Analytics if true
+        disabled: false,
+        // OPTIONAL - Allow recording session events. Default is true.
+        autoSessionRecord: true,
+
+        AWSPinpoint: {
+            // OPTIONAL -  Amazon Pinpoint App Client ID
+            appId: 'cab36577eb1a451ba20c3be009e32284',
+            // OPTIONAL -  Amazon service region
+            region: 'eu-west-1'
+        }
+    },
+    PushNotification: {
+        appId: 'cab36577eb1a451ba20c3be009e32284',
+        requestIOSPermissions: false
     }
+
 }
 
 export default awsconfigsclient;

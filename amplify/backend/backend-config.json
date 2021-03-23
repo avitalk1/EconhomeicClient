@@ -6,5 +6,19 @@
       "dependsOn": [],
       "customAuth": false
     }
+  },
+  "notifications": {
+    "EconhomeicClientG1kXp": {
+      "service": "Pinpoint",
+      "channels": [
+        "FCM"
+      ]
+    }
+  },
+  "analytics": {
+    "EconhomeicClientG1kXp": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

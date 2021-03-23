@@ -1,5 +1,10 @@
 import Amplify, { API } from 'aws-amplify';
 import awsconfigsclient from '../common/aws-configs'
+
+import DeviceInfo from 'react-native-device-info';
+import messaging from '@react-native-firebase/messaging';
+
+
 Amplify.configure(awsconfigsclient);
 const getUserByHouse = async (houseID) => {
     console.log("house id", houseID)
@@ -45,8 +50,27 @@ const getUserInfo = async (email) => {
     }
     
 }
+const handleDeivceForNotifications = async (email, action) => {
+    const FCMToken = await messaging().getToken();
+    const myInit = {
+        body:{
+            userEmail: email, 
+            case: action, 
+            deviceID: DeviceInfo.getDeviceId(), 
+            FCMToken: FCMToken
+        }
+    }
+    try{
+        const result = await API.post('LambdaSimpleProxy', '/devicenotificationcheck', myInit)
+        console.log(result)
+        return result 
+    }catch(err){
+        return err;
+    }
+}
 export {
     getUserByHouse,
     registrUser,
     getUserInfo,
+    handleDeivceForNotifications,
 }

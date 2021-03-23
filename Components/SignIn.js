@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet } from 'react-native';
 import { Auth } from 'aws-amplify'
 import { Input, Button} from 'react-native-elements';
-import { getUserInfo } from '../common/api'
+import {handleDeivceForNotifications} from '../common/api'
 function SignIn({ navigation }) {
   const [userInfo, setUserInfo] = useState({
     email: '',
@@ -18,19 +18,10 @@ function SignIn({ navigation }) {
   const handleSubmit = async () => { 
     try{
       const user = await Auth.signIn(userInfo.email, userInfo.password)
-      getUserInfo(userInfo.email).then(result => {
-        if ('Expenses' in result.user){
-          navigation.navigate('MAIN_STATISTICS_PAGE',{
-            userInfo: result
-          })
-        }else{
-          navigation.navigate('HOMEPAGE',{
-            newUser:false,
-            userInfo: result
-          })
-        }
+      handleDeivceForNotifications(userInfo.email, "genetrate")
+      navigation.navigate('MAIN_STATISTICS_PAGE',{
+        userInfo: userInfo.email,
       })
-      
     }catch(err){
       console.log(err)
       navigation.navigate("LANDING_PAGE")

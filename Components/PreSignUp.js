@@ -24,6 +24,18 @@ function PreSignUp({ navigation }) {
               navigation.navigate('LANDING_PAGE')
           }
       }
+      const handleBarCodeScannedSim = async () => {
+        setScanned(true);
+          const result = await getUserByHouse("1234")
+          if(result){
+            navigation.navigate('SIGNUP', {
+                houseID: "1234"
+            })
+          }else{
+              console.log("opsiiii")
+              navigation.navigate('LANDING_PAGE')
+          }
+      }
       
     
       if (hasPermission === null) {
@@ -39,6 +51,10 @@ function PreSignUp({ navigation }) {
          <BarCodeScanner
             onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
             style={StyleSheet.absoluteFillObject}
+        />
+        <Button
+         title="simulate qr code"
+         onPress={handleBarCodeScannedSim}
         />
        </View>
     );

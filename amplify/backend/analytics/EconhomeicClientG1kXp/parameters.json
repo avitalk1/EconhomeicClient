@@ -1,0 +1,22 @@
+{
+    "appName": "EconhomeicClientG1kXp",
+    "roleName": "pinpointLambdaRoleb1bc7532",
+    "cloudformationPolicyName": "cloudformationPolicyb1bc7532",
+    "cloudWatchPolicyName": "cloudWatchPolicyb1bc7532",
+    "pinpointPolicyName": "pinpointPolicyb1bc7532",
+    "authPolicyName": "pinpoint_amplify_b1bc7532",
+    "unauthPolicyName": "pinpoint_amplify_b1bc7532",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "appId": "cab36577eb1a451ba20c3be009e32284"
+}

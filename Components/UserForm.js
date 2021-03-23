@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { registrUser } from '../common/api';
 import { Input, Button } from 'react-native-elements';
-
+import {handleDeivceForNotifications} from '../common/api'
 
 function UserForm({ route, navigation }) {
   const [userFormStage, setUserFormStage] = useState(1)
@@ -76,8 +76,9 @@ function UserForm({ route, navigation }) {
       //     electricityBudget:constaints.electricityBudget,
       //     waterBudget:constaints.waterBudget
       // });
-      console.log(result)
+      console.log("handleSubmit result userForm", result)
       if (result) {
+        handleDeivceForNotifications(userInfo.email, "generate")
         navigation.navigate('HOMEPAGE',{
           newUser:true,
           userInfo:{

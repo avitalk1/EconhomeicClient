@@ -21,6 +21,7 @@
     },
     "android": {
       "package": "com.echonhomeic.echonhomeic",
+      "googleServicesFile": "./google-services.json",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

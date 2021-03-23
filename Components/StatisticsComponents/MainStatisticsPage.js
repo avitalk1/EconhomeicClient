@@ -2,18 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import Amplify, { API } from 'aws-amplify';
+import Amplify from 'aws-amplify';
 import awsconfigsclient from '../../common/aws-configs'
+import { getUserInfo} from '../../common/api'
 import { mainStatisticsFunction } from './statisticFunctions'
+import Logout from '../Logout';
 Amplify.configure(awsconfigsclient);
 function MainStatisticsPage({ route, navigation }) {
     const [progressView, setProgressView] = useState(1);
     const [currentMonthStats, setCurrentMonthStats] = useState()
     const [userInfo, setUserInfo] = useState(route.params.userInfo.user)
     useEffect(() => {
-        const result = mainStatisticsFunction(userInfo.Expenses, userInfo.Constaints)
-        setCurrentMonthStats(result)
-
+        getUserInfo(route.params.userInfo).then(userInfoResult => {
+            if(!('Expenses' in  userInfoResult.user)){
+                navigation.navigate('HOMEPAGE',{
+                    newUser:false,
+                    userInfo:{
+                      firstName: userInfoResult.user.firstName,
+                      lastName: userInfoResult.user.lastName
+                    }
+                  })
+            }else{
+                const result = mainStatisticsFunction(userInfoResult.user.Expenses, userInfoResult.user.Constaints)
+                setCurrentMonthStats(result)
+            }
+        }).catch(err => console.log(err));
+      
     }, [])
     if (currentMonthStats) {
         return (
@@ -125,7 +139,7 @@ function MainStatisticsPage({ route, navigation }) {
                             <Text style={styles.numbersTextStyle}>{currentMonthStats.todaysWaterExpenses}</Text>
                         </View>
                 }
-
+            <Logout/>
             </View>
         );
     } else return <></>

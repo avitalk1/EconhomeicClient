@@ -1,6 +1,6 @@
 {
     "identityPoolName": "econhomeicclientc60b8b8d_identitypool_c60b8b8d",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "econhoc60b8b8d",
     "userPoolName": "econhomeicclientc60b8b8d_userpool_c60b8b8d",
     "autoVerifiedAttributes": [
