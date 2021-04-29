@@ -11,27 +11,25 @@ import UserForm from './UserForm';
 import HomePage from './HomePage';
 import MainStatisticsPage from './StatisticsComponents/MainStatisticsPage';
 
-const Stack = createStackNavigator();
+const MainStack = createStackNavigator();
 
 const AppNavigation = () => {
     return (
-        <NavigationContainer>
-            <Stack.Navigator 
+            <MainStack.Navigator 
             initialRouteName="LANDING_PAGE"
             screenOptions={{
                 headerShown: false
               }}
             >
-                <Stack.Screen name="LANDING_PAGE" component={LandingPage}/>
-                <Stack.Screen name="SIGNIN" component={SignIn}/>
-                <Stack.Screen name="PRESIGNUP" component={PreSignUp}/>
-                <Stack.Screen name="SIGNUP" component={SignUp}/>
-                <Stack.Screen name="SUCONFIRM" component={SignupConfirmation}/>
-                <Stack.Screen name="USERFORM" component={UserForm}/>
-                <Stack.Screen name="HOMEPAGE" component={HomePage}/>
-                <Stack.Screen name="MAIN_STATISTICS_PAGE" component={MainStatisticsPage}/>
-            </Stack.Navigator>
-        </NavigationContainer>
+                <MainStack.Screen name="LANDING_PAGE" component={LandingPage}/>
+                <MainStack.Screen name="SIGNIN" component={SignIn}/>
+                <MainStack.Screen name="PRESIGNUP" component={PreSignUp}/>
+                <MainStack.Screen name="SIGNUP" component={SignUp}/>
+                <MainStack.Screen name="SUCONFIRM" component={SignupConfirmation}/>
+                <MainStack.Screen name="USERFORM" component={UserForm}/>
+                <MainStack.Screen name="HOMEPAGE" component={HomePage}/>
+                <MainStack.Screen name="MAIN_STATISTICS_PAGE" component={MainStatisticsPage}/>
+            </MainStack.Navigator>
     )
 }
 

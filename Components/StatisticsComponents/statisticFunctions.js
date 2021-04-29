@@ -1,3 +1,6 @@
+import {ProgressGreen, ProgressOrange, ProgressRed} from '../../common/styleColors'
+
+
 const formatUserExpenses = (expensesArray) => {
     let today = new Date();
     let year = today.getFullYear();
@@ -9,6 +12,16 @@ const formatUserExpenses = (expensesArray) => {
         }
     }
     return monthsArray
+}
+
+const pickColor = (value) => {
+    if(value <= 33){
+        return ProgressGreen
+    }else if(value > 33 && value <=70){
+        return ProgressOrange
+    }else{
+        return ProgressRed
+    }
 }
 const mainStatisticsFunction = (expensesArray, constraints) =>{
     let formatedExpenses = formatUserExpenses(expensesArray);
@@ -31,6 +44,12 @@ const mainStatisticsFunction = (expensesArray, constraints) =>{
         totalWaterExpenses += currentMonthExpenses[i].waterExpenses;
         totalElectricityExpenses+= currentMonthExpenses[i].electricityExpenses;
     }
+    let epc = Math.round( (totalWaterExpenses + totalElectricityExpenses) / (constraints.waterBudget + constraints.electricityBudget) * 100 * 100) / 100
+    let water_epc = Math.round( totalWaterExpenses / constraints.waterBudget * 100 * 100) / 100
+    let electricity_epc =  Math.round( totalElectricityExpenses /  constraints.electricityBudget * 100 * 100) / 100
+    
+    // calculate colors 
+
 
     let result = {
         totalExpenses: totalWaterExpenses + totalElectricityExpenses,
@@ -39,9 +58,18 @@ const mainStatisticsFunction = (expensesArray, constraints) =>{
         todaysTotalExpenses: todaysWaterExpenses + todaysElectricityExpenses,
         todaysWaterExpenses: todaysWaterExpenses, 
         todaysElectricityExpenses: todaysElectricityExpenses,
-        expensesPercentageCalculation: Math.round( (totalWaterExpenses + totalElectricityExpenses) / (constraints.waterBudget + constraints.electricityBudget) * 100 * 100) / 100, 
-        WaterExpensesPercentageCalculation: Math.round( totalWaterExpenses / constraints.waterBudget * 100 * 100) / 100, 
-        ElectricityExpensesPercentageCalculation: Math.round( totalElectricityExpenses /  constraints.electricityBudget * 100 * 100) / 100, 
+        expensesPercentageCalculation:  {
+            value:epc, 
+            color: pickColor(epc)
+        },
+        WaterExpensesPercentageCalculation:{
+            value:water_epc, 
+            color: pickColor(water_epc)
+        },
+        ElectricityExpensesPercentageCalculation:{
+            value:electricity_epc, 
+            color: pickColor(electricity_epc)
+        },
         monthNumberOfDays: new Date(today.getFullYear(), today.getMonth() +1 , 0).getDate(), 
         todaysDay:today.getDate(), 
         monthName: today.toLocaleString('en-US', { month: 'long' }),

@@ -6,19 +6,15 @@ import {handleDeivceForNotifications} from '../common/api'
 
 import { useNavigation } from '@react-navigation/native';
 function Logout() {
-
-  const handleSubmit = async () => { 
-    const navigation = useNavigation();
-    try{    
+  const navigation = useNavigation();
+  const handleSubmit =  () => {   
       Auth.currentAuthenticatedUser()
         .then(user => {
             handleDeivceForNotifications(user.attributes.email, "deactivate")
         })
-      await Auth.signOut()
-     navigation.navigate('LANDING_PAGE')
-    }catch(err){
-      console.log(err)
-    }
+      Auth.signOut().then(res=>{
+        navigation.navigate('LANDING_PAGE')
+      })
   }
   return (
     <View style={styles.container}>
@@ -37,3 +33,4 @@ const styles = StyleSheet.create({
 });
 
 export default Logout
+

@@ -4,9 +4,8 @@ import { Input, Button } from 'react-native-elements';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Amplify from 'aws-amplify';
 import awsconfigsclient from '../../common/aws-configs'
-import { getUserInfo} from '../../common/api'
+import { getUserInfo } from '../../common/api'
 import { mainStatisticsFunction } from './statisticFunctions'
-import Logout from '../Logout';
 Amplify.configure(awsconfigsclient);
 function MainStatisticsPage({ route, navigation }) {
     const [progressView, setProgressView] = useState(1);
@@ -14,42 +13,46 @@ function MainStatisticsPage({ route, navigation }) {
     const [userInfo, setUserInfo] = useState(route.params.userInfo.user)
     useEffect(() => {
         getUserInfo(route.params.userInfo).then(userInfoResult => {
-            if(!('Expenses' in  userInfoResult.user)){
-                navigation.navigate('HOMEPAGE',{
-                    newUser:false,
-                    userInfo:{
-                      firstName: userInfoResult.user.firstName,
-                      lastName: userInfoResult.user.lastName
+            if (!('Expenses' in userInfoResult.user)) {
+                navigation.navigate('HOMEPAGE', {
+                    newUser: false,
+                    userInfo: {
+                        firstName: userInfoResult.user.firstName,
+                        lastName: userInfoResult.user.lastName
                     }
-                  })
-            }else{
+                })
+            } else {
                 const result = mainStatisticsFunction(userInfoResult.user.Expenses, userInfoResult.user.Constaints)
                 setCurrentMonthStats(result)
+                setUserInfo(userInfoResult.user)
+
+                
             }
         }).catch(err => console.log(err));
-      
+
     }, [])
     if (currentMonthStats) {
         return (
             <View style={styles.container}>
-                <Text>Main Statistics Page</Text>
-                <Text>{`${currentMonthStats.todaysDay}, ${currentMonthStats.monthName} ${currentMonthStats.currentYear}`}</Text>
+                <Text style={styles.MSPageTitle}>Main Statistics Page</Text>
+                <Text>{` ${currentMonthStats.monthName}`}</Text>
                 <View style={styles.progressContainer}>
+                <Text style={styles.daysText}>{`Day ${currentMonthStats.todaysDay} out of ${currentMonthStats.monthNumberOfDays}`}</Text>
                     {
                         progressView === 1 ?
                             <View>
                                 <TouchableOpacity onPress={() => { setProgressView(2) }}>
                                     <AnimatedCircularProgress
                                         size={300}
-                                        width={3}
-                                        fill={currentMonthStats.expensesPercentageCalculation}
-                                        tintColor="#00e0ff"
-                                        backgroundColor="#3d5875">
+                                        width={10}
+                                        fill={currentMonthStats.expensesPercentageCalculation.value}
+                                        tintColor={currentMonthStats.expensesPercentageCalculation.color}
+                                        backgroundColor="#B0B4B4">
                                         {
                                             () => (
                                                 <View>
                                                     <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.expensesPercentageCalculation} %`}
+                                                        {`${currentMonthStats.expensesPercentageCalculation.value} %`}
                                                     </Text>
                                                     <Text style={styles.numbersTextStyle}>
                                                         {`${currentMonthStats.totalExpenses} / ${currentMonthStats.totalBudget}`}
@@ -59,57 +62,66 @@ function MainStatisticsPage({ route, navigation }) {
                                         }
                                     </AnimatedCircularProgress>
                                 </TouchableOpacity>
-                                
-                            </View>
-                            :
-                            <View>
-                                <Text style={styles.numbersTextStyle}>Expenses Breakdown</Text>
-                                <TouchableOpacity onPress={() => { setProgressView(1) }}>
-                                    <Text style={styles.numbersTextStyle}>Water</Text>
-                                    <AnimatedCircularProgress
-                                        size={150}
-                                        width={3}
-                                        fill={currentMonthStats.WaterExpensesPercentageCalculation}
-                                        tintColor="#00e0ff"
-                                        backgroundColor="#3d5875">
-                                        {
-                                            () => (
-                                                <View>
-                                                    <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.WaterExpensesPercentageCalculation} %`}
-                                                    </Text>
-                                                    <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.totalWaterExpenses} / ${userInfo.Constaints.waterBudget}`}
-                                                    </Text>
-                                                </View>
-                                            )
-                                        }
-                                    </AnimatedCircularProgress>
-                                    <Text style={styles.numbersTextStyle}>Electricity</Text>
-                                    <AnimatedCircularProgress
-                                        size={150}
-                                        width={3}
-                                        fill={currentMonthStats.ElectricityExpensesPercentageCalculation}
-                                        tintColor="#00e0ff"
-                                        backgroundColor="#3d5875">
-                                        {
-                                            () => (
-                                                <View>
-                                                    <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.ElectricityExpensesPercentageCalculation} %`}
-                                                    </Text>
-                                                    <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.totalElectricityExpenses} / ${userInfo.Constaints.electricityBudget}`}
-                                                    </Text>
-                                                </View>
-                                            )
-                                        }
-                                    </AnimatedCircularProgress>
-                                </TouchableOpacity>
 
                             </View>
+                            :
+                            <View >
+                                <Text style={styles.numbersTextStyle}>Expenses Breakdown</Text>
+                                <View style={styles.breakeDownContainer}>
+                                    <TouchableOpacity onPress={() => { setProgressView(1) }}>
+                                        <View style={styles.smallProgressContainer}>
+
+                                            <Text style={styles.numbersTextStyle}>Water</Text>
+                                            <AnimatedCircularProgress
+                                                size={120}
+                                                width={7}
+                                                fill={currentMonthStats.WaterExpensesPercentageCalculation.value}
+                                                tintColor={currentMonthStats.WaterExpensesPercentageCalculation.color}
+                                                backgroundColor="#B0B4B4">
+                                                {
+                                                    () => (
+                                                        <View>
+                                                            <Text style={styles.numbersTextStyle}>
+                                                                {`${currentMonthStats.WaterExpensesPercentageCalculation.value} %`}
+                                                            </Text>
+                                                            <Text style={styles.numbersTextStyle}>
+                                                                {`${currentMonthStats.totalWaterExpenses} / ${userInfo.Constaints.waterBudget}`}
+                                                            </Text>
+                                                        </View>
+                                                    )
+                                                }
+                                            </AnimatedCircularProgress>
+
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => { setProgressView(1) }}>
+                                        <View style={styles.smallProgressContainer}>
+                                            <Text style={styles.numbersTextStyle}>Electricity</Text>
+                                            <AnimatedCircularProgress
+                                                size={120}
+                                                width={7}
+                                                fill={currentMonthStats.ElectricityExpensesPercentageCalculation.value}
+                                                tintColor={currentMonthStats.ElectricityExpensesPercentageCalculation.color}
+                                                backgroundColor="#B0B4B4">
+                                                {
+                                                    () => (
+                                                        <View>
+                                                            <Text style={styles.numbersTextStyle}>
+                                                                {`${currentMonthStats.ElectricityExpensesPercentageCalculation.value} %`}
+                                                            </Text>
+                                                            <Text style={styles.numbersTextStyle}>
+                                                                {`${currentMonthStats.totalElectricityExpenses} / ${userInfo.Constaints.electricityBudget}`}
+                                                            </Text>
+                                                        </View>
+                                                    )
+                                                }
+                                            </AnimatedCircularProgress>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
                     }
-                    <Text>{`Day ${currentMonthStats.todaysDay} out of ${currentMonthStats.monthNumberOfDays}`}</Text>
+                    
                 </View>
 
                 {
@@ -131,15 +143,14 @@ function MainStatisticsPage({ route, navigation }) {
                         </View>
                 }
                 {
-                    currentMonthStats.todaysWaterExpenses < 0 ?
+                    currentMonthStats.todaysElectricityExpenses < 0 ?
                         <></>
                         :
                         <View style={styles.todaysNumbersTextContainer}>
                             <Text style={styles.numbersTextStyle}>Todays Water Expenses</Text>
-                            <Text style={styles.numbersTextStyle}>{currentMonthStats.todaysWaterExpenses}</Text>
+                            <Text style={styles.numbersTextStyle}>{currentMonthStats.todaysElectricityExpenses}</Text>
                         </View>
                 }
-            <Logout/>
             </View>
         );
     } else return <></>
@@ -147,22 +158,42 @@ function MainStatisticsPage({ route, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 100, 
-        display:'flex', 
-        alignItems:'center', 
-        height:'100%'
+        marginTop: 30,
+        display: 'flex',
+        alignItems: 'center',
+        height: '100%'
+    },
+    progressContainer: {
+       height:'57%', 
+        display: 'flex',
+        alignItems: 'center',
+    },
+    todaysNumbersTextContainer: {
+        display: "flex",
+        flexDirection: 'row',
+       
+        width:"60%", 
+        justifyContent:"space-between", 
+        marginTop:5
+    },
+    numbersTextStyle: {
+        fontSize: 20, 
+        textAlign:"center"
+    },
+    MSPageTitle: {
+        fontSize: 24
+    },
+    breakeDownContainer: {
+        display: "flex",
+        flexDirection: 'row',
     }, 
-    progressContainer:{
-        height:'40%', 
-        display:'flex', 
-        alignItems:'center', 
+    smallProgressContainer:{
+        display: 'flex',
+        alignItems: 'center', 
+        margin:10
     }, 
-    todaysNumbersTextContainer:{
-        display:"flex", 
-        flexDirection:'row', 
-    }, 
-    numbersTextStyle:{
-        fontSize:16
+    daysText:{
+        marginTop:10
     }
 
 

@@ -68,9 +68,39 @@ const handleDeivceForNotifications = async (email, action) => {
         return err;
     }
 }
+
+const getNotifications = async (email) => {
+    const myInit = {
+        body:{
+            userEmail: email, 
+        }
+    }
+    try{
+        const result = await API.post('LambdaSimpleProxy', '/getnotifications', myInit)
+        return result 
+    }catch(err){
+        return err;
+    }
+}
+
+const setReadNotification = async (nid) => {
+    const myInit = {
+        body:{
+            notificationID: nid,
+        }
+    }
+    try{
+        const result = await API.post('LambdaSimpleProxy', '/updatenotification', myInit)
+        return result 
+    }catch(err){
+        return err;
+    }
+}
 export {
     getUserByHouse,
     registrUser,
     getUserInfo,
     handleDeivceForNotifications,
+    getNotifications, 
+    setReadNotification
 }

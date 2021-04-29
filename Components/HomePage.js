@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Input, Button} from 'react-native-elements';
 import Amplify, { API } from 'aws-amplify';
 import awsconfigsclient from '../common/aws-configs'
-import Logout from './Logout';
 Amplify.configure(awsconfigsclient);
 function HomePage({ route, navigation }) {
 
@@ -16,7 +14,6 @@ function HomePage({ route, navigation }) {
         : 
         <Text>Hello you are not a new user - but no statistics to show</Text>
       }
-      <Logout/>
     </View>
   );
 }

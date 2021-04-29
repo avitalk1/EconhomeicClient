@@ -18,7 +18,7 @@ function SignIn({ navigation }) {
   const handleSubmit = async () => { 
     try{
       const user = await Auth.signIn(userInfo.email, userInfo.password)
-      handleDeivceForNotifications(userInfo.email, "genetrate")
+      handleDeivceForNotifications(userInfo.email, "generate")
       navigation.navigate('MAIN_STATISTICS_PAGE',{
         userInfo: userInfo.email,
       })
@@ -29,8 +29,8 @@ function SignIn({ navigation }) {
   }
     return (
        <View style={styles.container}>
-         <Text>Sign IN Page</Text>
-         <View>
+         <Text style={styles.SIPageTitle} >Sign In</Text>
+         <View style={styles.InputContainer}>
         <Input
           placeholder="Email"
           onChangeText={value => handelInputChange('email', value)}
@@ -40,16 +40,32 @@ function SignIn({ navigation }) {
           onChangeText={value => handelInputChange('password', value)}
         />
       </View>
+      <View style={styles.BtnContainer}>
       <Button
         title="Submit"
         onPress={handleSubmit}
       />
+      </View>
        </View>
     );
 }
 const styles = StyleSheet.create({
     container: {
-      marginTop: 50
+      marginTop:50, 
+      display: 'flex',
+      alignItems: 'center',
+      height: "100%", 
+    }, 
+    InputContainer:{
+      width:"80%"
+    }, 
+    BtnContainer:{
+      marginTop:50, 
+      width:"80%"
+    }, 
+    SIPageTitle:{
+      marginBottom:20,
+      fontSize:24,
     }
   });
 
