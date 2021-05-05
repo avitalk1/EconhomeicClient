@@ -5,15 +5,26 @@ import awsconfigsclient from '../common/aws-configs'
 import { handleDeivceForNotifications } from '../common/api'
 import { Button } from 'react-native-elements';
 Amplify.configure(awsconfigsclient);
-function LandingPage(props) {
+function LandingPage({ navigation }) {
 
     const handeSignIn = () => {
-        props.navigation.navigate('SIGNIN')
+        navigation.navigate('SIGNIN')
     }
 
     const handlePreSignUp = () => {
-        props.navigation.navigate('PRESIGNUP')
+        navigation.navigate('PRESIGNUP')
     }
+    
+    useEffect(() => {
+        Auth.currentAuthenticatedUser()
+            .then(user => {
+                handleDeivceForNotifications(user.attributes.email, "check")
+                navigation.navigate('MAIN_STATISTICS_PAGE', {
+                    userInfo: user.attributes.email,
+                })
+            })
+            .catch(err => console.log(err));
+    }, [])
 
     return (
         <View style={styles.container}>
