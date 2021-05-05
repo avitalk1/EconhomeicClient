@@ -7,7 +7,8 @@ import awsconfigsclient from './common/aws-configs'
 import messaging from '@react-native-firebase/messaging';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { Provider } from 'react-redux'
+import store from './Redux/sagas/rootSaga'
 import { Button } from 'react-native-elements';
 
 import LandingPage from './Components/LandingPage';
@@ -20,6 +21,7 @@ import HomePage from './Components/HomePage';
 import MainStatisticsPage from './Components/StatisticsComponents/MainStatisticsPage';
 import NotificationList from './Components/Notifications/NotificationList'
 import LeftMenu from './Components/LeftMenu';
+import InitRouting from './Components/InitRouting';
 Analytics.record({ name: "EconhomeicVisit" })
 Amplify.configure(awsconfigsclient);
 const Stack = createStackNavigator();
@@ -64,7 +66,7 @@ function App() {
     navigate('LANDING_PAGE')
   }
   return (
-    <>
+    <Provider store={store}>
 
       {
         !isMenuOpen ?
@@ -79,12 +81,13 @@ function App() {
 
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator
-          initialRouteName="LANDING_PAGE"
+          initialRouteName="INIT_ROUTING"
           screenOptions={{
             headerShown: false
           }}
         >
           <Stack.Screen name="LANDING_PAGE" component={LandingPage} />
+          <Stack.Screen name="INIT_ROUTING" component={InitRouting} />
           <Stack.Screen name="SIGNIN" component={SignIn} />
           <Stack.Screen name="PRESIGNUP" component={PreSignUp} />
           <Stack.Screen name="SIGNUP" component={SignUp} />
@@ -95,7 +98,7 @@ function App() {
           <Stack.Screen name="NOTIFICATION_LIST" component={NotificationList} />
         </Stack.Navigator>
       </NavigationContainer>
-    </>
+    </Provider>
   )
 }
 

@@ -1,36 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Input, Button } from 'react-native-elements';
+import { connect } from 'react-redux'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Amplify from 'aws-amplify';
 import awsconfigsclient from '../../common/aws-configs'
 import { getUserInfo } from '../../common/api'
 import { mainStatisticsFunction } from './statisticFunctions'
 Amplify.configure(awsconfigsclient);
-function MainStatisticsPage({ route, navigation }) {
+function MainStatisticsPage(props) {
     const [progressView, setProgressView] = useState(1);
     const [currentMonthStats, setCurrentMonthStats] = useState()
-    const [userInfo, setUserInfo] = useState(route.params.userInfo.user)
     useEffect(() => {
-        getUserInfo(route.params.userInfo).then(userInfoResult => {
-            if (!('Expenses' in userInfoResult.user)) {
-                navigation.navigate('HOMEPAGE', {
+            if(!props.userInfo.loading){
+            if (!('Expenses' in props.userInfo.data)) {
+                props.navigation.navigate('HOMEPAGE', {
                     newUser: false,
                     userInfo: {
-                        firstName: userInfoResult.user.firstName,
-                        lastName: userInfoResult.user.lastName
+                        firstName: props.userInfo.data.firstName,
+                        lastName: props.userInfo.data.lastName
                     }
                 })
             } else {
-                const result = mainStatisticsFunction(userInfoResult.user.Expenses, userInfoResult.user.Constaints)
+                const result = mainStatisticsFunction(props.userInfo.data.Expenses, props.userInfo.data.Constaints)
                 setCurrentMonthStats(result)
-                setUserInfo(userInfoResult.user)
-
-                
             }
-        }).catch(err => console.log(err));
 
-    }, [])
+        }
+    }, [props.userInfo.loading])
     if (currentMonthStats) {
         return (
             <View style={styles.container}>
@@ -85,7 +82,7 @@ function MainStatisticsPage({ route, navigation }) {
                                                                 {`${currentMonthStats.WaterExpensesPercentageCalculation.value} %`}
                                                             </Text>
                                                             <Text style={styles.numbersTextStyle}>
-                                                                {`${currentMonthStats.totalWaterExpenses} / ${userInfo.Constaints.waterBudget}`}
+                                                                {`${currentMonthStats.totalWaterExpenses} / ${props.userInfo.data.Constaints.waterBudget}`}
                                                             </Text>
                                                         </View>
                                                     )
@@ -110,7 +107,7 @@ function MainStatisticsPage({ route, navigation }) {
                                                                 {`${currentMonthStats.ElectricityExpensesPercentageCalculation.value} %`}
                                                             </Text>
                                                             <Text style={styles.numbersTextStyle}>
-                                                                {`${currentMonthStats.totalElectricityExpenses} / ${userInfo.Constaints.electricityBudget}`}
+                                                                {`${currentMonthStats.totalElectricityExpenses} / ${props.userInfo.data.Constaints.electricityBudget}`}
                                                             </Text>
                                                         </View>
                                                     )
@@ -199,4 +196,8 @@ const styles = StyleSheet.create({
 
 });
 
-export default MainStatisticsPage;
+const mapStateToProps = (store) => ({
+    userInfo: store.userData,
+  });
+  
+export default connect(mapStateToProps)(MainStatisticsPage);
