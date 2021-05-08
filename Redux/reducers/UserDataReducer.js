@@ -20,7 +20,7 @@ const reducer = (state = initialState, action) => {
     case FETCH_USER_DATA_FAIL:
       return { ...state, data: {}, error, loading: false};
     case USER_DATA_UPDATE:
-      return {...state , data: action.value , error, loading: false }
+      return {...state , data, error: null, loading: false }
     default:
       return state;
   }

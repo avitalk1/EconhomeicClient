@@ -26,6 +26,12 @@ function Settings(props) {
                 waterBudget: constaints.waterBudget,
                 UserID: props.userInfo.data.UserID
             })
+            props.updateUserDataFunc({
+                numberOfHouseMembers: constaints.numberOfHouseMembers,
+                electricityBudget: constaints.electricityBudget,
+                waterBudget: constaints.waterBudget,
+                UserID: props.userInfo.data.UserID
+            })
             return result;
         } catch (err) {
             console.log(err)
