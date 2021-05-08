@@ -5,6 +5,7 @@ import { UpdateUserSettings } from '../common/api';
 import { Input, Button } from 'react-native-elements';
 import Amplify from 'aws-amplify';
 import awsconfigsclient from '../common/aws-configs'
+import { userDataUpdate } from '../Redux/actions/UserDataActions/action';
 Amplify.configure(awsconfigsclient);
 function Settings(props) {
 
@@ -66,4 +67,7 @@ const mapStateToProps = (store) => ({
     userInfo: store.userData,
 });
 
-export default connect(mapStateToProps)(Settings);
+const mapDispatchToProps = (dispatch)=> ({
+   updateUserDataFunc:(data)=> dispatch(userDataUpdate(data))
+  })
+export default connect(mapDispatchToProps,mapStateToProps)(Settings);
