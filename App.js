@@ -22,6 +22,8 @@ import MainStatisticsPage from './Components/StatisticsComponents/MainStatistics
 import NotificationList from './Components/Notifications/NotificationList'
 import LeftMenu from './Components/LeftMenu';
 import InitRouting from './Components/InitRouting';
+import Settings from './Components/Settings'
+
 Analytics.record({ name: "EconhomeicVisit" })
 Amplify.configure(awsconfigsclient);
 const Stack = createStackNavigator();
@@ -89,6 +91,7 @@ function App() {
           <Stack.Screen name="LANDING_PAGE" component={LandingPage} />
           <Stack.Screen name="INIT_ROUTING" component={InitRouting} />
           <Stack.Screen name="SIGNIN" component={SignIn} />
+          <Stack.Screen name="SETTINGS" component={Settings} />
           <Stack.Screen name="PRESIGNUP" component={PreSignUp} />
           <Stack.Screen name="SIGNUP" component={SignUp} />
           <Stack.Screen name="SUCONFIRM" component={SignupConfirmation} />

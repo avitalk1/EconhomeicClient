@@ -19,9 +19,7 @@ function SignIn({ navigation }) {
     try{
       const user = await Auth.signIn(userInfo.email, userInfo.password)
       handleDeivceForNotifications(userInfo.email, "generate")
-      navigation.navigate('MAIN_STATISTICS_PAGE',{
-        userInfo: userInfo.email,
-      })
+      navigation.navigate('INIT_ROUTING')
     }catch(err){
       console.log(err)
       navigation.navigate("LANDING_PAGE")

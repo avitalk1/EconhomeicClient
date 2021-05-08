@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = (dispatch)=> ({
-   fetchUserDataFunc : (email) => dispatch(fetchUserData(email))
+   fetchUserDataFunc : (email) => dispatch(fetchUserData(email)),
+   updateUserDataFunc:(data)=> dispatch(userDataUpdate(data))
   })
   export default connect(null, mapDispatchToProps)(InitRouting);
