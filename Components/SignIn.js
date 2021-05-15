@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { Auth } from 'aws-amplify'
-import { Input, Button} from 'react-native-elements';
-import {handleDeivceForNotifications} from '../common/api'
+import { Input, Button } from 'react-native-elements';
+import { styles } from './styles'
+import { handleDeivceForNotifications } from '../common/api'
 function SignIn({ navigation }) {
   const [userInfo, setUserInfo] = useState({
     email: '',
@@ -15,56 +16,44 @@ function SignIn({ navigation }) {
     setUserInfo(tempUserInfo);
   }
 
-  const handleSubmit = async () => { 
-    try{
+  const handleSubmit = async () => {
+    try {
       const user = await Auth.signIn(userInfo.email, userInfo.password)
       handleDeivceForNotifications(userInfo.email, "generate")
       navigation.navigate('INIT_ROUTING')
-    }catch(err){
+    } catch (err) {
       console.log(err)
       navigation.navigate("LANDING_PAGE")
     }
   }
-    return (
-       <View style={styles.container}>
-         <Text style={styles.SIPageTitle} >Sign In</Text>
-         <View style={styles.InputContainer}>
-        <Input
-          placeholder="Email"
-          onChangeText={value => handelInputChange('email', value)}
-        />
-        <Input
-          placeholder="Password"
-          onChangeText={value => handelInputChange('password', value)}
-        />
+  return (
+    <View>
+      <View style={[{ flexDirection: 'row', alignItems: 'center' }]}>
+        <View style={styles.triangleCorner} />
+        <View style={styles.triangleCornerTopRight} />
       </View>
-      <View style={styles.BtnContainer}>
-      <Button
-        title="Submit"
-        onPress={handleSubmit}
-      />
+      <View style={styles.container}>
+        <Text style={styles.welcomeText} >Sign In</Text>
+        <View style={styles.InputContainer}>
+          <Input
+            placeholder="Email"
+            onChangeText={value => handelInputChange('email', value)}
+          />
+          <Input
+            placeholder="Password"
+            onChangeText={value => handelInputChange('password', value)}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            buttonStyle={styles.button}
+            title="Submit"
+            onPress={handleSubmit}
+          />
+        </View>
       </View>
-       </View>
-    );
+    </View>
+  );
 }
-const styles = StyleSheet.create({
-    container: {
-      marginTop:50, 
-      display: 'flex',
-      alignItems: 'center',
-      height: "100%", 
-    }, 
-    InputContainer:{
-      width:"80%"
-    }, 
-    BtnContainer:{
-      marginTop:50, 
-      width:"80%"
-    }, 
-    SIPageTitle:{
-      marginBottom:20,
-      fontSize:24,
-    }
-  });
 
 export default SignIn

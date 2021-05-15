@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
+import { styles } from './styles'
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfigsclient from '../common/aws-configs'
 import { handleDeivceForNotifications } from '../common/api'
@@ -14,46 +15,33 @@ function LandingPage(props) {
     const handlePreSignUp = () => {
         props.navigation.navigate('PRESIGNUP')
     }
-
+    
     return (
-        <View style={styles.container}>
-            <Text style={styles.welcomeText} >Welcome to Econhomeic</Text>
-            <View style={styles.buttonContainer}>
-                <Button
-                    title="Sign In"
-                    onPress={handeSignIn}
-                />
+        <View>
+            <View style={[{ flexDirection: 'row', alignItems: 'center' }]}>
+                <View style={styles.triangleCorner} />
+                <View style={styles.triangleCornerTopRight} />
             </View>
-            <Text  style={styles.OrText}>OR</Text>
-            <View style={styles.buttonContainer}>
-                <Button
-                    title="Sign Up"
-                    onPress={handlePreSignUp}
-                />
+            <View style={styles.container}>
+                <Text style={styles.welcomeText} >Welcome to Econhomeic</Text>
+                <View style={styles.buttonContainer}>
+                    <Button
+                        title="Sign In"
+                        onPress={handeSignIn}
+                        buttonStyle={styles.button} 
+                    />
+                </View>
+                <Text style={styles.OrText}>OR</Text>
+                <View style={styles.buttonContainer}>
+                    <Button
+                        buttonStyle={styles.button}
+                        title="Sign Up"
+                        onPress={handlePreSignUp}
+                    />
+                </View>
             </View>
         </View>
     );
 }
 
-
-const styles = StyleSheet.create({
-    container: {
-        marginTop:50, 
-        display: 'flex',
-        alignItems: 'center',
-        height: "100%"
-    },
-    welcomeText: {
-        fontSize:24,
-        marginBottom:50
-    }, 
-    OrText:{
-        fontSize:20,
-        marginBottom:20, 
-        marginTop:20
-    }, 
-    buttonContainer:{
-        width:"80%"
-    }
-});
 export default LandingPage
