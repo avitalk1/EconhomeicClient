@@ -1,40 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import Amplify from 'aws-amplify';
-import awsconfigsclient from '../../common/aws-configs'
-import { getUserInfo } from '../../common/api'
-import { mainStatisticsFunction } from './statisticFunctions'
+import Amplify, { Analytics, Auth } from 'aws-amplify';
+import awsconfigsclient from '../../common/aws-configs';
+import { styles } from '../styles';
+import { mainStatisticsFunction } from './statisticFunctions';
+// import Tabs from '../Navigation/BottomTabNavigator'
+import { fetchUserData } from '../../Redux/actions/UserDataActions/action';
+
 Amplify.configure(awsconfigsclient);
+
 function MainStatisticsPage(props) {
     const [progressView, setProgressView] = useState(1);
-    const [currentMonthStats, setCurrentMonthStats] = useState()
-    useEffect(() => {
-            if(!props.userInfo.loading){
-            if (!('Expenses' in props.userInfo.data)) {
-                props.navigation.navigate('HOMEPAGE', {
-                    newUser: false,
-                    userInfo: {
-                        firstName: props.userInfo.data.firstName,
-                        lastName: props.userInfo.data.lastName
-                    }
-                })
-            } else {
-                const result = mainStatisticsFunction(props.userInfo.data.Expenses, props.userInfo.data.Constaints)
+    const [currentMonthStats, setCurrentMonthStats] = useState(null)
+    useEffect(()=>{
+        if(props.userInfo.data != null){
+            if('Expenses' in props.userInfo.data){
+                let result = mainStatisticsFunction(props.userInfo.data.Expenses, props.userInfo.data.Constraints)
                 setCurrentMonthStats(result)
+            }else{
+                console.log("no expenses ")
             }
-
         }
-    }, [props.userInfo.loading])
+    },[props.userInfo.loading])
+    
     if (currentMonthStats) {
         return (
             <View style={styles.container}>
                 <Text style={styles.MSPageTitle}>Main Statistics Page</Text>
                 <Text>{` ${currentMonthStats.monthName}`}</Text>
                 <View style={styles.progressContainer}>
-                <Text style={styles.daysText}>{`Day ${currentMonthStats.todaysDay} out of ${currentMonthStats.monthNumberOfDays}`}</Text>
+                    <Text style={styles.daysText}>{`Day ${currentMonthStats.todaysDay} out of ${currentMonthStats.monthNumberOfDays}`}</Text>
                     {
                         progressView === 1 ?
                             <View>
@@ -82,7 +79,7 @@ function MainStatisticsPage(props) {
                                                                 {`${currentMonthStats.WaterExpensesPercentageCalculation.value} %`}
                                                             </Text>
                                                             <Text style={styles.numbersTextStyle}>
-                                                                {`${currentMonthStats.totalWaterExpenses} / ${props.userInfo.data.Constaints.waterBudget}`}
+                                                                {`${currentMonthStats.totalWaterExpenses} / ${props.userInfo.data.Constraints.waterBudget}`}
                                                             </Text>
                                                         </View>
                                                     )
@@ -107,7 +104,7 @@ function MainStatisticsPage(props) {
                                                                 {`${currentMonthStats.ElectricityExpensesPercentageCalculation.value} %`}
                                                             </Text>
                                                             <Text style={styles.numbersTextStyle}>
-                                                                {`${currentMonthStats.totalElectricityExpenses} / ${props.userInfo.data.Constaints.electricityBudget}`}
+                                                                {`${currentMonthStats.totalElectricityExpenses} / ${props.userInfo.data.Constraints.electricityBudget}`}
                                                             </Text>
                                                         </View>
                                                     )
@@ -118,8 +115,9 @@ function MainStatisticsPage(props) {
                                 </View>
                             </View>
                     }
-                    
+
                 </View>
+
 
                 {
                     currentMonthStats.todaysTotalExpenses < 0 ?
@@ -153,51 +151,11 @@ function MainStatisticsPage(props) {
     } else return <></>
 }
 
-const styles = StyleSheet.create({
-    container: {
-        marginTop: 30,
-        display: 'flex',
-        alignItems: 'center',
-        height: '100%'
-    },
-    progressContainer: {
-       height:'57%', 
-        display: 'flex',
-        alignItems: 'center',
-    },
-    todaysNumbersTextContainer: {
-        display: "flex",
-        flexDirection: 'row',
-       
-        width:"60%", 
-        justifyContent:"space-between", 
-        marginTop:5
-    },
-    numbersTextStyle: {
-        fontSize: 20, 
-        textAlign:"center"
-    },
-    MSPageTitle: {
-        fontSize: 24
-    },
-    breakeDownContainer: {
-        display: "flex",
-        flexDirection: 'row',
-    }, 
-    smallProgressContainer:{
-        display: 'flex',
-        alignItems: 'center', 
-        margin:10
-    }, 
-    daysText:{
-        marginTop:10
-    }
-
-
-});
-
 const mapStateToProps = (store) => ({
     userInfo: store.userData,
-  });
-  
-export default connect(mapStateToProps)(MainStatisticsPage);
+});
+const mapDispatchToProps = (dispatch) => ({
+    fetchUserDataFunc: (email) => dispatch(fetchUserData(email))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainStatisticsPage);

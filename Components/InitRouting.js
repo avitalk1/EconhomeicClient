@@ -5,13 +5,14 @@ import Amplify, { Auth } from 'aws-amplify';
 import { connect } from 'react-redux'
 import awsconfigsclient from '../common/aws-configs'
 import { handleDeivceForNotifications } from '../common/api'
-import { Button } from 'react-native-elements';
 import LandingPage from './LandingPage';
 import MainStatisticsPage from './StatisticsComponents/MainStatisticsPage';
 import { fetchUserData } from '../Redux/actions/UserDataActions/action';
+
 Amplify.configure(awsconfigsclient);
 function InitRouting(props) {
     const [testing, setTesting] = useState(0)
+    console.log("hii im here!")
     useEffect(() => {
         Auth.currentAuthenticatedUser()
             .then(user => {

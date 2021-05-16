@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
         elevation: 1,
         width: '30%',
         height: '100%',
-        backgroundColor: "white"
+        backgroundColor: "red",
+        color:"red"
     },
     menuOptionsTextContainer:{
         display:'flex', 

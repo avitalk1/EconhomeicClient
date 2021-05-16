@@ -23,7 +23,7 @@ import LeftMenu from './Components/LeftMenu';
 import InitRouting from './Components/InitRouting';
 import MyTabs from './Components/Navigation/BottomTabNavigator'
 import { handleDeivceForNotifications } from './common/api'
-import AppNavigation from "./Components/AppNavigation"
+
 Analytics.record({ name: "EconhomeicVisit" })
 Amplify.configure(awsconfigsclient);
 const Stack = createStackNavigator();
@@ -40,13 +40,13 @@ function App() {
   useEffect(() => {
     Auth.currentAuthenticatedUser()
         .then(user => {
-            // handleDeivceForNotifications(user.attributes.email, "check")
+            handleDeivceForNotifications(user.attributes.email, "check")
             setUserEmail(user.attributes.email)
             setIsSignedin(1)
         })
         .catch((err) => {
-          console.log("error")
           setIsSignedin(2)
+          console.log("error")
         });
   }, [])
   useEffect(() => {
@@ -72,13 +72,34 @@ function App() {
       });
   }, []);
   if(isSignedin == 0){
-    return (<View>
-      <Text>Loading...</Text>
-    </View>)
+    <View><Text>Loading....</Text></View>
   }
   return (
     <Provider store={store}>
-      <AppNavigation isSignedin={isSignedin} userEmail={userEmail}/>
+      <NavigationContainer>
+        <Stack.Navigator
+                  screenOptions={{
+                    headerShown: false
+          }}
+        >
+          {
+            isSignedin == 2 ? (
+              <>
+                <Stack.Screen name="LANDING_PAGE" component={LandingPage} />
+                <Stack.Screen name="SIGNIN" component={SignIn} />
+                <Stack.Screen name="SIGNUP" component={SignUp} />
+                </>
+            ): (
+              <>
+                <Stack.Screen name="MAIN_STATISTICS_PAGE">
+                  {props => <MyTabs {...props} extraData={userEmail} />}
+                </Stack.Screen>
+                <Stack.Screen name="HOMEPAGE" component={HomePage} />
+              </>
+            )
+          }
+        </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
   )
 }

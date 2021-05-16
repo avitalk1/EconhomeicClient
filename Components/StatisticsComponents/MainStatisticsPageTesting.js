@@ -9,13 +9,7 @@ import { getUserInfo } from '../../common/api'
 import { mainStatisticsFunction } from './statisticFunctions'
 Amplify.configure(awsconfigsclient);
 function MainStatisticsPageTesting(props) {
-    useEffect(()=>{
-        console.log(props.store)
-    })
-    return (<View><Text>Hello</Text></View>)
+    return (<View><Text>Hello I am signin</Text></View>)
 };
-const mapStateToProps = (store) => ({
-    store: store,
-  });
   
-export default connect(mapStateToProps)(MainStatisticsPageTesting);
+export default MainStatisticsPageTesting;
