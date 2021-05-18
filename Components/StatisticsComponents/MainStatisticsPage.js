@@ -14,34 +14,38 @@ Amplify.configure(awsconfigsclient);
 function MainStatisticsPage(props) {
     const [progressView, setProgressView] = useState(1);
     const [currentMonthStats, setCurrentMonthStats] = useState(null)
-    useEffect(()=>{
-        if(props.userInfo.data != null){
-            if('Expenses' in props.userInfo.data){
+    useEffect(() => {
+        if (props.userInfo.data != null) {
+            if ('Expenses' in props.userInfo.data) {
                 let result = mainStatisticsFunction(props.userInfo.data.Expenses, props.userInfo.data.Constraints)
                 setCurrentMonthStats(result)
-            }else{
+            } else {
                 console.log("no expenses ")
             }
         }
-    },[props.userInfo.loading])
-    
+    }, [props.userInfo.loading])
+
     if (currentMonthStats) {
         return (
             <View style={styles.container}>
                 <Text style={styles.MSPageTitle}>Main Statistics Page</Text>
-                <Text>{` ${currentMonthStats.monthName}`}</Text>
-                <View style={styles.progressContainer}>
-                    <Text style={styles.daysText}>{`Day ${currentMonthStats.todaysDay} out of ${currentMonthStats.monthNumberOfDays}`}</Text>
+                <View>
                     {
                         progressView === 1 ?
-                            <View>
+                            <View style={styles.progressContainer}>
                                 <TouchableOpacity onPress={() => { setProgressView(2) }}>
                                     <AnimatedCircularProgress
-                                        size={300}
-                                        width={10}
+                                        size={250}
+                                        width={15}
                                         fill={currentMonthStats.expensesPercentageCalculation.value}
-                                        tintColor={currentMonthStats.expensesPercentageCalculation.color}
-                                        backgroundColor="#B0B4B4">
+                                        tintColor="#00ff00"
+                                        width={10}
+                                        tintColorSecondary="#ff0000"
+                                        backgroundColor="#3d5875"
+                                        arcSweepAngle={240}
+                                        rotation={240}
+                                        lineCap="round"
+                                    >
                                         {
                                             () => (
                                                 <View>
@@ -59,16 +63,15 @@ function MainStatisticsPage(props) {
 
                             </View>
                             :
-                            <View >
+                            <View style={styles.progressContainer} >
                                 <Text style={styles.numbersTextStyle}>Expenses Breakdown</Text>
                                 <View style={styles.breakeDownContainer}>
                                     <TouchableOpacity onPress={() => { setProgressView(1) }}>
                                         <View style={styles.smallProgressContainer}>
-
                                             <Text style={styles.numbersTextStyle}>Water</Text>
                                             <AnimatedCircularProgress
-                                                size={120}
-                                                width={7}
+                                                size={150}
+                                                width={7.5}
                                                 fill={currentMonthStats.WaterExpensesPercentageCalculation.value}
                                                 tintColor={currentMonthStats.WaterExpensesPercentageCalculation.color}
                                                 backgroundColor="#B0B4B4">
@@ -92,8 +95,8 @@ function MainStatisticsPage(props) {
                                         <View style={styles.smallProgressContainer}>
                                             <Text style={styles.numbersTextStyle}>Electricity</Text>
                                             <AnimatedCircularProgress
-                                                size={120}
-                                                width={7}
+                                                size={150}
+                                                width={7.5}
                                                 fill={currentMonthStats.ElectricityExpensesPercentageCalculation.value}
                                                 tintColor={currentMonthStats.ElectricityExpensesPercentageCalculation.color}
                                                 backgroundColor="#B0B4B4">
@@ -115,9 +118,25 @@ function MainStatisticsPage(props) {
                                 </View>
                             </View>
                     }
-
+                    <Text style={styles.daysText}>{`${currentMonthStats.monthNumberOfDays - currentMonthStats.todaysDay} Days left`}</Text>
+                    <View style={styles.dailyInfo}>
+                        <Text style={{ color: "white", textAlign: "center", marginTop: 20 }}>{` ${currentMonthStats.monthName}`}</Text>
+                        <View style={styles.breakeDownContainer}>
+                            <View style={styles.squareInfo}>
+                                <Text style={styles.squareTitle} >Overall</Text>
+                                <Text style={styles.squareNumbers}>{`${currentMonthStats.totalExpenses}`}</Text>
+                            </View>
+                            <View style={styles.squareInfo}>
+                                <Text style={styles.squareTitle}>Electricity</Text>
+                                <Text style={styles.squareNumbers} >{`${currentMonthStats.totalElectricityExpenses}`}</Text>
+                            </View>
+                            <View style={styles.squareInfo}>
+                                <Text style={styles.squareTitle}>Water</Text>
+                                <Text style={styles.squareNumbers}>{`${currentMonthStats.totalWaterExpenses}`}</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
-
 
                 {
                     currentMonthStats.todaysTotalExpenses < 0 ?

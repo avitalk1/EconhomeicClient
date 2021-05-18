@@ -5,7 +5,6 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 10,
         display: 'flex',
         alignItems: 'center',
         height: "100%",
@@ -52,66 +51,94 @@ const styles = StyleSheet.create({
     },
     topContainer: {
         backgroundColor: "#10375C",
-        height: windowHeight/10,
+        height: windowHeight / 10,
     },
-    menuIconContainer: {
-        flexDirection: 'row', 
-        alignItems: 'center'
-        // width: 50,
-        // height: 50,
-        // display: 'flex',
-        // alignItems: 'center',
-        // justifyContent: 'center',
-    },
-    menuIcon: {
-        marginLeft: 20,
-        marginTop:10,
-        fontSize: 30,
-        fontWeight: "bold",
-        color:"white",
-    },
-    menuTitle:{
-        fontSize: 20,
-        color:"white",
-        marginLeft: 100,
+    menuTitle: {
         marginTop: 20,
+        fontSize: 20,
+        color: "white",
+        textAlign: "center",
         fontFamily: "BeatifulPeople",
     },
     progressContainer: {
-        height:'57%', 
-         display: 'flex',
-         alignItems: 'center',
-     },
-     todaysNumbersTextContainer: {
-         display: "flex",
-         flexDirection: 'row',
-         width:"60%", 
-         justifyContent:"space-between", 
-         marginTop:5
-     },
-     numbersTextStyle: {
-         fontSize: 20, 
-         textAlign:"center"
-     },
-     MSPageTitle: {
-         fontSize: 24,
-         fontFamily: "Roboto-bold",
-     },
-     breakeDownContainer: {
-         display: "flex",
-         flexDirection: 'row',
-     }, 
-     smallProgressContainer:{
-         display: 'flex',
-         alignItems: 'center', 
-         margin:10
-     }, 
-     daysText:{
-         marginTop:10
-     },
-     navContainer:{
-         backgroundColor:"blue"
-     }
+        height: windowHeight / 3,
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: 30
+    },
+    dailyInfo: {
+        width: windowWidth,
+        backgroundColor: "#10375C",
+        height: windowHeight / 4
+    },
+    todaysNumbersTextContainer: {
+        display: "flex",
+        flexDirection: 'row',
+        width: "60%",
+        justifyContent: "space-between",
+        marginTop: 5
+    },
+    numbersTextStyle: {
+        fontSize: 20,
+        textAlign: "center"
+    },
+    MSPageTitle: {
+        width: windowWidth,
+        backgroundColor: "#E2DDDD",
+        color: "#10375C",
+        fontSize: 20,
+        fontFamily: "Roboto-bold",
+        textAlign: 'center',
+    },
+    breakeDownContainer: {
+        display: "flex",
+        flexDirection: 'row',
+    },
+    smallProgressContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        margin: 15
+    },
+    daysText: {
+        color: "#10375C",
+        fontSize: 20,
+        margin: 10,
+        textAlign: 'center'
+    },
+    squareInfo: {
+        height: 110,
+        width: 100,
+        backgroundColor: "white",
+        borderRadius: 20,
+        margin: 15
+    },
+    squareTitle: {
+        fontSize: 16,
+        margin: 10,
+        textAlign: "center",
+        color: "#10375C"
+    },
+    squareNumbers: {
+        fontSize: 32,
+        textAlign: "center",
+        color: "#10375C"
+    },
+    avatarImg: {
+        margin: 20
+    },
+    MenuContainer:{
+        marginTop : 20
+    },
+    MenuLines: {
+        display: "flex",
+        flexDirection: 'row',
+        margin: 15,
+    },
+    MenuText: {
+        fontSize: 20,
+        marginLeft: 15,
+        color: "#10375C",
+    }
 });
 
 export { styles };

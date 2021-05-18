@@ -19,7 +19,7 @@ import UserForm from './Components/UserForm';
 import HomePage from './Components/HomePage';
 import MainStatisticsPageTesting from './Components/StatisticsComponents/MainStatisticsPageTesting';
 import NotificationList from './Components/Notifications/NotificationList'
-import LeftMenu from './Components/LeftMenu';
+import Menu from './Components/Menu';
 import InitRouting from './Components/InitRouting';
 import MyTabs from './Components/Navigation/BottomTabNavigator'
 import { handleDeivceForNotifications } from './common/api'
@@ -36,7 +36,6 @@ const navigationRef = React.createRef();
 function App() {
   const [isSignedin, setIsSignedin] = useState(0)
   const [userEmail, setUserEmail] = useState("")
-  // const [isMenuOpen, setIsMenuOpen] = useState(false)
   useEffect(() => {
     Auth.currentAuthenticatedUser()
         .then(user => {
