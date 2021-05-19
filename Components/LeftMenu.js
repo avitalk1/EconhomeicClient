@@ -26,7 +26,11 @@ function LeftMenu(props) {
                 userInfo: user.attributes.email,
             })
         }).catch(err => console.log(err))
-    } 
+    }
+    const handleGotoSettings = () => {
+        props.handleCloseMenu()
+        props.navigation("SETTINGS")
+    }
     return (
         <View style={styles.menuContainer}>
             <View>
@@ -38,23 +42,30 @@ function LeftMenu(props) {
                 <Divider style={{ backgroundColor: 'blue' }} />
             </View>
             <View>
-            <TouchableOpacity onPress={handleGotoNotifications}>
-                <View style={styles.menuOptionsTextContainer}>
-                    <Text style={styles.menuOptionsText}>Notifications</Text>
-                </View>
-             </TouchableOpacity>
-             <Divider style={{ backgroundColor: 'blue' }} />
+                <TouchableOpacity onPress={handleGotoNotifications}>
+                    <View style={styles.menuOptionsTextContainer}>
+                        <Text style={styles.menuOptionsText}>Notifications</Text>
+                    </View>
+                </TouchableOpacity>
+                <Divider style={{ backgroundColor: 'blue' }} />
             </View>
 
             <View>
-            <TouchableOpacity onPress={handleGotoMainPage}>
-                <View style={styles.menuOptionsTextContainer}>
-                    <Text style={styles.menuOptionsText}>Main</Text>
-                </View>
-             </TouchableOpacity>
-             <Divider style={{ backgroundColor: 'blue' }} />
+                <TouchableOpacity onPress={handleGotoSettings}>
+                    <View style={styles.menuOptionsTextContainer}>
+                        <Text style={styles.menuOptionsText}>Settings</Text>
+                    </View>
+                </TouchableOpacity>
+                <Divider style={{ backgroundColor: 'blue' }} />
             </View>
-
+            <View>
+                <TouchableOpacity onPress={handleGotoMainPage}>
+                    <View style={styles.menuOptionsTextContainer}>
+                        <Text style={styles.menuOptionsText}>Main</Text>
+                    </View>
+                </TouchableOpacity>
+                <Divider style={{ backgroundColor: 'blue' }} />
+            </View>
             <View>
                 <TouchableOpacity onPress={() => props.handleCloseMenu()}>
                     <View style={styles.menuOptionsTextContainer}>
@@ -65,7 +76,7 @@ function LeftMenu(props) {
             </View>
 
         </View>
-        
+
     );
 }
 const styles = StyleSheet.create({
@@ -77,16 +88,16 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: "white"
     },
-    menuOptionsTextContainer:{
-        display:'flex', 
-        alignItems:'center', 
-        justifyContent:'center',
-        width:'100%', 
-        marginTop:5, 
-        marginBottom:5
+    menuOptionsTextContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        marginTop: 5,
+        marginBottom: 5
     },
-    menuOptionsText:{
-        fontSize:16
+    menuOptionsText: {
+        fontSize: 16
     }
 });
 

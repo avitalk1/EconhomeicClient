@@ -36,6 +36,19 @@ const registrUser = async (userObject) => {
         return false
     }
 }
+const UpdateUserSettings = async (userObject) => {
+
+    const myInit = {
+        body: userObject
+    }
+    try {
+        const result = await API.post('LambdaSimpleProxy', '/updatesettings', myInit);
+        return result
+    } catch (err) {
+        console.log("err", err)
+        return false
+    }
+}
 const getUserInfo = async (email) => {
     const myInit = {
         body:{
@@ -99,6 +112,7 @@ const setReadNotification = async (nid) => {
 export {
     getUserByHouse,
     registrUser,
+    UpdateUserSettings,
     getUserInfo,
     handleDeivceForNotifications,
     getNotifications, 
