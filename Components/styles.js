@@ -124,20 +124,46 @@ const styles = StyleSheet.create({
         color: "#10375C"
     },
     avatarImg: {
-        margin: 20
+        marginTop: 50,
+        marginLeft:20,
+        display: "flex",
+        flexDirection: 'row',
     },
-    MenuContainer:{
-        marginTop : 20
+    MenuContainer: {
+        marginTop: 20
     },
     MenuLines: {
         display: "flex",
         flexDirection: 'row',
-        margin: 15,
+        marginTop: 20
     },
     MenuText: {
         fontSize: 20,
-        marginLeft: 15,
+        textAlign: "center",
         color: "#10375C",
+    },
+    MenuName: {
+        fontSize: 20,
+        marginTop: 20,
+        marginLeft: 10,
+        color: "#10375C",
+    },
+    MenuBox:{
+        marginLeft: (windowWidth-2*(windowWidth/2.5))/3,
+        backgroundColor: "#E8E8E8",
+        borderRadius:10,
+        width: windowWidth / 2.5,
+        height: windowHeight / 8,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 2,
+        shadowRadius:20
+    },
+    MenuIcon:{
+        fontSize: 24
     }
 });
 

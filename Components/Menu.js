@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './styles';
 import { Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons, AntDesign, MaterialIcons, Ionicons } from '@expo/vector-icons';
-import { Divider } from 'react-native-elements';
+import { Icon } from 'react-native-elements'
 
 function Menu(props) {
     const handleLogout = () => {
@@ -36,39 +36,41 @@ function Menu(props) {
         }).catch(err => console.log(err))
     }
     return (
-        <View style={styles.container}>
+        <View>
+            <Text style={styles.MSPageTitle}>Menu</Text>
             <View style={styles.avatarImg}>
-                <Avatar.Image size={150} source={require('../assets/womenAvatar.png')} />
-            </View>
-            <View>
-                <Text style={styles.daysText}>Hello {`${props.userInfo.data.userDetails.firstName}`}!</Text>
-                <Divider style={{ backgroundColor: '#10375C' , width:200 }} />
+                <Avatar.Image size={80} source={require('../assets/womenAvatar.png')} />
+                <Text style={styles.MenuName}>{`${props.userInfo.data.userDetails.firstName}`} {`${props.userInfo.data.userDetails.lastName}`}!</Text>
             </View>
             <View style={styles.MenuContainer}>
-                <TouchableOpacity onPress={handleLogout}>
-                    <View style={styles.MenuLines}>
-                        <MaterialCommunityIcons name="account-circle-outline" size={24} color="#10375C" />
-                        <Text style={styles.MenuText}>Account</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleLogout}>
-                    <View style={styles.MenuLines}>
-                        <Ionicons name="settings-outline" size={24} color="#10375C" />
-                        <Text style={styles.MenuText}>Constraints</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleLogout}>
-                    <View style={styles.MenuLines}>
-                        <AntDesign name="plus" size={24} color="#10375C" />
-                        <Text style={styles.MenuText}>Auto Actions</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleLogout}>
-                    <View style={styles.MenuLines}>
-                        <MaterialIcons name="power-settings-new" size={24} color="#10375C" />
-                        <Text style={styles.MenuText}>Logout</Text>
-                    </View>
-                </TouchableOpacity>
+                <View style={styles.MenuLines}>
+                    <TouchableOpacity >
+                        <View style={styles.MenuBox}>
+                            <MaterialCommunityIcons name="account-circle-outline" size={24} color="#10375C" />
+                            <Text style={styles.MenuText}>Account</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity >
+                        <View style={styles.MenuBox}>
+                            <Ionicons name="settings-outline" size={24} color="#10375C" />
+                            <Text style={styles.MenuText}>Constraints</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.MenuLines}>
+                    <TouchableOpacity>
+                        <View style={styles.MenuBox} >
+                            <AntDesign name="plus" style={styles.MenuIcon} />
+                            <Text style={styles.MenuText}>Auto Actions</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleLogout}>
+                        <View style={styles.MenuBox}>
+                            <MaterialIcons name="power-settings-new" style={styles.MenuIcon} color="red"/>
+                            <Text style={styles.MenuText}>Logout</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
 
