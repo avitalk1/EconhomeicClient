@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux'
-import { UpdateUserSettings } from '../common/api';
+import { UpdateUserSettings } from '../../common/api';
 import { Input, Button } from 'react-native-elements';
 import Amplify from 'aws-amplify';
-import awsconfigsclient from '../common/aws-configs'
-import { userDataUpdate } from '../Redux/actions/UserDataActions/action';
+import awsconfigsclient from '../../common/aws-configs'
+import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
 Amplify.configure(awsconfigsclient);
 function Settings(props) {
 
