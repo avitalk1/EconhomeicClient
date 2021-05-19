@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
