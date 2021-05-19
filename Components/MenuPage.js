@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './styles';
 import { Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons, AntDesign, MaterialIcons, Ionicons } from '@expo/vector-icons';
-import { Icon } from 'react-native-elements'
+
 
 function Menu(props) {
     const handleLogout = () => {
@@ -19,25 +19,13 @@ function Menu(props) {
             props.handleLogoutAction()
         )
     }
-    const handleLogoutActionFunction = () => {
-        navigate('LANDING_PAGE')
+    const handleAutoAction = () => {
+        props.navigation.navigate('AUTOACTIONS')
     }
-    const handleGotoNotifications = () => {
-        props.handleCloseMenu()
-        props.navigation('NOTIFICATION_LIST')
-    }
+  
 
-    const handleGotoMainPage = () => {
-        props.handleCloseMenu()
-        Auth.currentAuthenticatedUser().then(user => {
-            props.navigation('MAIN_STATISTICS_PAGE', {
-                userInfo: user.attributes.email,
-            })
-        }).catch(err => console.log(err))
-    }
     return (
         <View>
-            <Text style={styles.MSPageTitle}>Menu</Text>
             <View style={styles.avatarImg}>
                 <Avatar.Image size={80} source={require('../assets/womenAvatar.png')} />
                 <Text style={styles.MenuName}>{`${props.userInfo.data.userDetails.firstName}`} {`${props.userInfo.data.userDetails.lastName}`}!</Text>
@@ -46,21 +34,21 @@ function Menu(props) {
                 <View style={styles.MenuLines}>
                     <TouchableOpacity >
                         <View style={styles.MenuBox}>
-                            <MaterialCommunityIcons name="account-circle-outline" size={24} color="#10375C" />
+                            <MaterialCommunityIcons name="account-circle-outline" style={styles.MenuIcon} color="#4D105C"/>
                             <Text style={styles.MenuText}>Account</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity >
                         <View style={styles.MenuBox}>
-                            <Ionicons name="settings-outline" size={24} color="#10375C" />
+                            <Ionicons name="settings-outline" style={styles.MenuIcon} color="#459BFF" />
                             <Text style={styles.MenuText}>Constraints</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.MenuLines}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={handleAutoAction}>
                         <View style={styles.MenuBox} >
-                            <AntDesign name="plus" style={styles.MenuIcon} />
+                            <AntDesign name="plus" style={styles.MenuIcon} color="green"/>
                             <Text style={styles.MenuText}>Auto Actions</Text>
                         </View>
                     </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { styles } from '../styles';
 import { Auth } from 'aws-amplify'
 import { getNotifications } from '../../common/api'
@@ -23,9 +23,6 @@ function NotificationList(props) {
     if (notifications) {
         return (
             <View>
-                <View>
-                    <Text style={styles.MSPageTitle}>Notifications</Text>
-                </View>
                 {
                     notifications.map((data, index) => {
                         return (

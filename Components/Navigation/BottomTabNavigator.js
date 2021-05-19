@@ -1,21 +1,65 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { SimpleLineIcons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons'
 import MainStatisticsPage from '../StatisticsComponents/MainStatisticsPage'
 import StatisticsGraphs from '../StatisticsComponents/StatisticsGraphs'
 import NotificationList from '../Notifications/NotificationList'
-import Menu from '../Menu';
-import { styles } from '../styles';
+import Menu from '../MenuPage';
+import { styles ,headerStyle } from '../styles';
+import AutoActions from '../Menu/AutoActions'
 
 
 const Tab = createBottomTabNavigator();
+const HomeStack = createStackNavigator();
+const NotificationStack = createStackNavigator();
+const GraphsStack = createStackNavigator();
+const MenuStack = createStackNavigator();
+const screenOptionsStyle = headerStyle;
+
+function HomeStackScreen() {
+    return (
+        <HomeStack.Navigator
+            screenOptions={screenOptionsStyle}
+        >
+            <HomeStack.Screen name="Main Statistics" component={MainStatisticsPage} />
+        </HomeStack.Navigator>
+    );
+}
+function NotificationStackScreen() {
+    return (
+        <NotificationStack.Navigator
+            screenOptions={screenOptionsStyle}
+        >
+            <NotificationStack.Screen name="Notification" component={NotificationList} />
+
+        </NotificationStack.Navigator>
+    );
+}
+function GraphStackScreen() {
+    return (
+        <GraphsStack.Navigator
+            screenOptions={screenOptionsStyle}
+        >
+            <GraphsStack.Screen name="Statistics Graphs" component={StatisticsGraphs} />
+
+        </GraphsStack.Navigator>
+    );
+}
+function MenuStackScreen() {
+    return (
+        <MenuStack.Navigator
+            screenOptions={screenOptionsStyle}
+        >
+            <MenuStack.Screen name="Menu" component={Menu} />
+            <MenuStack.Screen name="AUTOACTIONS" component={AutoActions} options={{ title: 'Automation Actions' }} />
+        </MenuStack.Navigator>
+    );
+}
 
 function MyTabs() {
     return (
         <Tab.Navigator
-            screenOptions={{
-                headerShown: false,
-            }}
             tabBarOptions={{
                 activeTintColor: '#ffffff',
                 style: {
@@ -25,7 +69,7 @@ function MyTabs() {
         >
             <Tab.Screen
                 name="MAIN_STATISTICS_PAGE"
-                component={MainStatisticsPage}
+                component={HomeStackScreen}
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color, size }) => (
@@ -36,7 +80,7 @@ function MyTabs() {
             />
             <Tab.Screen
                 name="NOTIFICATION_LIST"
-                component={NotificationList}
+                component={NotificationStackScreen}
                 options={{
                     tabBarLabel: 'Notifications',
                     tabBarIcon: ({ color, size }) => (
@@ -46,7 +90,7 @@ function MyTabs() {
             />
             <Tab.Screen
                 name="STATISTICS_GRAPHS"
-                component={StatisticsGraphs}
+                component={GraphStackScreen}
                 options={{
                     tabBarLabel: 'Statistics',
                     tabBarIcon: ({ color, size }) => (
@@ -54,9 +98,9 @@ function MyTabs() {
                     ),
                 }}
             />
-             <Tab.Screen
-                name="LEFT_MENU"
-                component={Menu}
+            <Tab.Screen
+                name="MENU"
+                component={MenuStackScreen}
                 options={{
                     tabBarLabel: 'More',
                     tabBarIcon: ({ color, size }) => (

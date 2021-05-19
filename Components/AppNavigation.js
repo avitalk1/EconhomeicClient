@@ -8,9 +8,6 @@ import { styles } from './styles';
 import LandingPage from './LandingPage';
 import SignIn from './SignIn'
 import SignUp from './SignUp';
-import HomePage from './HomePage';
-import Menu from './Menu';
-// import MainStatisticsPage from './StatisticsComponents/MainStatisticsPage';
 import MyTabs from './Navigation/BottomTabNavigator'
 import { fetchUserData } from '../Redux/actions/UserDataActions/action';
 
@@ -40,27 +37,24 @@ const AppNavigation = (props) => {
             }
 
             <NavigationContainer>
-                <Stack.Navigator
-                    screenOptions={{
-                        headerShown: false
-                    }}
-                >
+
+                
                     {
-                        props.isSignedin == 2 ? (
-                            <>
+                    props.isSignedin == 2 ? (
+                            <Stack.Navigator
+                                screenOptions={{
+                                    headerShown: false
+                                }}>
                                 <Stack.Screen name="LANDING_PAGE" component={LandingPage} />
                                 <Stack.Screen name="SIGNIN" component={SignIn} />
                                 <Stack.Screen name="SIGNUP" component={SignUp} />
-                            </>
+                                </Stack.Navigator>
                         ) : (
-                            <>
-                                <Stack.Screen name="MAIN_STATISTICS_PAGE" component={MyTabs} />
-                                <Stack.Screen name="HOMEPAGE" component={HomePage} />
-                            </>
+                                <MyTabs/>
                         )
                     }
-                </Stack.Navigator>
-            </NavigationContainer>
+
+        </NavigationContainer>
         </>
     )
 }

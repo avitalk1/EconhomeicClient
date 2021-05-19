@@ -19,11 +19,11 @@ const navigationRef = React.createRef();
 function App() {
   const [isSignedin, setIsSignedin] = useState(0)
   const [userEmail, setUserEmail] = useState("")
-  // const [isMenuOpen, setIsMenuOpen] = useState(false)
+  
   useEffect(() => {
     Auth.currentAuthenticatedUser()
         .then(user => {
-            // handleDeivceForNotifications(user.attributes.email, "check")
+            
             setUserEmail(user.attributes.email)
             setIsSignedin(1)
         })

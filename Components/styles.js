@@ -1,4 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center"
     },
-    MSPageTitle: {
+    PageTitle: {
         width: windowWidth,
         backgroundColor: "#E2DDDD",
         color: "#10375C",
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     MenuContainer: {
-        marginTop: 20
+        marginTop: 30
     },
     MenuLines: {
         display: "flex",
@@ -141,12 +143,14 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center",
         color: "#10375C",
+        marginTop:10
     },
     MenuName: {
         fontSize: 20,
         marginTop: 20,
         marginLeft: 10,
         color: "#10375C",
+        fontFamily: "Roboto-Medium",
     },
     MenuBox:{
         marginLeft: (windowWidth-2*(windowWidth/2.5))/3,
@@ -163,8 +167,38 @@ const styles = StyleSheet.create({
         shadowRadius:20
     },
     MenuIcon:{
-        fontSize: 24
+        fontSize: 28,
+        marginLeft:15,
+        marginTop:10
+    },
+    switchLine:{
+        width: windowWidth*0.8,
+        display: "flex",
+        flexDirection: 'row',
+        marginTop:40,
+        marginLeft:windowWidth*0.1,
+        justifyContent: "space-between",
+    },
+    switchBtn:{
+        transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
+    },
+    switchTxt:{
+        fontSize: 24,
+        fontFamily: "Roboto-Light",
+        color: "#10375C",
     }
 });
 
-export { styles };
+const headerStyle = {
+    headerTintColor: '#10375C',
+    headerStyle: {
+        backgroundColor: "#E2DDDD",
+        height: 30
+    },
+    headerTitleStyle: {
+        textAlign: 'center',
+        fontSize: 20
+    }
+}
+
+export { styles, headerStyle};

@@ -6,7 +6,6 @@ import Amplify, { Analytics, Auth } from 'aws-amplify';
 import awsconfigsclient from '../../common/aws-configs';
 import { styles } from '../styles';
 import { mainStatisticsFunction } from './statisticFunctions';
-// import Tabs from '../Navigation/BottomTabNavigator'
 import { fetchUserData } from '../../Redux/actions/UserDataActions/action';
 
 Amplify.configure(awsconfigsclient);
@@ -28,7 +27,6 @@ function MainStatisticsPage(props) {
     if (currentMonthStats) {
         return (
             <View style={styles.container}>
-                <Text style={styles.MSPageTitle}>Main Statistics Page</Text>
                 <View>
                     {
                         progressView === 1 ?
