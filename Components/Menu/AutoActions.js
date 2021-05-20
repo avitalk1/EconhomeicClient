@@ -57,7 +57,7 @@ function AutoActions(props) {
                 <SafeAreaView>
                     <View >
                         <View style={styles.switchLine}>
-                            <Text style={styles.switchTxt}>{LightValue ? 'Light is ON' : 'Light is OFF'}</Text>
+                            <Text style={styles.switchTxt}>{LightValue ? 'Light Auto ON' : 'Light Auto OFF'}</Text>
                             <Switch
                                 style={styles.switchBtn}
                                 onValueChange={() => toggleSwitch("light")}
@@ -65,7 +65,7 @@ function AutoActions(props) {
                             />
                         </View>
                         <View style={styles.switchLine}>
-                            <Text style={styles.switchTxt} >{AirConditionerValue ? 'AirConditioner is ON' : 'AirConditioner is OFF'}</Text>
+                            <Text style={styles.switchTxt} >{AirConditionerValue ? 'AirConditioner Auto ON' : 'AirConditioner Auto OFF'}</Text>
                             <Switch
                                 style={styles.switchBtn}
                                 onValueChange={() => toggleSwitch("ac")}

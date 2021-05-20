@@ -22,7 +22,12 @@ function Menu(props) {
     const handleAutoAction = () => {
         props.navigation.navigate('AUTOACTIONS')
     }
-  
+    const handleConstraints = () => {
+        props.navigation.navigate('CONSTRAINTS')
+    }
+    const handleAccount = () => {
+        props.navigation.navigate('ACCOUNT')
+    }
 
     return (
         <View>
@@ -32,14 +37,14 @@ function Menu(props) {
             </View>
             <View style={styles.MenuContainer}>
                 <View style={styles.MenuLines}>
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={handleAccount} >
                         <View style={styles.MenuBox}>
                             <MaterialCommunityIcons name="account-circle-outline" style={styles.MenuIcon} color="#4D105C"/>
                             <Text style={styles.MenuText}>Account</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity >
-                        <View style={styles.MenuBox}>
+                    <TouchableOpacity onPress={handleConstraints}>
+                        <View style={styles.MenuBox} >
                             <Ionicons name="settings-outline" style={styles.MenuIcon} color="#459BFF" />
                             <Text style={styles.MenuText}>Constraints</Text>
                         </View>

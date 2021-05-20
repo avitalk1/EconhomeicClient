@@ -7,7 +7,9 @@ import StatisticsGraphs from '../StatisticsComponents/StatisticsGraphs'
 import NotificationList from '../Notifications/NotificationList'
 import Menu from '../MenuPage';
 import { styles ,headerStyle } from '../styles';
-import AutoActions from '../Menu/AutoActions'
+import AutoActions from '../Menu/AutoActions';
+import Constraints from '../Menu/Constraints';
+import Account from '../Menu/Account';
 
 
 const Tab = createBottomTabNavigator();
@@ -53,6 +55,8 @@ function MenuStackScreen() {
         >
             <MenuStack.Screen name="Menu" component={Menu} />
             <MenuStack.Screen name="AUTOACTIONS" component={AutoActions} options={{ title: 'Automation Actions' }} />
+            <MenuStack.Screen name="CONSTRAINTS" component={Constraints} options={{ title: 'Constraints' }} />
+            <MenuStack.Screen name="ACCOUNT" component={Account} options={{ title: 'Account' }} />
         </MenuStack.Navigator>
     );
 }

@@ -123,47 +123,19 @@ function MainStatisticsPage(props) {
                         <View style={styles.breakeDownContainer}>
                             <View style={styles.squareInfo}>
                                 <Text style={styles.squareTitle} >Overall</Text>
-                                <Text style={styles.squareNumbers}>{`${currentMonthStats.totalExpenses}`}</Text>
+                                <Text style={styles.squareNumbers}>{currentMonthStats.todaysTotalExpenses < 1 ? 0 : currentMonthStats.todaysTotalExpenses}</Text>
                             </View>
                             <View style={styles.squareInfo}>
                                 <Text style={styles.squareTitle}>Electricity</Text>
-                                <Text style={styles.squareNumbers} >{`${currentMonthStats.totalElectricityExpenses}`}</Text>
+                                <Text style={styles.squareNumbers} >{currentMonthStats.todaysElectricityExpenses < 1 ? 0 : currentMonthStats.todaysElectricityExpenses}</Text>
                             </View>
                             <View style={styles.squareInfo}>
                                 <Text style={styles.squareTitle}>Water</Text>
-                                <Text style={styles.squareNumbers}>{`${currentMonthStats.totalWaterExpenses}`}</Text>
+                                <Text style={styles.squareNumbers}>{currentMonthStats.todaysWaterExpenses < 1 ? 0 : currentMonthStats.todaysWaterExpenses}</Text>
                             </View>
                         </View>
                     </View>
                 </View>
-
-                {
-                    currentMonthStats.todaysTotalExpenses < 0 ?
-                        <></>
-                        :
-                        <View style={styles.todaysNumbersTextContainer}>
-                            <Text style={styles.numbersTextStyle}>Todays Total Expenses</Text>
-                            <Text style={styles.numbersTextStyle}>{currentMonthStats.todaysTotalExpenses}</Text>
-                        </View>
-                }
-                {
-                    currentMonthStats.todaysWaterExpenses < 0 ?
-                        <></>
-                        :
-                        <View style={styles.todaysNumbersTextContainer}>
-                            <Text style={styles.numbersTextStyle}>Todays Water Expenses</Text>
-                            <Text style={styles.numbersTextStyle}>{currentMonthStats.todaysWaterExpenses}</Text>
-                        </View>
-                }
-                {
-                    currentMonthStats.todaysElectricityExpenses < 0 ?
-                        <></>
-                        :
-                        <View style={styles.todaysNumbersTextContainer}>
-                            <Text style={styles.numbersTextStyle}>Todays Water Expenses</Text>
-                            <Text style={styles.numbersTextStyle}>{currentMonthStats.todaysElectricityExpenses}</Text>
-                        </View>
-                }
             </View>
         );
     } else return <></>

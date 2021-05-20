@@ -7,7 +7,7 @@ import Amplify from 'aws-amplify';
 import awsconfigsclient from '../../common/aws-configs'
 import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
 Amplify.configure(awsconfigsclient);
-function Settings(props) {
+function Constraints(props) {
 
     const [constaints, setConstaints] = useState({
         numberOfHouseMembers: 5,
@@ -35,12 +35,10 @@ function Settings(props) {
             return result;
         } catch (err) {
             console.log(err)
-            console.log("check chen ")
         }
     }
     return (
         <View>
-            <Text>Constraints</Text>
             <Input
                 placeholder="Number Of House Members"
                 onChangeText={value => handelInputChange('numberOfHouseMembers', value)}
@@ -76,4 +74,4 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch)=> ({
    updateUserDataFunc:(data)=> dispatch(userDataUpdate(data))
   })
-export default connect(mapDispatchToProps,mapStateToProps)(Settings);
+export default connect(mapDispatchToProps,mapStateToProps)(Constraints);

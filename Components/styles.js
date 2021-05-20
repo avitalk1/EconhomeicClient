@@ -197,7 +197,8 @@ const headerStyle = {
     },
     headerTitleStyle: {
         textAlign: 'center',
-        fontSize: 20
+        fontSize: 20,
+        flex: 4,
     }
 }
 
