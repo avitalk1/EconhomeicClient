@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import { styles } from '../styles';
+import { ScrollView } from 'react-native';
 import { Auth } from 'aws-amplify'
 import { getNotifications } from '../../common/api'
 import NotificationListItem from './NotificationListItem'
@@ -22,7 +21,7 @@ function NotificationList(props) {
 
     if (notifications) {
         return (
-            <View>
+            <ScrollView>
                 {
                     notifications.map((data, index) => {
                         return (
@@ -30,7 +29,7 @@ function NotificationList(props) {
                         )
                     })
                 }
-            </View>
+            </ScrollView>
         );
     } else {
         return <></>

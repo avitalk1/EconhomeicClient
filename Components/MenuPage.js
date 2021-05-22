@@ -6,8 +6,8 @@ import { handleDeivceForNotifications } from '../common/api'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './styles';
 import { Avatar } from 'react-native-paper';
-import { MaterialCommunityIcons, AntDesign, MaterialIcons, Ionicons } from '@expo/vector-icons';
-
+import { MaterialCommunityIcons, AntDesign, MaterialIcons, Ionicons,Entypo } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function Menu(props) {
     const handleLogout = () => {
@@ -40,13 +40,13 @@ function Menu(props) {
                     <TouchableOpacity onPress={handleAccount} >
                         <View style={styles.MenuBox}>
                             <MaterialCommunityIcons name="account-circle-outline" style={styles.MenuIcon} color="#4D105C"/>
-                            <Text style={styles.MenuText}>Account</Text>
+                            <Text style={styles.generalText}>Account</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleConstraints}>
                         <View style={styles.MenuBox} >
                             <Ionicons name="settings-outline" style={styles.MenuIcon} color="#459BFF" />
-                            <Text style={styles.MenuText}>Constraints</Text>
+                            <Text style={styles.generalText}>Constraints</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -54,13 +54,21 @@ function Menu(props) {
                     <TouchableOpacity onPress={handleAutoAction}>
                         <View style={styles.MenuBox} >
                             <AntDesign name="plus" style={styles.MenuIcon} color="green"/>
-                            <Text style={styles.MenuText}>Auto Actions</Text>
+                            <Text style={styles.generalText}>Auto Actions</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleLogout}>
                         <View style={styles.MenuBox}>
-                            <MaterialIcons name="power-settings-new" style={styles.MenuIcon} color="red"/>
-                            <Text style={styles.MenuText}>Logout</Text>
+                            <Entypo name="open-book" style={styles.MenuIcon} color="black" />
+                            <Text style={styles.generalText}>Configeration</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.MenuLines}>
+                    <TouchableOpacity onPress={handleLogout}>
+                        <View style={styles.MenuBox}>
+                            <MaterialIcons name="power-settings-new" style={styles.MenuIcon} color='red'/>
+                            <Text style={styles.generalText}>Logout</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

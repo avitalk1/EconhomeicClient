@@ -1,9 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Auth } from 'aws-amplify'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { Divider , Badge} from 'react-native-elements';
-import {getNotifications} from '../../common/api'
+import React from 'react';
+import {View, Text } from 'react-native';
+import { Divider } from 'react-native-elements';
+import { styles } from '../styles';
 function NotificationListItem(props) {
 
         return (
@@ -14,7 +12,6 @@ function NotificationListItem(props) {
                 </View>
                 <View style={styles.titleNotificationContainer}>
                 <Text style={styles.notificationItemMsg}>{props.msg}</Text>
-                {/* <Badge status="primary"/> */}
                 </View>
                 <Divider style={{ backgroundColor: 'blue' }} />
             </View>
@@ -22,24 +19,6 @@ function NotificationListItem(props) {
 
     
 }
-const styles = StyleSheet.create({
-    notificationContainer:{
-        //borderBottomWidth: 1,
-        margin:5, 
-        paddingBottom:5
-    }, 
-    notificationItemTitle:{
-        fontWeight:'bold'
-    }, 
-    titleNotificationContainer:{
-        display: "flex",
-        flexDirection: 'row',
-        justifyContent:"space-between"
-    }, 
-    notificationItemDate:{
-        fontSize:12
-    }
-});
 
 export default NotificationListItem
 

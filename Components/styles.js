@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         fontFamily: "Roboto-bold",
         textAlign: 'center',
     },
-    breakeDownContainer: {
+    rowContainer: {
         display: "flex",
         flexDirection: 'row',
     },
@@ -121,29 +121,32 @@ const styles = StyleSheet.create({
         color: "#10375C"
     },
     squareNumbers: {
-        fontSize: 32,
+        fontSize: 30,
         textAlign: "center",
         color: "#10375C"
     },
     avatarImg: {
         marginTop: 50,
-        marginLeft:20,
+        marginLeft: 20,
         display: "flex",
         flexDirection: 'row',
     },
     MenuContainer: {
-        marginTop: 30
+        marginTop: 30,
+        width: '90%',
+        marginLeft: '5%'
     },
     MenuLines: {
         display: "flex",
         flexDirection: 'row',
-        marginTop: 20
+        marginTop: 20,
+        justifyContent: 'space-between'
     },
-    MenuText: {
+    generalText: {
         fontSize: 20,
         textAlign: "center",
         color: "#10375C",
-        marginTop:10
+        marginTop: 10
     },
     MenuName: {
         fontSize: 20,
@@ -152,40 +155,68 @@ const styles = StyleSheet.create({
         color: "#10375C",
         fontFamily: "Roboto-Medium",
     },
-    MenuBox:{
-        marginLeft: (windowWidth-2*(windowWidth/2.5))/3,
-        backgroundColor: "#E8E8E8",
-        borderRadius:10,
+    MenuBox: {
+        backgroundColor: "white",
+        borderRadius: 10,
         width: windowWidth / 2.5,
         height: windowHeight / 8,
-        shadowColor: "#000",
+        shadowColor: "#0a0a0a",
         shadowOffset: {
             width: 0,
             height: 3,
         },
-        shadowOpacity: 2,
-        shadowRadius:20
+        shadowOpacity: 10,
+        shadowRadius: 70
     },
-    MenuIcon:{
-        fontSize: 28,
-        marginLeft:15,
-        marginTop:10
+    MenuIcon: {
+        fontSize: 30,
+        marginLeft: 15,
+        marginTop: 10
     },
-    switchLine:{
-        width: windowWidth*0.8,
+    switchLine: {
+        width: windowWidth * 0.8,
         display: "flex",
         flexDirection: 'row',
-        marginTop:40,
-        marginLeft:windowWidth*0.1,
+        marginTop: 40,
+        marginLeft: windowWidth * 0.1,
         justifyContent: "space-between",
     },
-    switchBtn:{
+    switchBtn: {
         transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
     },
-    switchTxt:{
+    switchTxt: {
         fontSize: 24,
         fontFamily: "Roboto-Light",
         color: "#10375C",
+    },
+    InputConstrains: {
+        width: "80%",
+        marginBottom: 10
+    },
+    notificationContainer: {
+        margin: 5,
+        paddingBottom: 5
+    },
+    notificationItemTitle: {
+        fontWeight: 'bold'
+    },
+    titleNotificationContainer: {
+        display: "flex",
+        flexDirection: 'row',
+        justifyContent: "space-between"
+    },
+    notificationItemDate: {
+        fontSize: 12
+    },
+    constrainsContainer: {
+        width: '80%',
+        marginLeft: '10%',
+        marginTop: 20
+    },
+    constrainsInfo: {
+        textAlign: 'right',
+        fontSize: 20,
+        marginTop: 10
     }
 });
 
@@ -202,4 +233,4 @@ const headerStyle = {
     }
 }
 
-export { styles, headerStyle};
+export { styles, headerStyle };

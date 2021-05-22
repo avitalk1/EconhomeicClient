@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Switch, View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import { Auth } from 'aws-amplify'
+import React, { useState } from 'react';
+import { Switch, View, Text, SafeAreaView } from 'react-native';
 import { styles } from '../styles';
 import awsconfigsclient from '../../common/aws-configs'
 import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
@@ -11,6 +10,7 @@ import Amplify from 'aws-amplify';
 Amplify.configure(awsconfigsclient);
 
 function AutoActions(props) {
+    console.log(props.userInfo.data.AutomaticActions)
     const [LightValue, setLightValue] = useState(props.userInfo.data.AutomaticActions.Light);
     const [AirConditionerValue, setAirConditionerValue] = useState(props.userInfo.data.AutomaticActions.AirConditioner);
   

@@ -1,11 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Text, View } from 'react-native';
 import Amplify, { Analytics, Auth } from 'aws-amplify';
 import awsconfigsclient from './common/aws-configs'
 import messaging from '@react-native-firebase/messaging';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux'
 import store from './Redux/sagas/rootSaga'

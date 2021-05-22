@@ -7,6 +7,8 @@ import { Provider } from 'react-redux'
 import { View, Text} from 'react-native';
 import store from './Redux/sagas/rootSaga'
 import AppNavigation from "./Components/AppNavigation"
+import SplashScreen from  "react-native-splash-screen";
+
 Analytics.record({ name: "EconhomeicVisit" })
 Amplify.configure(awsconfigsclient);
 const Stack = createStackNavigator();

@@ -17,14 +17,13 @@ function MainStatisticsPage(props) {
     useEffect(() => {
         if (props.userInfo.data != null) {
             if ('Expenses' in props.userInfo.data) {
-                let result = mainStatisticsFunction(props.userInfo.data.Expenses, props.userInfo.data.Constraints)
+                let result = mainStatisticsFunction(props.userInfo.data.Expenses, props.userInfo.data.UserConstraints)
                 setCurrentMonthStats(result)
             } else {
                 console.log("no expenses ")
             }
         }
-    }, [props.userInfo.loading])
-
+    }, [props.userInfo])
     if (currentMonthStats) {
         return (
             <View style={styles.container}>
@@ -52,7 +51,7 @@ function MainStatisticsPage(props) {
                                                         {`${currentMonthStats.expensesPercentageCalculation.value} %`}
                                                     </Text>
                                                     <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.totalExpenses} / ${currentMonthStats.totalBudget}`}
+                                                        {`${currentMonthStats.totalExpenses} ₪/ ${currentMonthStats.totalBudget}₪`}
                                                     </Text>
                                                 </View>
                                             )
@@ -64,7 +63,7 @@ function MainStatisticsPage(props) {
                             :
                             <View style={styles.progressContainer} >
                                 <Text style={styles.numbersTextStyle}>Expenses Breakdown</Text>
-                                <View style={styles.breakeDownContainer}>
+                                <View style={styles.rowContainer}>
                                     <TouchableOpacity onPress={() => { setProgressView(1) }}>
                                         <View style={styles.smallProgressContainer}>
                                             <Text style={styles.numbersTextStyle}>Water</Text>
@@ -81,7 +80,7 @@ function MainStatisticsPage(props) {
                                                                 {`${currentMonthStats.WaterExpensesPercentageCalculation.value} %`}
                                                             </Text>
                                                             <Text style={styles.numbersTextStyle}>
-                                                                {`${currentMonthStats.totalWaterExpenses} / ${props.userInfo.data.Constraints.waterBudget}`}
+                                                                {`${currentMonthStats.totalWaterExpenses} ₪/ ${props.userInfo.data.UserConstraints.waterBudget}₪`}
                                                             </Text>
                                                         </View>
                                                     )
@@ -106,7 +105,7 @@ function MainStatisticsPage(props) {
                                                                 {`${currentMonthStats.ElectricityExpensesPercentageCalculation.value} %`}
                                                             </Text>
                                                             <Text style={styles.numbersTextStyle}>
-                                                                {`${currentMonthStats.totalElectricityExpenses} / ${props.userInfo.data.Constraints.electricityBudget}`}
+                                                                {`${currentMonthStats.totalElectricityExpenses} ₪/ ${props.userInfo.data.UserConstraints.electricityBudget}₪`}
                                                             </Text>
                                                         </View>
                                                     )
@@ -120,18 +119,18 @@ function MainStatisticsPage(props) {
                     <Text style={styles.daysText}>{`${currentMonthStats.monthNumberOfDays - currentMonthStats.todaysDay} Days left`}</Text>
                     <View style={styles.dailyInfo}>
                         <Text style={{ color: "white", textAlign: "center", marginTop: 20 }}>{` ${currentMonthStats.monthName}`}</Text>
-                        <View style={styles.breakeDownContainer}>
+                        <View style={styles.rowContainer}>
                             <View style={styles.squareInfo}>
                                 <Text style={styles.squareTitle} >Overall</Text>
-                                <Text style={styles.squareNumbers}>{currentMonthStats.todaysTotalExpenses < 1 ? 0 : currentMonthStats.todaysTotalExpenses}</Text>
+                                <Text style={styles.squareNumbers}>{currentMonthStats.todaysTotalExpenses < 1 ? 0 : currentMonthStats.todaysTotalExpenses}₪</Text>
                             </View>
                             <View style={styles.squareInfo}>
                                 <Text style={styles.squareTitle}>Electricity</Text>
-                                <Text style={styles.squareNumbers} >{currentMonthStats.todaysElectricityExpenses < 1 ? 0 : currentMonthStats.todaysElectricityExpenses}</Text>
+                                <Text style={styles.squareNumbers} >{currentMonthStats.todaysElectricityExpenses < 1 ? 0 : currentMonthStats.todaysElectricityExpenses}₪</Text>
                             </View>
                             <View style={styles.squareInfo}>
                                 <Text style={styles.squareTitle}>Water</Text>
-                                <Text style={styles.squareNumbers}>{currentMonthStats.todaysWaterExpenses < 1 ? 0 : currentMonthStats.todaysWaterExpenses}</Text>
+                                <Text style={styles.squareNumbers}>{currentMonthStats.todaysWaterExpenses < 1 ? 0 : currentMonthStats.todaysWaterExpenses}₪</Text>
                             </View>
                         </View>
                     </View>
