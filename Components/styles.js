@@ -217,6 +217,11 @@ const styles = StyleSheet.create({
         textAlign: 'right',
         fontSize: 20,
         marginTop: 10
+    },
+    loadingPage: {
+        width: windowWidth,
+        height: windowHeight,
+        resizeMode: 'stretch'
     }
 });
 

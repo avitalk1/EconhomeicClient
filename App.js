@@ -4,10 +4,10 @@ import awsconfigsclient from './common/aws-configs'
 import messaging from '@react-native-firebase/messaging';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux'
-import { View, Text} from 'react-native';
+import { View ,Image , StyleSheet} from 'react-native';
 import store from './Redux/sagas/rootSaga'
 import AppNavigation from "./Components/AppNavigation"
-import SplashScreen from  "react-native-splash-screen";
+import { styles } from './Components/styles'
 
 Analytics.record({ name: "EconhomeicVisit" })
 Amplify.configure(awsconfigsclient);
@@ -21,7 +21,7 @@ const navigationRef = React.createRef();
 function App() {
   const [isSignedin, setIsSignedin] = useState(0)
   const [userEmail, setUserEmail] = useState("")
-  
+  const [viewSplash, setViewSplash] = useState(true)
   useEffect(() => {
     Auth.currentAuthenticatedUser()
         .then(user => {
@@ -56,9 +56,17 @@ function App() {
         }
       });
   }, []);
-  if(isSignedin == 0){
+
+  useEffect(()=>{
+    setTimeout(() => {setViewSplash(false)}, 3000)
+  },[])
+  
+  if(viewSplash){
     return (<View>
-      <Text>Loading...</Text>
+      <Image
+        style={styles.loadingPage}
+        source={require('./assets/splash.png')}
+      />
     </View>)
   }
   return (
@@ -67,6 +75,4 @@ function App() {
     </Provider>
   )
 }
-
-
  export default App;
