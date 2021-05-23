@@ -31,7 +31,7 @@ const AppNavigation = (props) => {
             { props.isSignedin == 2 ? <></> :
                 <>
                     <TouchableOpacity style={styles.topContainer}>
-                        <Text style={styles.menuTitle}>EconHomeic</Text>
+                        <Text style={styles.topTitle}>EconHomeic</Text>
                     </TouchableOpacity>
                 </>
             }

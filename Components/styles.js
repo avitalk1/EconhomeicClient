@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#10375C",
         height: windowHeight / 10,
     },
-    menuTitle: {
+    topTitle: {
         marginTop: 20,
         fontSize: 20,
         color: "white",
@@ -125,16 +125,15 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "#10375C"
     },
-    avatarImg: {
-        marginTop: 50,
-        marginLeft: 20,
-        display: "flex",
-        flexDirection: 'row',
+    boxContainer:{
+        backgroundColor:"white",
+        width: windowWidth,
     },
-    MenuContainer: {
-        marginTop: 30,
-        width: '90%',
-        marginLeft: '5%'
+    MenuTitels:{
+        fontSize:16,
+        marginLeft:10,
+        marginTop:15,
+        marginBottom:5
     },
     MenuLines: {
         display: "flex",
@@ -142,11 +141,22 @@ const styles = StyleSheet.create({
         marginTop: 20,
         justifyContent: 'space-between'
     },
+    MenuLine: {
+        display: "flex",
+        flexDirection: 'row',
+        width: "90%",
+        marginLeft:"5%",
+        marginTop: 5,
+        marginBottom:5,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: windowHeight*0.05
+    },
     generalText: {
-        fontSize: 20,
+        fontSize: 18,
         textAlign: "center",
         color: "#10375C",
-        marginTop: 10
+        marginLeft: 10
     },
     MenuName: {
         fontSize: 20,
@@ -155,43 +165,18 @@ const styles = StyleSheet.create({
         color: "#10375C",
         fontFamily: "Roboto-Medium",
     },
-    MenuBox: {
-        backgroundColor: "white",
-        borderRadius: 10,
-        width: windowWidth / 2.5,
-        height: windowHeight / 8,
-        shadowColor: "#0a0a0a",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 10,
-        shadowRadius: 70
-    },
-    MenuIcon: {
-        fontSize: 30,
-        marginLeft: 15,
-        marginTop: 10
-    },
-    switchLine: {
-        width: windowWidth * 0.8,
-        display: "flex",
-        flexDirection: 'row',
-        marginTop: 40,
-        marginLeft: windowWidth * 0.1,
-        justifyContent: "space-between",
+    arrowIcon: {
+        fontSize: 24,
+        opacity: 0.5,
+        color: "#abaaa7",
+        borderRadius:5
     },
     switchBtn: {
         transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
     },
-    switchTxt: {
-        fontSize: 24,
-        fontFamily: "Roboto-Light",
-        color: "#10375C",
-    },
     InputConstrains: {
-        width: "80%",
-        marginBottom: 10
+        marginBottom: 5,
+        alignItems:'center'
     },
     notificationContainer: {
         margin: 5,
@@ -209,14 +194,10 @@ const styles = StyleSheet.create({
         fontSize: 12
     },
     constrainsContainer: {
-        width: '80%',
-        marginLeft: '10%',
         marginTop: 20
     },
-    constrainsInfo: {
-        textAlign: 'right',
-        fontSize: 20,
-        marginTop: 10
+    constrainsInfo:{
+        fontSize: 18
     },
     loadingPage: {
         width: windowWidth,

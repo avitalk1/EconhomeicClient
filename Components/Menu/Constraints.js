@@ -8,6 +8,7 @@ import Amplify from 'aws-amplify';
 import awsconfigsclient from '../../common/aws-configs'
 import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { Divider } from 'react-native-paper';
 
 Amplify.configure(awsconfigsclient);
 
@@ -22,7 +23,6 @@ function Constraints(props) {
 
     const [edit, setedit] = useState(false)
     const handleEdit = () => {
-        console.log("hello")
         setedit(!edit)
     }
     const handelInputChange = (field, value) => {
@@ -32,7 +32,7 @@ function Constraints(props) {
     }
     const handleSubmit = async () => {
         try {
-            const result = await UpdateUserSettings({
+            await UpdateUserSettings({
                 numberOfHouseMembers: constaints.numberOfHouseMembers,
                 electricityBudget: constaints.electricityBudget,
                 waterBudget: constaints.waterBudget,
@@ -44,9 +44,7 @@ function Constraints(props) {
                 waterBudget: constaints.waterBudget,
                 UserID: props.userInfo.data.UserID
             })
-
-
-            return result;
+            handleEdit();
         } catch (err) {
             console.log(err)
         }
@@ -63,40 +61,55 @@ function Constraints(props) {
             </TouchableOpacity>
             {
                 edit ?
-                    <View style={styles.container}>
-                        <Input
-                            placeholder={`${constaints.numberOfHouseMembers}`}
-                            onChangeText={value => handelInputChange('numberOfHouseMembers', value)}
-                        />
-                        <Input
-                            placeholder={`${constaints.electricityBudget}`}
-                            onChangeText={value => handelInputChange('electricityBudget', value)}
-                        />
-                        <Input
-                            placeholder={`${constaints.waterBudget}`}
-                            onChangeText={value => handelInputChange('waterBudget', value)}
-                        />
-                        <View style={styles.buttonContainer}>
-                            <Button
-                                buttonStyle={styles.button}
-                                title="Submit"
-                                onPress={handleSubmit}
+                    <View >
+                        <View style={styles.MenuLine} >
+                            <Text style={styles.generalText}>Number Of House Members :</Text>
+                            <Input
+                                placeholder={`${constaints.numberOfHouseMembers}`}
+                                onChangeText={value => handelInputChange('numberOfHouseMembers', value)}
                             />
+                        </View>
+                        <View style={styles.MenuLine} >
+                            <Text style={styles.generalText}>Electricity Budget : </Text>
+                            <Input
+                                placeholder={`${constaints.electricityBudget}`}
+                                onChangeText={value => handelInputChange('electricityBudget', value)}
+                            />
+                        </View>
+                        <View style={styles.MenuLine} >
+                            <Text style={styles.generalText}>Water Budget :</Text>
+                            <Input
+                                placeholder={`${constaints.waterBudget}`}
+                                onChangeText={value => handelInputChange('waterBudget', value)}
+                            />
+                        </View>
+                        <View style={styles.container}>
+                            <View style={styles.buttonContainer}>
+                                <Button
+                                    buttonStyle={styles.button}
+                                    title="Submit"
+                                    onPress={handleSubmit}
+                                />
+                            </View>
                         </View>
                     </View>
                     :
                     <View style={styles.constrainsContainer}>
-                        <View style={styles.MenuLines}>
-                            <Text style={styles.generalText}>Number Of House Members :</Text>
-                            <Text style={styles.constrainsInfo}r>{`${constaints.numberOfHouseMembers}`}</Text>
-                        </View>
-                        <View style={styles.MenuLines}>
-                            <Text style={styles.generalText}>Electricity Budget :</Text>
-                            <Text style={styles.constrainsInfo}>{`${constaints.electricityBudget}`}₪</Text>
-                        </View>
-                        <View style={styles.MenuLines}>
-                            <Text style={styles.generalText}>Water Budget:</Text>
-                            <Text style={styles.constrainsInfo}>{`${constaints.waterBudget}`}₪</Text>
+                        <View style={styles.boxContainer}>
+                            <View style={styles.MenuLine} >
+                                <Text style={styles.generalText}>Number Of House Members </Text>
+                                <Text style={styles.constrainsInfo} r>{`${constaints.numberOfHouseMembers}`}</Text>
+                            </View>
+                            <Divider style={{ height: 1 }} />
+                            <View style={styles.MenuLine} >
+                                <Text style={styles.generalText}>Electricity Budget </Text>
+                                <Text style={styles.constrainsInfo}>{`${constaints.electricityBudget}`}₪</Text>
+                            </View>
+                            <Divider style={{ height: 1 }} />
+                            <View style={styles.MenuLine} >
+                                <Text style={styles.generalText}>Water Budget</Text>
+                                <Text style={styles.constrainsInfo}>{`${constaints.waterBudget}`}₪</Text>
+                            </View>
                         </View>
                     </View>
             }
