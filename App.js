@@ -22,6 +22,7 @@ import MainStatisticsPage from './Components/StatisticsComponents/MainStatistics
 import NotificationList from './Components/Notifications/NotificationList'
 import LeftMenu from './Components/LeftMenu';
 import InitRouting from './Components/InitRouting';
+import Charts from './Components/Charts';
 Analytics.record({ name: "EconhomeicVisit" })
 Amplify.configure(awsconfigsclient);
 const Stack = createStackNavigator();
@@ -67,26 +68,15 @@ function App() {
   }
   return (
     <Provider store={store}>
-
-      {
-        !isMenuOpen ?
-          <TouchableOpacity onPress={handleOpenMenuFunction}>
-            <View style={styles.menuIconContainer}>
-                <Text style={styles.menuIcon}>||||</Text>
-            </View>
-          </TouchableOpacity>
-          :
-          <LeftMenu handleCloseMenu={handleCloseMenuFunction} handleLogoutAction={handleLogoutActionFunction} navigation={navigate}/>
-      }
-
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator
-          initialRouteName="INIT_ROUTING"
+          initialRouteName="CHARTS"
           screenOptions={{
             headerShown: false
           }}
         >
           <Stack.Screen name="LANDING_PAGE" component={LandingPage} />
+          <Stack.Screen name="CHARTS" component={Charts} />
           <Stack.Screen name="INIT_ROUTING" component={InitRouting} />
           <Stack.Screen name="SIGNIN" component={SignIn} />
           <Stack.Screen name="PRESIGNUP" component={PreSignUp} />
