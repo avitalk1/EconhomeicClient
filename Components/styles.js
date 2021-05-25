@@ -125,15 +125,15 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "#10375C"
     },
-    boxContainer:{
-        backgroundColor:"white",
+    boxContainer: {
+        backgroundColor: "white",
         width: windowWidth,
     },
-    MenuTitels:{
-        fontSize:16,
-        marginLeft:10,
-        marginTop:15,
-        marginBottom:5
+    MenuTitels: {
+        fontSize: 16,
+        marginLeft: 10,
+        marginTop: 15,
+        marginBottom: 5
     },
     MenuLines: {
         display: "flex",
@@ -145,12 +145,16 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: 'row',
         width: "90%",
-        marginLeft:"5%",
+        marginLeft: "5%",
         marginTop: 5,
-        marginBottom:5,
+        marginBottom: 5,
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: windowHeight*0.05
+        height: windowHeight * 0.05
+    },
+    ConstrainsText:{
+        fontSize: 18,
+        color: "#10375C",
     },
     generalText: {
         fontSize: 18,
@@ -169,14 +173,16 @@ const styles = StyleSheet.create({
         fontSize: 24,
         opacity: 0.5,
         color: "#abaaa7",
-        borderRadius:5
+        borderRadius: 5
     },
     switchBtn: {
         transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]
     },
     InputConstrains: {
-        marginBottom: 5,
-        alignItems:'center'
+        height: 40,
+        borderWidth: 0.3,
+        borderRadius:10,
+        width: "80%"
     },
     notificationContainer: {
         margin: 5,
@@ -196,7 +202,11 @@ const styles = StyleSheet.create({
     constrainsContainer: {
         marginTop: 20
     },
-    constrainsInfo:{
+    updateConstrains: {
+        marginBottom:20,
+        marginLeft:"15%"
+    },
+    constrainsInfo: {
         fontSize: 18
     },
     loadingPage: {

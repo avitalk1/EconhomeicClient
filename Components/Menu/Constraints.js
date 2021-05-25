@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView ,TextInput} from 'react-native';
 import { connect } from 'react-redux'
 import { UpdateUserSettings } from '../../common/api';
 import { Input, Button } from 'react-native-elements';
@@ -61,26 +61,32 @@ function Constraints(props) {
             </TouchableOpacity>
             {
                 edit ?
-                    <View >
-                        <View style={styles.MenuLine} >
-                            <Text style={styles.generalText}>Number Of House Members :</Text>
-                            <Input
-                                placeholder={`${constaints.numberOfHouseMembers}`}
+                    <SafeAreaView style={styles.constrainsContainer}>
+                        <View style={styles.updateConstrains}>
+                            <Text style={styles.ConstrainsText}>Number Of House Members :</Text>
+                            <TextInput
+                                style={styles.InputConstrains}
                                 onChangeText={value => handelInputChange('numberOfHouseMembers', value)}
+                                placeholder={`${constaints.numberOfHouseMembers}`}
+                                keyboardType="numeric"
                             />
                         </View>
-                        <View style={styles.MenuLine} >
-                            <Text style={styles.generalText}>Electricity Budget : </Text>
-                            <Input
-                                placeholder={`${constaints.electricityBudget}`}
+                        <View style={styles.updateConstrains} >
+                            <Text style={styles.ConstrainsText}>Electricity Budget : </Text>
+                            <TextInput
+                                style={styles.InputConstrains}
                                 onChangeText={value => handelInputChange('electricityBudget', value)}
+                                placeholder={`${constaints.electricityBudget}`}
+                                keyboardType="numeric"
                             />
                         </View>
-                        <View style={styles.MenuLine} >
-                            <Text style={styles.generalText}>Water Budget :</Text>
-                            <Input
-                                placeholder={`${constaints.waterBudget}`}
+                        <View style={styles.updateConstrains} >
+                            <Text style={styles.ConstrainsText}>Water Budget :</Text>
+                            <TextInput
+                                style={styles.InputConstrains}
                                 onChangeText={value => handelInputChange('waterBudget', value)}
+                                placeholder={`${constaints.waterBudget}`}
+                                keyboardType="numeric"
                             />
                         </View>
                         <View style={styles.container}>
@@ -92,7 +98,7 @@ function Constraints(props) {
                                 />
                             </View>
                         </View>
-                    </View>
+                    </SafeAreaView>
                     :
                     <View style={styles.constrainsContainer}>
                         <View style={styles.boxContainer}>
