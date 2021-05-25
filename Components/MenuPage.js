@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { ScrollView, View, Text, Switch, SafeAreaView } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { Auth } from 'aws-amplify'
@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { handleDeivceForNotifications } from '../common/api'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './styles';
-import { userDataUpdate } from '../Redux/actions/UserDataActions/action';
+// import { userDataUpdate } from '../Redux/actions/UserDataActions/action';
 import { UpdateUserActions } from '../common/api';
 import { Foundation, MaterialCommunityIcons, Feather,Fontisto, AntDesign, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
 
@@ -23,11 +23,14 @@ function Menu(props) {
             props.handleLogoutAction()
         )
     }
-    const handleAutoAction = () => {
-        props.navigation.navigate('AUTOACTIONS')
-    }
     const handleConstraints = () => {
         props.navigation.navigate('CONSTRAINTS')
+    }
+    const handlePassword = () => {
+        props.navigation.navigate('CHANGE_PASSWORD')
+    }
+    const handleConfiguration = () => {
+        props.navigation.navigate('CONFIGURATION')
     }
     const handleAccount = () => {
         props.navigation.navigate('ACCOUNT')
@@ -44,11 +47,11 @@ function Menu(props) {
                     AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
                     UserID: props.userInfo.data.UserID
                 })
-                props.updateUserDataFunc({
-                    Light: !props.userInfo.data.AutomaticActions.Light,
-                    AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
-                    UserID: props.userInfo.data.UserID
-                })
+                // props.updateUserDataFunc({
+                //     Light: !props.userInfo.data.AutomaticActions.Light,
+                //     AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                //     UserID: props.userInfo.data.UserID
+                // })
                 setLightValue(!props.userInfo.data.AutomaticActions.Light)
             }
             if (val == "ac") {
@@ -57,18 +60,21 @@ function Menu(props) {
                     AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
                     UserID: props.userInfo.data.UserID
                 })
-                props.updateUserDataFunc({
-                    Light: props.userInfo.data.AutomaticActions.Light,
-                    AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
-                    UserID: props.userInfo.data.UserID
-                })
+                // props.updateUserDataFunc({
+                //     Light: props.userInfo.data.AutomaticActions.Light,
+                //     AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
+                //     UserID: props.userInfo.data.UserID
+                // })
                 setAirConditionerValue(!props.userInfo.data.AutomaticActions.AirConditioner)
             }
         } catch (err) {
             console.log(err)
         }
     }
-
+    useEffect(() => {
+        console.log("menu")
+       console.log(JSON.stringify(props.userInfo.data, null, 2))
+    }, [props.userInfo])
     return (
         <ScrollView>
             <View>
@@ -80,12 +86,12 @@ function Menu(props) {
                     <TouchableOpacity style={styles.MenuLine} onPress={handleAccount} >
                         <View style={styles.rowContainer}>
                             <MaterialCommunityIcons name="account" size={24} color="white" style={{ backgroundColor: '#ffad33' , borderRadius:5 ,opacity:0.6}} />
-                            <Text style={styles.generalText}>Edit Profile</Text>
+                            <Text style={styles.generalText}>Profile</Text>
                         </View>
                         <AntDesign name="right" style={styles.arrowIcon} />
                     </TouchableOpacity>
                     <Divider />
-                    <TouchableOpacity style={styles.MenuLine} onPress={handleAccount} >
+                    <TouchableOpacity style={styles.MenuLine} onPress={handlePassword} >
                         <View style={styles.rowContainer}>
                             <Entypo name="key" size={24} color="white" style={{ backgroundColor: '#339933' , borderRadius:5 ,opacity:0.6 }} />
                             <Text style={styles.generalText}>Change Password</Text>
@@ -103,10 +109,10 @@ function Menu(props) {
                         <AntDesign name="right" style={styles.arrowIcon} />
                     </TouchableOpacity>
                     <Divider />
-                    <TouchableOpacity style={styles.MenuLine} onPress={handleAccount} >
+                    <TouchableOpacity style={styles.MenuLine} onPress={handleConfiguration} >
                         <View style={styles.rowContainer}>
                             <Feather name="book-open" size={24} color="white" style={{ backgroundColor: '#4d4dff' , borderRadius:5 ,opacity:0.6}} />
-                            <Text style={styles.generalText}>Configeration</Text>
+                            <Text style={styles.generalText}>Configuration</Text>
                         </View>
                         <AntDesign name="right" style={styles.arrowIcon} />
                     </TouchableOpacity>

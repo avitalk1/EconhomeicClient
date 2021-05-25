@@ -122,6 +122,34 @@ const setReadNotification = async (nid) => {
         return err;
     }
 }
+
+const getUserConfig = async (UserID) => {
+    const myInit = {
+        body:{
+            UserID
+        }
+    }
+    try{
+        const result = await API.post('LambdaSimpleProxy', '/getuserconfig', myInit)
+        return result 
+    }catch(err){
+        return err;
+    }
+}
+
+const updateUserConfig = async (values) => {
+    const myInit = {
+        body:{
+            notificationID: nid,
+        }
+    }
+    try{
+        const result = await API.post('LambdaSimpleProxy', '/updateuserconfig', myInit)
+        return result 
+    }catch(err){
+        return err;
+    }
+}
 export {
     getUserByHouse,
     registrUser,
@@ -130,5 +158,7 @@ export {
     getUserInfo,
     handleDeivceForNotifications,
     getNotifications, 
-    setReadNotification
+    setReadNotification, 
+    getUserConfig, 
+    updateUserConfig
 }

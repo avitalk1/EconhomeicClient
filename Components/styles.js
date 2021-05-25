@@ -156,6 +156,9 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: "#10375C",
     },
+    profileLine:{
+        marginLeft : 15
+    },
     generalText: {
         fontSize: 18,
         textAlign: "center",
@@ -181,7 +184,7 @@ const styles = StyleSheet.create({
     InputConstrains: {
         height: 40,
         borderWidth: 0.3,
-        borderRadius:10,
+        borderRadius:5,
         width: "80%"
     },
     notificationContainer: {
@@ -213,6 +216,24 @@ const styles = StyleSheet.create({
         width: windowWidth,
         height: windowHeight,
         resizeMode: 'stretch'
+    },
+    ModalPickerContainer:{
+        flex:1,
+        alignItems:'center',
+        justifyContent: 'center'
+    },
+    Modal:{
+        backgroundColor:'white',
+        borderRadius:10,
+        opacity:0.9
+    },
+    optionText:{
+        margin:20,
+        fontSize:18,
+        fontWeight:'bold'
+    },
+    modalOption:{
+        alignItems:'flex-start'
     }
 });
 
