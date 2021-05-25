@@ -1,15 +1,20 @@
-import React from 'react';
+import React , {useState, useEffect} from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { connect } from 'react-redux'
 import { SimpleLineIcons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons'
 import MainStatisticsPage from '../StatisticsComponents/MainStatisticsPage'
 import StatisticsGraphs from '../StatisticsComponents/StatisticsGraphs'
+import Charts from '../Charts'
 import NotificationList from '../Notifications/NotificationList'
 import Menu from '../MenuPage';
 import { styles ,headerStyle } from '../styles';
 import AutoActions from '../Menu/AutoActions';
 import Constraints from '../Menu/Constraints';
 import Account from '../Menu/Account';
+import NotificationView from '../Notifications/NotificationView'
+const navigationRef = React.createRef();
 
 
 const Tab = createBottomTabNavigator();
@@ -34,6 +39,7 @@ function NotificationStackScreen() {
             screenOptions={screenOptionsStyle}
         >
             <NotificationStack.Screen name="Notification" component={NotificationList} />
+            <NotificationStack.Screen name="NotificationView" component={NotificationView} />
 
         </NotificationStack.Navigator>
     );
@@ -43,7 +49,7 @@ function GraphStackScreen() {
         <GraphsStack.Navigator
             screenOptions={screenOptionsStyle}
         >
-            <GraphsStack.Screen name="Statistics Graphs" component={StatisticsGraphs} />
+            <GraphsStack.Screen name="CHARTS" component={Charts} />
 
         </GraphsStack.Navigator>
     );
@@ -61,7 +67,15 @@ function MenuStackScreen() {
     );
 }
 
-function MyTabs() {
+
+
+function MyTabs(props) {
+   useEffect(()=>{
+       if(props.isSignedInStatus.notificationId != false){
+        props.navigate("NOTIFICATION_LIST")
+       }
+    
+   }, [props.isSignedInStatus.notificationId])
     return (
         <Tab.Navigator
             tabBarOptions={{
@@ -117,5 +131,7 @@ function MyTabs() {
     );
 }
 
-
-export default MyTabs;
+const mapStateToProps = (store) => ({
+    isSignedInStatus: store.isSignedIn
+});
+export default connect(mapStateToProps, null)(MyTabs);

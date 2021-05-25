@@ -6,14 +6,12 @@ import { Input, Button } from 'react-native-elements';
 import { styles } from '../styles';
 import Amplify from 'aws-amplify';
 import awsconfigsclient from '../../common/aws-configs'
-import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
+import { userDataUpdate, userDataUpdateConstraints} from '../../Redux/actions/UserDataActions/action';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 Amplify.configure(awsconfigsclient);
 
 function Constraints(props) {
-    console.log(props.userInfo.data.UserConstraints)
-
     const [constaints, setConstaints] = useState({
         numberOfHouseMembers: props.userInfo.data.UserConstraints.numberOfHouseMembers,
         electricityBudget: props.userInfo.data.UserConstraints.electricityBudget,
@@ -22,7 +20,6 @@ function Constraints(props) {
 
     const [edit, setedit] = useState(false)
     const handleEdit = () => {
-        console.log("hello")
         setedit(!edit)
     }
     const handelInputChange = (field, value) => {
@@ -38,13 +35,12 @@ function Constraints(props) {
                 waterBudget: constaints.waterBudget,
                 UserID: props.userInfo.data.UserID
             })
-            props.updateUserDataFunc({
-                numberOfHouseMembers: constaints.numberOfHouseMembers,
-                electricityBudget: constaints.electricityBudget,
-                waterBudget: constaints.waterBudget,
-                UserID: props.userInfo.data.UserID
+            props.userDataUpdateConstraintsFunc({
+                numberOfHouseMembers:parseInt(constaints.numberOfHouseMembers),
+                electricityBudget: parseInt(constaints.electricityBudget),
+                waterBudget: parseInt(constaints.waterBudget)
             })
-
+            setedit(!edit)
 
             return result;
         } catch (err) {
@@ -110,6 +106,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    updateUserDataFunc: (data) => dispatch(userDataUpdate(data))
+    updateUserDataFunc: (data) => dispatch(userDataUpdate(data)),
+    userDataUpdateConstraintsFunc: (data) => dispatch(userDataUpdateConstraints(data))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Constraints);

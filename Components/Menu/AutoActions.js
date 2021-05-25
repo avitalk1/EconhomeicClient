@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Switch, View, Text, SafeAreaView } from 'react-native';
 import { styles } from '../styles';
 import awsconfigsclient from '../../common/aws-configs'
-import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
+import { userDataUpdate, userDataUpdateAutoactions } from '../../Redux/actions/UserDataActions/action';
 import { UpdateUserActions } from '../../common/api';
 import { connect } from 'react-redux'
 import Amplify from 'aws-amplify';
@@ -26,10 +26,9 @@ function AutoActions(props) {
                     AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
                     UserID: props.userInfo.data.UserID
                 })
-                props.updateUserDataFunc({
+                props.userDataUpdateAutoactionsFunc({
                     Light: !props.userInfo.data.AutomaticActions.Light,
                     AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
-                    UserID: props.userInfo.data.UserID
                 })
                 setLightValue(!props.userInfo.data.AutomaticActions.Light)
             }
@@ -86,7 +85,8 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch)=> ({
-   updateUserDataFunc:(data)=> dispatch(userDataUpdate(data))
+   updateUserDataFunc:(data)=> dispatch(userDataUpdate(data)), 
+   userDataUpdateAutoactionsFunc:(data)=> dispatch(userDataUpdateAutoactions(data)), 
   })
 export default connect(mapStateToProps, mapDispatchToProps)(AutoActions);
 

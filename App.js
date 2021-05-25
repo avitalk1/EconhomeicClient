@@ -22,10 +22,10 @@ function App() {
   const [isSignedin, setIsSignedin] = useState(0)
   const [userEmail, setUserEmail] = useState("")
   const [viewSplash, setViewSplash] = useState(true)
+  const [isOpenedFromNotification, setIsOpenedFromNotification] = useState(false)
   useEffect(() => {
     Auth.currentAuthenticatedUser()
         .then(user => {
-            
             setUserEmail(user.attributes.email)
             setIsSignedin(1)
         })
@@ -33,6 +33,13 @@ function App() {
           console.log("error")
           setIsSignedin(2)
         });
+  }, [])
+  useEffect(()=>{
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+      setIsOpenedFromNotification(remoteMessage.data.notificationID)
+    });
+    
   }, [])
   useEffect(() => {
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
@@ -42,23 +49,12 @@ function App() {
         'Notification caused app to open from background state:',
         remoteMessage,
       );
+      setIsOpenedFromNotification(remoteMessage.data.notificationID)
     });
-
-    // Check whether an initial notification is available
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage,
-          );
-        }
-      });
   }, []);
 
   useEffect(()=>{
-    setTimeout(() => {setViewSplash(false)}, 3000)
+    setTimeout(() => {setViewSplash(false)}, 500)
   },[])
   
   if(viewSplash){
@@ -71,7 +67,7 @@ function App() {
   }
   return (
     <Provider store={store}>
-      <AppNavigation isSignedin={isSignedin} userEmail={userEmail}/>
+      <AppNavigation isSignedin={isSignedin} userEmail={userEmail} isNotification={isOpenedFromNotification} resetIsNotification={()=>setIsOpenedFromNotification(false)}/>
     </Provider>
   )
 }

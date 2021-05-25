@@ -2,7 +2,8 @@ import {
   FETCH_USER_DATA,
   FETCH_USER_DATA_SUCCESS,
   FETCH_USER_DATA_FAIL,
-  FETCH_USER_DATA_UPDATE
+  FETCH_USER_DATA_UPDATE, 
+  USER_DATA_UPDATE_CONSTRAINTS
 } from "../actions/UserDataActions/actionTypes";
 
 
@@ -19,6 +20,23 @@ export default (
       return { ...state, data: {}, error, loading: false };
     case FETCH_USER_DATA_UPDATE:
       return {...state , ...state.data, error: null, loading: false }
+    case USER_DATA_UPDATE_CONSTRAINTS:
+      return {...state , data:{
+        ...state.data,
+        UserConstraints:{
+          electricityBudget: data.electricityBudget,
+          numberOfHouseMembers: data.numberOfHouseMembers,
+          waterBudget: data.waterBudget
+        }
+      }, error: null, loading: false }
+    case USER_DATA_UPDATE_CONSTRAINTS:
+      return {...state , data:{
+        ...state.data,
+        AutomaticActions:{
+          Light: data.Light,
+          AirConditioner: data.AirConditioner,
+        }
+      }, error: null, loading: false }
     default:
       return state;
   }

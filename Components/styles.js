@@ -200,6 +200,34 @@ const styles = StyleSheet.create({
     notificationItemTitle: {
         fontWeight: 'bold'
     },
+    messageDate:{
+        marginTop: 10,
+        marginBottom:10,
+        textAlign: 'right',
+    },
+    messageTitle:{
+        fontSize:18,
+        marginBottom:10,
+        marginLeft:10,
+        fontWeight : 'bold',
+        color: "#10375C"
+    },
+    messageBody:{
+        marginTop:10,
+        width:'90%',
+        marginLeft:'5%'
+    },
+    messageBodyTxt:{
+        fontSize:15,
+        margin:15
+    },
+    messageBtnContainer: {
+        width: "70%",
+        marginLeft:'15%'
+    },
+    messageBtn:{
+        margin:10,
+    },
     titleNotificationContainer: {
         display: "flex",
         flexDirection: 'row',

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 import { Input, Button } from 'react-native-elements';
+import { changeIsSignedInStatus, changeIsSignedInEmail } from '../Redux/actions/IsSignedInActions/action';
 import { styles } from './styles'
 import { handleDeivceForNotifications } from '../common/api'
-function SignIn({ navigation }) {
+
+function SignIn(props) {
   const [userInfo, setUserInfo] = useState({
     email: '',
     password: '',
@@ -20,10 +23,11 @@ function SignIn({ navigation }) {
     try {
       const user = await Auth.signIn(userInfo.email, userInfo.password)
       handleDeivceForNotifications(userInfo.email, "generate")
-      navigation.navigate('MAIN_STATISTICS_PAGE')
+      props.changeIsSignedInStatusFunc(1)
+      props.changeIsSignedInEmailFunc(userInfo.email)
     } catch (err) {
       console.log(err)
-      navigation.navigate("LANDING_PAGE")
+      props.navigation.navigate("LANDING_PAGE")
     }
   }
   return (
@@ -56,4 +60,8 @@ function SignIn({ navigation }) {
   );
 }
 
-export default SignIn
+const mapDispatchToProps = (dispatch) => ({
+  changeIsSignedInStatusFunc: (status) => dispatch(changeIsSignedInStatus(status)), 
+  changeIsSignedInEmailFunc: (email) => dispatch(changeIsSignedInEmail(email))
+})
+export default connect(null, mapDispatchToProps)(SignIn);
