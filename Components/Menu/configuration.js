@@ -9,11 +9,15 @@ import { styles } from '../styles';
 import { fetchUserConfig } from '../../Redux/actions/UserConfigAction/action';
 import { AntDesign } from '@expo/vector-icons';
 import { ModalPicker } from './ModalPicker';
+import {updateUserConfig} from '../../common/api'
 
 Amplify.configure(awsconfigsclient);
 
-
 function Configuration(props) {
+    const [isModalVisible, setisModalVisible] = useState(false)
+    const [modalType , setModalType] = useState('')
+    const [configTypeOptions, setConfigTypeOptions] = useState()
+    const [lightLevel, setlightLevel] = useState('')
     const [timeData, settimeData] = useState({
         AC: '',
         Light: '',
@@ -23,11 +27,22 @@ function Configuration(props) {
         AC: 24,
         Boiler: 35
     })
-
-
-    const [isModalVisible, setisModalVisible] = useState(false)
-    const [modalType , setModalType] = useState('')
-    const [configTypeOptions, setConfigTypeOptions] = useState()
+    
+    useEffect(()=>{
+        if(props.userConfig.data!=null){
+            console.log(JSON.stringify(props.userConfig.data,null,2))
+            settimeData({
+                AC: props.userConfig.data.ACTime,
+                Light: props.userConfig.data.LightTime,
+                Water:props.userConfig.data.WTTime  
+            })
+            setlightLevel(props.userConfig.data.LightLevel)
+            settemperatureData({
+                AC: props.userConfig.data.ACTemp,
+                Boiler: props.userConfig.data.BoilerTemp
+            })
+        }
+    },[props.userConfig])
 
     const changeModalVisibility = (bool, configType = null) => {
         if (configType != null) {
@@ -35,17 +50,6 @@ function Configuration(props) {
         }
         setisModalVisible(bool)
     }
-    // useEffect(()=>{
-    //     props.fetchUserConfigFunc(props.userInfo.data.UserID)
-    // },[])
-
-    // useEffect(()=>{
-    //     console.log(JSON.stringify(props.userConfig.data, null, 2))
-    // },[props.userConfig])
-
-    // console.log(JSON.stringify(props.userConfig.data, null, 2))
-
-    const [lightLevel, setlightLevel] = useState('')
 
     const setData = (option) => {
         let temp ;
@@ -78,6 +82,9 @@ function Configuration(props) {
         temperatureData.Boiler = value
         settemperatureData(temperatureData)
     }
+    useEffect(()=>{
+        props.fetchUserConfigFunc(props.userInfo.data.UserID)
+    },[])
 
     return (
         <View>
