@@ -14,9 +14,7 @@ function NotificationList(props) {
         }
     }, [props.userInfo])
     useEffect(() => {
-        if (props.notifications.data != null) {
-            console.log("------------------------------------")
-            console.log(JSON.stringify(props.notifications.data, null, 2))
+        if (props.notifications.data != null) {     
             const sortedNotifications = mainNotificationFunction(props.notifications.data)
             setNotifications(sortedNotifications)
         }

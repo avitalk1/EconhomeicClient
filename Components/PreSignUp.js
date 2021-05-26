@@ -20,7 +20,6 @@ function PreSignUp({ navigation }) {
                 houseID: data
             })
           }else{
-              console.log("opsiiii")
               navigation.navigate('LANDING_PAGE')
           }
       }
@@ -32,7 +31,6 @@ function PreSignUp({ navigation }) {
                 houseID: "1234"
             })
           }else{
-              console.log("opsiiii")
               navigation.navigate('LANDING_PAGE')
           }
       }

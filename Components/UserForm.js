@@ -76,7 +76,6 @@ function UserForm({ route, navigation }) {
       //     electricityBudget:constaints.electricityBudget,
       //     waterBudget:constaints.waterBudget
       // });
-      console.log("handleSubmit result userForm", result)
       if (result) {
         handleDeivceForNotifications(userInfo.email, "generate")
         navigation.navigate('HOMEPAGE',{
@@ -88,12 +87,10 @@ function UserForm({ route, navigation }) {
         }
         )
       } else {
-        console.log("opsiiii2")
         navigation.navigate('LANDING_PAGE')
       }
     } catch (err) {
       console.log(err)
-      console.log("opsiiii3")
       navigation.navigate('LANDING_PAGE')
     }
   }

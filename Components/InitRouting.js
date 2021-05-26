@@ -12,7 +12,6 @@ import { fetchUserData } from '../Redux/actions/UserDataActions/action';
 Amplify.configure(awsconfigsclient);
 function InitRouting(props) {
     const [testing, setTesting] = useState(0)
-    console.log("hii im here!")
     useEffect(() => {
         Auth.currentAuthenticatedUser()
             .then(user => {

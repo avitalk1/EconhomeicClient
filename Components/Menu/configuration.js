@@ -6,7 +6,7 @@ import awsconfigsclient from '../../common/aws-configs'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from '../styles';
-import { fetchUserConfig } from '../../Redux/actions/UserConfigAction/action';
+import { fetchUserConfig , userConfigUpdate} from '../../Redux/actions/UserConfigAction/action';
 import { AntDesign } from '@expo/vector-icons';
 import { ModalPicker } from './ModalPicker';
 import {updateUserConfig} from '../../common/api'
@@ -24,13 +24,12 @@ function Configuration(props) {
         Water:''
     })
     const [temperatureData, settemperatureData] = useState({
-        AC: 24,
-        Boiler: 35
+        AC: 0,
+        Boiler: 0
     })
     
     useEffect(()=>{
         if(props.userConfig.data!=null){
-            console.log(JSON.stringify(props.userConfig.data,null,2))
             settimeData({
                 AC: props.userConfig.data.ACTime,
                 Light: props.userConfig.data.LightTime,
@@ -57,9 +56,11 @@ function Configuration(props) {
             temp = timeData
             temp[configTypeOptions] = option
             settimeData(temp)
+            callUpdateUserConfig()
         }
         else{
             setlightLevel(option)
+            callUpdateUserConfig()
         }
     }
     const combinedFunctions = (bool,configType,value)=>{
@@ -73,6 +74,7 @@ function Configuration(props) {
         setConfigTypeOptions(value)
         temperatureData.AC = value
         settemperatureData(temperatureData)
+        callUpdateUserConfig()
     }
     const setBoilerTemperature = (value, configType = null) => {
         if (configType != null) {
@@ -81,6 +83,24 @@ function Configuration(props) {
         setConfigTypeOptions(value)
         temperatureData.Boiler = value
         settemperatureData(temperatureData)
+        callUpdateUserConfig()
+    }
+
+    const callUpdateUserConfig = () => {
+        let values = {
+            timeData, 
+            temperatureData, 
+            lightLevel
+        }
+        async function updateData() { 
+            try{
+                await updateUserConfig(props.userInfo.data.UserID, values)
+                props.userConfigUpdateFunc({values})
+
+            } catch (err){
+                console.log(err)
+            }
+        }updateData()
     }
     useEffect(()=>{
         props.fetchUserConfigFunc(props.userInfo.data.UserID)
@@ -200,6 +220,7 @@ const mapStateToProps = (store) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchUserConfigFunc: (userid) => dispatch(fetchUserConfig(userid))
+    fetchUserConfigFunc: (userid) => dispatch(fetchUserConfig(userid)),
+    userConfigUpdateFunc: (data) => dispatch(userConfigUpdate(data))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Configuration);

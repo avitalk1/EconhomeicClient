@@ -146,7 +146,11 @@ const updateNotifyUserWithAnswer = async (nid, ua) => {
     try{
         const result = await API.post('LambdaSimpleProxy', '/updatenotifyuser', myInit)
 
-
+    }catch(err){
+        console.log(err)
+        return "err"
+    }
+}
 const getUserConfig = async (UserID) => {
     const myInit = {
         body:{
@@ -161,19 +165,23 @@ const getUserConfig = async (UserID) => {
     }
 }
 
-const updateUserConfig = async (values) => {
+const updateUserConfig = async (userID, values) => {
+    console.log(userID, values)
     const myInit = {
         body:{
-            notificationID: nid,
+            userID, 
+            values
         }
     }
     try{
-        const result = await API.post('LambdaSimpleProxy', '/updateuserconfig', myInit)
+        const result = await API.post('LambdaSimpleProxy', '/updateuserconfigurations', myInit)
         return result 
     }catch(err){
         return err;
     }
 }
+
+
 export {
     getUserByHouse,
     registrUser,
@@ -187,5 +195,4 @@ export {
     updateNotifyUserWithAnswer,
     getUserConfig, 
     updateUserConfig
-
 }

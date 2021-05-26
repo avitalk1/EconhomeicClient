@@ -54,7 +54,7 @@ function App() {
   }, []);
 
   useEffect(()=>{
-    setTimeout(() => {setViewSplash(false)}, 500)
+    setTimeout(() => {setViewSplash(false)}, 1500)
   },[])
   
   if(viewSplash){

@@ -6,16 +6,14 @@ import { connect } from 'react-redux'
 import { handleDeivceForNotifications } from '../common/api'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './styles';
-import { MaterialCommunityIcons, AntDesign, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
 import { changeIsSignedInStatus, changeIsSignedInEmail } from '../Redux/actions/IsSignedInActions/action';
-
-// import { userDataUpdate } from '../Redux/actions/UserDataActions/action';
+import {  userDataUpdateAutoactions } from '../Redux/actions/UserDataActions/action';
 import { UpdateUserActions } from '../common/api';
 import { Foundation, MaterialCommunityIcons, Feather,Fontisto, AntDesign, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
 
 function Menu(props) {
-    const [LightValue, setLightValue] = useState(props.userInfo.data.AutomaticActions.Light);
-    const [AirConditionerValue, setAirConditionerValue] = useState(props.userInfo.data.AutomaticActions.AirConditioner);
+    const [LightValue, setLightValue] = useState(false);
+    const [AirConditionerValue, setAirConditionerValue] = useState(false);
 
     const handleLogout = () => {
         Auth.currentAuthenticatedUser()
@@ -51,11 +49,10 @@ function Menu(props) {
                     AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
                     UserID: props.userInfo.data.UserID
                 })
-                // props.updateUserDataFunc({
-                //     Light: !props.userInfo.data.AutomaticActions.Light,
-                //     AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
-                //     UserID: props.userInfo.data.UserID
-                // })
+                props.userDataUpdateAutoactionsFunc({
+                    Light: !props.userInfo.data.AutomaticActions.Light,
+                    AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                })
                 setLightValue(!props.userInfo.data.AutomaticActions.Light)
             }
             if (val == "ac") {
@@ -64,11 +61,10 @@ function Menu(props) {
                     AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
                     UserID: props.userInfo.data.UserID
                 })
-                // props.updateUserDataFunc({
-                //     Light: props.userInfo.data.AutomaticActions.Light,
-                //     AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
-                //     UserID: props.userInfo.data.UserID
-                // })
+                props.userDataUpdateAutoactionsFunc({
+                    Light: props.userInfo.data.AutomaticActions.Light,
+                    AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
+                })
                 setAirConditionerValue(!props.userInfo.data.AutomaticActions.AirConditioner)
             }
         } catch (err) {
@@ -76,6 +72,10 @@ function Menu(props) {
         }
     }
     useEffect(() => {
+        if(props.userInfo.data!=null){
+            setLightValue(props.userInfo.data.AutomaticActions.Light)
+            setAirConditionerValue(props.userInfo.data.AutomaticActions.AirConditioner);
+        }
     }, [props.userInfo])
     return (
         <ScrollView>
@@ -171,7 +171,8 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     changeIsSignedInStatusFunc: (status) => dispatch(changeIsSignedInStatus(status)),
-    changeIsSignedInEmailFunc: (email) => dispatch(changeIsSignedInEmail(email))
+    changeIsSignedInEmailFunc: (email) => dispatch(changeIsSignedInEmail(email)), 
+    userDataUpdateAutoactionsFunc:(data)=> dispatch(userDataUpdateAutoactions(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

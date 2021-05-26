@@ -10,7 +10,6 @@ import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
 Amplify.configure(awsconfigsclient);
 
 function ChangePassword(props) {
-    console.log(props.userInfo.data.UserConstraints)
 
     const [constaints, setConstaints] = useState({
 
