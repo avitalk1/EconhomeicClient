@@ -72,8 +72,6 @@ function Menu(props) {
         }
     }
     useEffect(() => {
-        console.log("menu")
-       console.log(JSON.stringify(props.userInfo.data, null, 2))
     }, [props.userInfo])
     return (
         <ScrollView>

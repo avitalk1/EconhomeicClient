@@ -220,12 +220,12 @@ const styles = StyleSheet.create({
     ModalPickerContainer:{
         flex:1,
         alignItems:'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     Modal:{
         backgroundColor:'white',
         borderRadius:10,
-        opacity:0.9
+        borderWidth:0.3
     },
     optionText:{
         margin:20,

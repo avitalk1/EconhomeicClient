@@ -14,16 +14,19 @@ Amplify.configure(awsconfigsclient);
 
 
 function Configuration(props) {
-
     const [timeData, settimeData] = useState({
         AC: '',
-        Light: ''
+        Light: '',
+        Water:''
     })
     const [temperatureData, settemperatureData] = useState({
         AC: 24,
-        Light: 35
+        Boiler: 35
     })
+
+
     const [isModalVisible, setisModalVisible] = useState(false)
+    const [modalType , setModalType] = useState('')
     const [configTypeOptions, setConfigTypeOptions] = useState()
 
     const changeModalVisibility = (bool, configType = null) => {
@@ -32,25 +35,47 @@ function Configuration(props) {
         }
         setisModalVisible(bool)
     }
-    useEffect(()=>{
-        props.fetchUserConfigFunc(props.userInfo.data.UserID)
-    },[])
+    // useEffect(()=>{
+    //     props.fetchUserConfigFunc(props.userInfo.data.UserID)
+    // },[])
 
-    useEffect(()=>{
-        console.log("config")
-        console.log(JSON.stringify(props.userConfig.data, null, 2))
-    },[props.userConfig])
+    // useEffect(()=>{
+    //     console.log(JSON.stringify(props.userConfig.data, null, 2))
+    // },[props.userConfig])
+
+    // console.log(JSON.stringify(props.userConfig.data, null, 2))
+
+    const [lightLevel, setlightLevel] = useState('')
+
     const setData = (option) => {
-        let temp = timeData;
-        temp[configTypeOptions] = option
-        settimeData(temp)
+        let temp ;
+        if(modalType =='time'){
+            temp = timeData
+            temp[configTypeOptions] = option
+            settimeData(temp)
+        }
+        else{
+            setlightLevel(option)
+        }
     }
-    const setTemperature = (value, configType = null) => {
+    const combinedFunctions = (bool,configType,value)=>{
+        changeModalVisibility (bool,configType)
+        setModalType (value)
+    }
+    const setACTemperature = (value, configType = null) => {
         if (configType != null) {
             setConfigTypeOptions(configType)
         }
         setConfigTypeOptions(value)
         temperatureData.AC = value
+        settemperatureData(temperatureData)
+    }
+    const setBoilerTemperature = (value, configType = null) => {
+        if (configType != null) {
+            setConfigTypeOptions(configType)
+        }
+        setConfigTypeOptions(value)
+        temperatureData.Boiler = value
         settemperatureData(temperatureData)
     }
 
@@ -59,7 +84,7 @@ function Configuration(props) {
             <Text style={styles.MenuTitels}>AC</Text>
             <SafeAreaView style={styles.boxContainer}>
                 <TouchableOpacity style={styles.MenuLine}
-                    onPress={() => changeModalVisibility(true, "AC")}
+                    onPress={() => combinedFunctions(true, "AC" , "time")}
                 >
                     <View style={styles.rowContainer}>
                         <Text style={styles.generalText}>Auto Action Time</Text>
@@ -80,7 +105,7 @@ function Configuration(props) {
                         maximumValue={32}
                         minimumValue={16}
                         step={1}
-                        onValueChange={setTemperature}
+                        onValueChange={setACTemperature}
                     />
                 </View>
 
@@ -89,13 +114,56 @@ function Configuration(props) {
             <Text style={styles.MenuTitels}>Light</Text>
             <SafeAreaView style={styles.boxContainer}>
                 <TouchableOpacity style={styles.MenuLine}
-                    onPress={() => changeModalVisibility(true, "Light")}
+                    onPress={() => combinedFunctions(true, "Light" , "time")}
                 >
                     <View style={styles.rowContainer}>
                         <Text style={styles.generalText}>Auto Action Time</Text>
                     </View>
                     <View style={styles.rowContainer}>
                         <Text>{timeData.Light}</Text>
+                        <AntDesign name="right" style={styles.arrowIcon} />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.MenuLine}
+                    onPress={() => combinedFunctions(true, "Light" , "level")}
+                >
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.generalText}>Light Level</Text>
+                    </View>
+                    <View style={styles.rowContainer}>
+                        <Text>{lightLevel}</Text>
+                        <AntDesign name="right" style={styles.arrowIcon} />
+                    </View>
+                </TouchableOpacity>
+            </SafeAreaView>
+            <Text style={styles.MenuTitels}>Boiler</Text>
+            <SafeAreaView style={styles.boxContainer}>
+                <View style={styles.MenuLine}>
+                    <Text style={styles.generalText}>Auto Action Temperature</Text>
+                    <Text>{temperatureData.Boiler}°C</Text>
+                </View>
+                <View style={styles.smallProgressContainer}>
+                    <Slider
+                        style={{ width: '80%', marginBottom: 20 }}
+                        value={temperatureData.Boiler}
+                        maximumValue={50}
+                        minimumValue={5}
+                        step={1}
+                        onValueChange={setBoilerTemperature}
+                    />
+                </View>
+
+            </SafeAreaView>
+            <Text style={styles.MenuTitels}>Water</Text>
+            <SafeAreaView style={styles.boxContainer}>
+                <TouchableOpacity style={styles.MenuLine}
+                    onPress={() => combinedFunctions(true, "Water" , "time")}
+                >
+                    <View style={styles.rowContainer}>
+                        <Text style={styles.generalText}>Auto Action Time</Text>
+                    </View>
+                    <View style={styles.rowContainer}>
+                        <Text>{timeData.Water}</Text>
                         <AntDesign name="right" style={styles.arrowIcon} />
                     </View>
                 </TouchableOpacity>
@@ -111,6 +179,7 @@ function Configuration(props) {
                 <ModalPicker
                     changeModalVisibility={changeModalVisibility}
                     setData={setData}
+                    modalType ={modalType}
                 />
             </Modal>
         </View>
@@ -119,11 +188,11 @@ function Configuration(props) {
 
 
 const mapStateToProps = (store) => ({
-    userInfo: store.userData, 
+    userInfo: store.userData,
     userConfig: store.userConfig
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchUserConfigFunc:(userid)=> dispatch(fetchUserConfig(userid))
+    fetchUserConfigFunc: (userid) => dispatch(fetchUserConfig(userid))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Configuration);
