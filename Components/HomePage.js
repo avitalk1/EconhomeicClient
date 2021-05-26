@@ -8,12 +8,6 @@ function HomePage({ route, navigation }) {
   return (
     <View style={styles.container}>
       <Text>Home Page</Text>
-      {
-        route.params.newUser ? 
-        <Text>hello you are a new user</Text> 
-        : 
-        <Text>Hello you are not a new user - but no statistics to show</Text>
-      }
     </View>
   );
 }

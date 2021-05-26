@@ -49,6 +49,19 @@ const UpdateUserSettings = async (userObject) => {
         return false
     }
 }
+const UpdateUserActions = async (userObject) => {
+
+    const myInit = {
+        body: userObject
+    }
+    try {
+        const result = await API.post('LambdaSimpleProxy', '/updateactions', myInit);
+        return result
+    } catch (err) {
+        console.log("err", err)
+        return false
+    }
+}
 const getUserInfo = async (email) => {
     const myInit = {
         body:{
@@ -95,6 +108,19 @@ const getNotifications = async (email) => {
         return err;
     }
 }
+const getNotificationByID = async (notificationID) => {
+    const myInit = {
+        body:{
+            notificationID 
+        }
+    }
+    try{
+        const result = await API.post('LambdaSimpleProxy', '/getnotificationbyid', myInit)
+        return result 
+    }catch(err){
+        return err;
+    }
+}
 
 const setReadNotification = async (nid) => {
     const myInit = {
@@ -109,12 +135,29 @@ const setReadNotification = async (nid) => {
         return err;
     }
 }
+const updateNotifyUserWithAnswer = async (nid, ua) => {
+    const myInit = {
+        body:{
+            notificationID: nid,
+            userAnswer:ua
+        }
+    }
+    try{
+        const result = await API.post('LambdaSimpleProxy', '/updatenotifyuser', myInit)
+        return result 
+    }catch(err){
+        return err;
+    }
+}
 export {
     getUserByHouse,
     registrUser,
     UpdateUserSettings,
+    UpdateUserActions,
     getUserInfo,
     handleDeivceForNotifications,
     getNotifications, 
-    setReadNotification
+    setReadNotification, 
+    getNotificationByID, 
+    updateNotifyUserWithAnswer
 }

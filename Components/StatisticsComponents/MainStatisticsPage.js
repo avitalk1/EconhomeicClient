@@ -1,48 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
+import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import Amplify from 'aws-amplify';
-import awsconfigsclient from '../../common/aws-configs'
-import { mainStatisticsFunction } from './statisticFunctions'
+import Amplify, { Analytics, Auth } from 'aws-amplify';
+import awsconfigsclient from '../../common/aws-configs';
+import { styles } from '../styles';
+import { mainStatisticsFunction } from './statisticFunctions';
+import { fetchUserData } from '../../Redux/actions/UserDataActions/action';
+
 Amplify.configure(awsconfigsclient);
+
 function MainStatisticsPage(props) {
     const [progressView, setProgressView] = useState(1);
-    const [currentMonthStats, setCurrentMonthStats] = useState()
+    const [currentMonthStats, setCurrentMonthStats] = useState(null)
     useEffect(() => {
-            if(!props.userInfo.loading){
-            if (!('Expenses' in props.userInfo.data)) {
-                props.navigation.navigate('HOMEPAGE', {
-                    newUser: false,
-                    userInfo: {
-                        firstName: props.userInfo.data.firstName,
-                        lastName: props.userInfo.data.lastName
-                    }
-                })
-            } else {
-                const result = mainStatisticsFunction(props.userInfo.data.Expenses, props.userInfo.data.Constaints)
+        if (props.userInfo.data != null) {
+            if ('Expenses' in props.userInfo.data) {
+                let result = mainStatisticsFunction(props.userInfo.data.Expenses, props.userInfo.data.UserConstraints)
                 setCurrentMonthStats(result)
+            } else {
+                console.log("no expenses ")
             }
-
         }
-    }, [props.userInfo.loading])
+    }, [props.userInfo])
     if (currentMonthStats) {
         return (
             <View style={styles.container}>
-                <Text style={styles.MSPageTitle}>Main Statistics Page</Text>
-                <Text>{` ${currentMonthStats.monthName}`}</Text>
-                <View style={styles.progressContainer}>
-                <Text style={styles.daysText}>{`Day ${currentMonthStats.todaysDay} out of ${currentMonthStats.monthNumberOfDays}`}</Text>
+                <View>
                     {
                         progressView === 1 ?
-                            <View>
+                            <View style={styles.progressContainer}>
                                 <TouchableOpacity onPress={() => { setProgressView(2) }}>
                                     <AnimatedCircularProgress
-                                        size={300}
-                                        width={10}
+                                        size={250}
+                                        width={15}
                                         fill={currentMonthStats.expensesPercentageCalculation.value}
-                                        tintColor={currentMonthStats.expensesPercentageCalculation.color}
-                                        backgroundColor="#B0B4B4">
+                                        tintColor="#00ff00"
+                                        width={10}
+                                        tintColorSecondary="#ff0000"
+                                        backgroundColor="#3d5875"
+                                        arcSweepAngle={240}
+                                        rotation={240}
+                                        lineCap="round"
+                                    >
                                         {
                                             () => (
                                                 <View>
@@ -50,7 +51,7 @@ function MainStatisticsPage(props) {
                                                         {`${currentMonthStats.expensesPercentageCalculation.value} %`}
                                                     </Text>
                                                     <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.totalExpenses} / ${currentMonthStats.totalBudget}`}
+                                                        {`${currentMonthStats.totalExpenses} ₪/ ${currentMonthStats.totalBudget}₪`}
                                                     </Text>
                                                 </View>
                                             )
@@ -60,16 +61,15 @@ function MainStatisticsPage(props) {
 
                             </View>
                             :
-                            <View >
+                            <View style={styles.progressContainer} >
                                 <Text style={styles.numbersTextStyle}>Expenses Breakdown</Text>
-                                <View style={styles.breakeDownContainer}>
+                                <View style={styles.rowContainer}>
                                     <TouchableOpacity onPress={() => { setProgressView(1) }}>
                                         <View style={styles.smallProgressContainer}>
-
                                             <Text style={styles.numbersTextStyle}>Water</Text>
                                             <AnimatedCircularProgress
-                                                size={120}
-                                                width={7}
+                                                size={150}
+                                                width={7.5}
                                                 fill={currentMonthStats.WaterExpensesPercentageCalculation.value}
                                                 tintColor={currentMonthStats.WaterExpensesPercentageCalculation.color}
                                                 backgroundColor="#B0B4B4">
@@ -80,7 +80,7 @@ function MainStatisticsPage(props) {
                                                                 {`${currentMonthStats.WaterExpensesPercentageCalculation.value} %`}
                                                             </Text>
                                                             <Text style={styles.numbersTextStyle}>
-                                                                {`${currentMonthStats.totalWaterExpenses} / ${props.userInfo.data.Constaints.waterBudget}`}
+                                                                {`${currentMonthStats.totalWaterExpenses} ₪/ ${props.userInfo.data.UserConstraints.waterBudget}₪`}
                                                             </Text>
                                                         </View>
                                                     )
@@ -93,8 +93,8 @@ function MainStatisticsPage(props) {
                                         <View style={styles.smallProgressContainer}>
                                             <Text style={styles.numbersTextStyle}>Electricity</Text>
                                             <AnimatedCircularProgress
-                                                size={120}
-                                                width={7}
+                                                size={150}
+                                                width={7.5}
                                                 fill={currentMonthStats.ElectricityExpensesPercentageCalculation.value}
                                                 tintColor={currentMonthStats.ElectricityExpensesPercentageCalculation.color}
                                                 backgroundColor="#B0B4B4">
@@ -105,7 +105,7 @@ function MainStatisticsPage(props) {
                                                                 {`${currentMonthStats.ElectricityExpensesPercentageCalculation.value} %`}
                                                             </Text>
                                                             <Text style={styles.numbersTextStyle}>
-                                                                {`${currentMonthStats.totalElectricityExpenses} / ${props.userInfo.data.Constaints.electricityBudget}`}
+                                                                {`${currentMonthStats.totalElectricityExpenses} ₪/ ${props.userInfo.data.UserConstraints.electricityBudget}₪`}
                                                             </Text>
                                                         </View>
                                                     )
@@ -116,86 +116,35 @@ function MainStatisticsPage(props) {
                                 </View>
                             </View>
                     }
-                    
+                    <Text style={styles.daysText}>{`${currentMonthStats.monthNumberOfDays - currentMonthStats.todaysDay} Days left`}</Text>
+                    <View style={styles.dailyInfo}>
+                        <Text style={{ color: "white", textAlign: "center", marginTop: 20 }}>{` ${currentMonthStats.monthName}`}</Text>
+                        <View style={styles.rowContainer}>
+                            <View style={styles.squareInfo}>
+                                <Text style={styles.squareTitle} >Overall</Text>
+                                <Text style={styles.squareNumbers}>{currentMonthStats.todaysTotalExpenses < 1 ? 0 : currentMonthStats.todaysTotalExpenses}₪</Text>
+                            </View>
+                            <View style={styles.squareInfo}>
+                                <Text style={styles.squareTitle}>Electricity</Text>
+                                <Text style={styles.squareNumbers} >{currentMonthStats.todaysElectricityExpenses < 1 ? 0 : currentMonthStats.todaysElectricityExpenses}₪</Text>
+                            </View>
+                            <View style={styles.squareInfo}>
+                                <Text style={styles.squareTitle}>Water</Text>
+                                <Text style={styles.squareNumbers}>{currentMonthStats.todaysWaterExpenses < 1 ? 0 : currentMonthStats.todaysWaterExpenses}₪</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
-
-                {
-                    currentMonthStats.todaysTotalExpenses < 0 ?
-                        <></>
-                        :
-                        <View style={styles.todaysNumbersTextContainer}>
-                            <Text style={styles.numbersTextStyle}>Todays Total Expenses</Text>
-                            <Text style={styles.numbersTextStyle}>{currentMonthStats.todaysTotalExpenses}</Text>
-                        </View>
-                }
-                {
-                    currentMonthStats.todaysWaterExpenses < 0 ?
-                        <></>
-                        :
-                        <View style={styles.todaysNumbersTextContainer}>
-                            <Text style={styles.numbersTextStyle}>Todays Water Expenses</Text>
-                            <Text style={styles.numbersTextStyle}>{currentMonthStats.todaysWaterExpenses}</Text>
-                        </View>
-                }
-                {
-                    currentMonthStats.todaysElectricityExpenses < 0 ?
-                        <></>
-                        :
-                        <View style={styles.todaysNumbersTextContainer}>
-                            <Text style={styles.numbersTextStyle}>Todays Water Expenses</Text>
-                            <Text style={styles.numbersTextStyle}>{currentMonthStats.todaysElectricityExpenses}</Text>
-                        </View>
-                }
             </View>
         );
     } else return <></>
 }
 
-const styles = StyleSheet.create({
-    container: {
-        marginTop: 30,
-        display: 'flex',
-        alignItems: 'center',
-        height: '100%'
-    },
-    progressContainer: {
-       height:'57%', 
-        display: 'flex',
-        alignItems: 'center',
-    },
-    todaysNumbersTextContainer: {
-        display: "flex",
-        flexDirection: 'row',
-       
-        width:"60%", 
-        justifyContent:"space-between", 
-        marginTop:5
-    },
-    numbersTextStyle: {
-        fontSize: 20, 
-        textAlign:"center"
-    },
-    MSPageTitle: {
-        fontSize: 24
-    },
-    breakeDownContainer: {
-        display: "flex",
-        flexDirection: 'row',
-    }, 
-    smallProgressContainer:{
-        display: 'flex',
-        alignItems: 'center', 
-        margin:10
-    }, 
-    daysText:{
-        marginTop:10
-    }
-
-
-});
-
 const mapStateToProps = (store) => ({
     userInfo: store.userData,
-  });
-  
-export default connect(mapStateToProps)(MainStatisticsPage);
+});
+const mapDispatchToProps = (dispatch) => ({
+    fetchUserDataFunc: (email) => dispatch(fetchUserData(email))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainStatisticsPage);

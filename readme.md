@@ -12,6 +12,15 @@ open another terminal and navigate to project folder and run
 ```bash
 npx react-native run-android
 ```
+**********************************
+if we have an error with gradlew :
+cd android 
+mac : chmod 755 gradlew
+      ./gradlew clean
+windows: gradlew clean
+cd ..
+npx react-native run-android
+**********************************
 ## Installing a Package
 
 ```bash

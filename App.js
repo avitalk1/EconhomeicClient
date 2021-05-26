@@ -1,40 +1,46 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import Amplify, { Analytics, Auth } from 'aws-amplify';
 import awsconfigsclient from './common/aws-configs'
 import messaging from '@react-native-firebase/messaging';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux'
+import { View ,Image , StyleSheet} from 'react-native';
 import store from './Redux/sagas/rootSaga'
-import { Button } from 'react-native-elements';
-
-import LandingPage from './Components/LandingPage';
-import SignIn from './Components/SignIn'
-import SignUp from './Components/SignUp';
-import PreSignUp from './Components/PreSignUp';
-import SignupConfirmation from './Components/SignupConfirmation';
-import UserForm from './Components/UserForm';
-import HomePage from './Components/HomePage';
-import MainStatisticsPage from './Components/StatisticsComponents/MainStatisticsPage';
-import NotificationList from './Components/Notifications/NotificationList'
-import LeftMenu from './Components/LeftMenu';
-import InitRouting from './Components/InitRouting';
-import Settings from './Components/Settings'
+import AppNavigation from "./Components/AppNavigation"
+import { styles } from './Components/styles'
 
 Analytics.record({ name: "EconhomeicVisit" })
 Amplify.configure(awsconfigsclient);
 const Stack = createStackNavigator();
 const navigationRef = React.createRef();
 
-function navigate(name, params) {
-  navigationRef.current && navigationRef.current.navigate(name, params);
-}
+// function navigate(name, params) {
+//   navigationRef.current && navigationRef.current.navigate(name, params);
+// }
 
 function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isSignedin, setIsSignedin] = useState(0)
+  const [userEmail, setUserEmail] = useState("")
+  const [viewSplash, setViewSplash] = useState(true)
+  const [isOpenedFromNotification, setIsOpenedFromNotification] = useState(false)
+  useEffect(() => {
+    Auth.currentAuthenticatedUser()
+        .then(user => {
+            setUserEmail(user.attributes.email)
+            setIsSignedin(1)
+        })
+        .catch((err) => {
+          console.log("error")
+          setIsSignedin(2)
+        });
+  }, [])
+  useEffect(()=>{
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
+      setIsOpenedFromNotification(remoteMessage.data.notificationID)
+    });
+    
+  }, [])
   useEffect(() => {
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
 
@@ -43,81 +49,26 @@ function App() {
         'Notification caused app to open from background state:',
         remoteMessage,
       );
+      setIsOpenedFromNotification(remoteMessage.data.notificationID)
     });
-
-    // Check whether an initial notification is available
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage,
-          );
-        }
-      });
   }, []);
-  const handleOpenMenuFunction = () => {
-    setIsMenuOpen(true)
-  }
-  const handleCloseMenuFunction = () => {
-    setIsMenuOpen(false)
-  }
+
+  useEffect(()=>{
+    setTimeout(() => {setViewSplash(false)}, 500)
+  },[])
   
-  const handleLogoutActionFunction = () => {
-    navigate('LANDING_PAGE')
+  if(viewSplash){
+    return (<View>
+      <Image
+        style={styles.loadingPage}
+        source={require('./assets/splash.png')}
+      />
+    </View>)
   }
   return (
     <Provider store={store}>
-
-      {
-        !isMenuOpen ?
-          <TouchableOpacity onPress={handleOpenMenuFunction}>
-            <View style={styles.menuIconContainer}>
-                <Text style={styles.menuIcon}>||||</Text>
-            </View>
-          </TouchableOpacity>
-          :
-          <LeftMenu handleCloseMenu={handleCloseMenuFunction} handleLogoutAction={handleLogoutActionFunction} navigation={navigate}/>
-      }
-
-      <NavigationContainer ref={navigationRef}>
-        <Stack.Navigator
-          initialRouteName="INIT_ROUTING"
-          screenOptions={{
-            headerShown: false
-          }}
-        >
-          <Stack.Screen name="LANDING_PAGE" component={LandingPage} />
-          <Stack.Screen name="INIT_ROUTING" component={InitRouting} />
-          <Stack.Screen name="SIGNIN" component={SignIn} />
-          <Stack.Screen name="SETTINGS" component={Settings} />
-          <Stack.Screen name="PRESIGNUP" component={PreSignUp} />
-          <Stack.Screen name="SIGNUP" component={SignUp} />
-          <Stack.Screen name="SUCONFIRM" component={SignupConfirmation} />
-          <Stack.Screen name="USERFORM" component={UserForm} />
-          <Stack.Screen name="HOMEPAGE" component={HomePage} />
-          <Stack.Screen name="MAIN_STATISTICS_PAGE" component={MainStatisticsPage} />
-          <Stack.Screen name="NOTIFICATION_LIST" component={NotificationList} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <AppNavigation isSignedin={isSignedin} userEmail={userEmail} isNotification={isOpenedFromNotification} resetIsNotification={()=>setIsOpenedFromNotification(false)}/>
     </Provider>
   )
 }
-
-const styles = StyleSheet.create({
-  menuIconContainer: {
-    width:30, 
-    height:30, 
-  
-    display:'flex', 
-    alignItems:'center', 
-    justifyContent:'center',
-  }, 
-  menuIcon:{
-    fontSize:20, 
-    fontWeight:"bold"
-  }
-});
-
-export default App
+ export default App;

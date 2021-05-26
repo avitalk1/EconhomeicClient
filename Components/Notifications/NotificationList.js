@@ -1,57 +1,75 @@
-import React, {useEffect, useState} from 'react';
-import { View, StyleSheet , Text} from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import { ScrollView, TouchableOpacity, Button } from 'react-native';
+import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import {getNotifications} from '../../common/api'
+import {getNotificationByID } from '../../common/api'
+import { fetchNotificationData, addNotification } from '../../Redux/actions/NotificationActions/action'
+import { mainNotificationFunction } from '../../common/notificationFunctions'
 import NotificationListItem from './NotificationListItem'
 function NotificationList(props) {
-    const [notifications, setNotifications] =  useState();
-    useEffect( () => {
-        async function getData(){
-        try{
-            const user = await Auth.currentAuthenticatedUser(); 
-            const userNotificationResult = await getNotifications(user.attributes.email)
-            setNotifications(userNotificationResult.Items)
-        }catch(err){
-            console.log(err)
+    const [notifications, setNotifications] = useState();
+    useEffect(() => {
+        if (props.userInfo.data != null) {
+            props.fetchNotificationDataFunc(props.userInfo.data.userDetails.email)
         }
-    }
-    getData();
-    }, [])
+    }, [props.userInfo])
+    useEffect(() => {
+        if (props.notifications.data != null) {
+            console.log("------------------------------------")
+            console.log(JSON.stringify(props.notifications.data, null, 2))
+            const sortedNotifications = mainNotificationFunction(props.notifications.data)
+            setNotifications(sortedNotifications)
+        }
+    }, [props.notifications])
+    useEffect(() => {
+        if (props.isSignedInStatus.notificationId != false) {
+            async function getNotification() {
+                let response = await getNotificationByID(props.isSignedInStatus.notificationId)
+                props.addNotificationFunc({notification:response.notification.Item})
+                let tempNotifications = JSON.parse(JSON.stringify(notifications))
+                tempNotifications.push(response.notification.Item)
+                setNotifications(tempNotifications)
+                handleNotificationClick(response.notification.Item, true)
+            }
+            getNotification()
+        }
+    }, [props.isSignedInStatus.notificationId])
 
-    
-    if(notifications){
+
+    const handleNotificationClick = (data, flag=false) => {
+        props.navigation.navigate('NotificationView', {
+            params: { data, flag },
+        });
+    }
+    if (notifications) {
         return (
-            <View >
-                <View style={styles.notificationListTitleContainer}>
-                <Text style={styles.notificationListTitle}>Notifications</Text>
-                </View>
-             {
-                 notifications.map((data, index) => {
-                     return (
-                        <NotificationListItem key={`noti-${index}`} title={data.title} msg={data.msg} date={data.sentAt}/>
-                     )
-                 })
-             }
-            </View>
+            <ScrollView>
+                {
+                    notifications.map((data, index) => {
+                        return (
+                            <TouchableOpacity key={`noti-${index}-touchable`} onPress={() => handleNotificationClick(data)}>
+                                <NotificationListItem key={`noti-${index}`} title={data.title} msg={data.msg} date={data.sentAt} />
+                            </TouchableOpacity>
+                        )
+                    })
+                }
+                
+            </ScrollView>
         );
-    }else {
+    } else {
         return <></>
     }
-    
+
 }
-const styles = StyleSheet.create({
-    notificationListTitle:{
-        fontSize:24
-    },
-    notificationListTitleContainer:{
-        marginTop: 30,
-        marginBottom:10, 
-        display: 'flex',
-        alignItems: 'center',
-    }
+const mapStateToProps = (store) => ({
+    isSignedInStatus: store.isSignedIn,
+    userInfo: store.userData,
+    notifications: store.notificationsData
 });
 
-export default NotificationList 
+const mapDispatchToProps = (dispatch) => ({
+    fetchNotificationDataFunc: (email) => dispatch(fetchNotificationData(email)),
+    addNotificationFunc: (data) => dispatch(addNotification(data)),
 
+})
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationList);
