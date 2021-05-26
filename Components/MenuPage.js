@@ -1,16 +1,22 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState , useEffect} from 'react';
+import { ScrollView, View, Text, Switch, SafeAreaView } from 'react-native';
+import { Divider } from 'react-native-paper';
 import { Auth } from 'aws-amplify'
 import { connect } from 'react-redux'
 import { handleDeivceForNotifications } from '../common/api'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from './styles';
-import { Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons, AntDesign, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { changeIsSignedInStatus, changeIsSignedInEmail } from '../Redux/actions/IsSignedInActions/action';
 
+// import { userDataUpdate } from '../Redux/actions/UserDataActions/action';
+import { UpdateUserActions } from '../common/api';
+import { Foundation, MaterialCommunityIcons, Feather,Fontisto, AntDesign, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
+
 function Menu(props) {
+    const [LightValue, setLightValue] = useState(props.userInfo.data.AutomaticActions.Light);
+    const [AirConditionerValue, setAirConditionerValue] = useState(props.userInfo.data.AutomaticActions.AirConditioner);
+
     const handleLogout = () => {
         Auth.currentAuthenticatedUser()
             .then(user => {
@@ -21,64 +27,144 @@ function Menu(props) {
             props.changeIsSignedInEmailFunc(null)
         })
     }
-    const handleAutoAction = () => {
-        props.navigation.navigate('AUTOACTIONS')
-    }
     const handleConstraints = () => {
         props.navigation.navigate('CONSTRAINTS')
+    }
+    const handlePassword = () => {
+        props.navigation.navigate('CHANGE_PASSWORD')
+    }
+    const handleConfiguration = () => {
+        props.navigation.navigate('CONFIGURATION')
     }
     const handleAccount = () => {
         props.navigation.navigate('ACCOUNT')
     }
+    const toggleSwitch = (field) => {
+        handleSwitch(field);
+    };
 
+    const handleSwitch = async (val) => {
+        try {
+            if (val == "light") {
+                await UpdateUserActions({
+                    Light: !props.userInfo.data.AutomaticActions.Light,
+                    AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                    UserID: props.userInfo.data.UserID
+                })
+                // props.updateUserDataFunc({
+                //     Light: !props.userInfo.data.AutomaticActions.Light,
+                //     AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                //     UserID: props.userInfo.data.UserID
+                // })
+                setLightValue(!props.userInfo.data.AutomaticActions.Light)
+            }
+            if (val == "ac") {
+                await UpdateUserActions({
+                    Light: props.userInfo.data.AutomaticActions.Light,
+                    AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
+                    UserID: props.userInfo.data.UserID
+                })
+                // props.updateUserDataFunc({
+                //     Light: props.userInfo.data.AutomaticActions.Light,
+                //     AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
+                //     UserID: props.userInfo.data.UserID
+                // })
+                setAirConditionerValue(!props.userInfo.data.AutomaticActions.AirConditioner)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    useEffect(() => {
+    }, [props.userInfo])
     return (
-        <View>
-            <View style={styles.avatarImg}>
-                <Avatar.Image size={80} source={require('../assets/womenAvatar.png')} />
-                <Text style={styles.MenuName}>{`${props.userInfo.data.userDetails.firstName}`} {`${props.userInfo.data.userDetails.lastName}`}!</Text>
+        <ScrollView>
+            <View>
+                <Text style={styles.MenuName}>Hello {`${props.userInfo.data.userDetails.firstName}`} {`${props.userInfo.data.userDetails.lastName}`} !</Text>
             </View>
-            <View style={styles.MenuContainer}>
-                <View style={styles.MenuLines}>
-                    <TouchableOpacity onPress={handleAccount} >
-                        <View style={styles.MenuBox}>
-                            <MaterialCommunityIcons name="account-circle-outline" style={styles.MenuIcon} color="#4D105C" />
-                            <Text style={styles.generalText}>Account</Text>
+
+            <View>
+                <Text style={styles.MenuTitels}>Account</Text>
+                <View style={styles.boxContainer}>
+                    <TouchableOpacity style={styles.MenuLine} onPress={handleAccount} >
+                        <View style={styles.rowContainer}>
+                            <MaterialCommunityIcons name="account" size={24} color="white" style={{ backgroundColor: '#ffad33' , borderRadius:5 ,opacity:0.6}} />
+                            <Text style={styles.generalText}>Profile</Text>
                         </View>
+                        <AntDesign name="right" style={styles.arrowIcon} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleConstraints}>
-                        <View style={styles.MenuBox} >
-                            <Ionicons name="settings-outline" style={styles.MenuIcon} color="#459BFF" />
+                    <Divider />
+                    <TouchableOpacity style={styles.MenuLine} onPress={handlePassword} >
+                        <View style={styles.rowContainer}>
+                            <Entypo name="key" size={24} color="white" style={{ backgroundColor: '#339933' , borderRadius:5 ,opacity:0.6 }} />
+                            <Text style={styles.generalText}>Change Password</Text>
+                        </View>
+                        <AntDesign name="right" style={styles.arrowIcon} />
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={styles.MenuTitels}>Settings</Text>
+                <View style={styles.boxContainer}>
+                    <TouchableOpacity style={styles.MenuLine} onPress={handleConstraints} >
+                        <View style={styles.rowContainer}>
+                            <Ionicons name="settings-outline" size={24} color="white" style={{ backgroundColor: '#9494b8' , borderRadius:5,opacity:0.6 }} />
                             <Text style={styles.generalText}>Constraints</Text>
                         </View>
+                        <AntDesign name="right" style={styles.arrowIcon} />
+                    </TouchableOpacity>
+                    <Divider />
+                    <TouchableOpacity style={styles.MenuLine} onPress={handleConfiguration} >
+                        <View style={styles.rowContainer}>
+                            <Feather name="book-open" size={24} color="white" style={{ backgroundColor: '#4d4dff' , borderRadius:5 ,opacity:0.6}} />
+                            <Text style={styles.generalText}>Configuration</Text>
+                        </View>
+                        <AntDesign name="right" style={styles.arrowIcon} />
                     </TouchableOpacity>
                 </View>
-                <View style={styles.MenuLines}>
-                    <TouchableOpacity onPress={handleAutoAction}>
-                        <View style={styles.MenuBox} >
-                            <AntDesign name="plus" style={styles.MenuIcon} color="green" />
-                            <Text style={styles.generalText}>Auto Actions</Text>
+
+                <Text style={styles.MenuTitels}>Auto Actions</Text>
+                <SafeAreaView style={styles.boxContainer}>
+                    <View style={styles.MenuLine} >
+                        <View style={styles.rowContainer}>
+                            <Foundation name="lightbulb" size={24} color="white" style={{ backgroundColor: '#ffcc00' , borderRadius:5 ,opacity:0.6 }} />
+                            <Text style={styles.generalText}>{LightValue ? 'Light Auto ON' : 'Light Auto OFF'}</Text>
                         </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleLogout}>
-                        <View style={styles.MenuBox}>
-                            <Entypo name="open-book" style={styles.MenuIcon} color="black" />
-                            <Text style={styles.generalText}>Configeration</Text>
+                        <Switch
+                            style={styles.switchBtn}
+                            onValueChange={() => toggleSwitch("light")}
+                            value={LightValue}
+                        />
+                    </View>
+                    <Divider />
+                    <View style={styles.MenuLine} >
+                        <View style={styles.rowContainer}>
+                            <Fontisto name="snowflake" size={24} color="white" style={{ backgroundColor: '#20a7d4' , borderRadius:5 ,opacity:0.6}} />
+                            <Text style={styles.generalText}>{AirConditionerValue ? 'AirConditioner Auto ON' : 'AirConditioner Auto OFF'}</Text>
                         </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.MenuLines}>
-                    <TouchableOpacity onPress={handleLogout}>
-                        <View style={styles.MenuBox}>
-                            <MaterialIcons name="power-settings-new" style={styles.MenuIcon} color='red' />
+                        <Switch
+                            style={styles.switchBtn}
+                            onValueChange={() => toggleSwitch("ac")}
+                            value={AirConditionerValue}
+                        />
+                    </View>
+                </SafeAreaView>
+                <Text style={styles.MenuTitels}>Logout</Text>
+                <View style={styles.boxContainer}>
+                    <TouchableOpacity style={styles.MenuLine} onPress={handleLogout} >
+                        <View style={styles.rowContainer}>
+                            <MaterialIcons name="power-settings-new" size={24} color="white" style={{ backgroundColor: 'red' , borderRadius:5 ,opacity:0.6}} />
                             <Text style={styles.generalText}>Logout</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+
+        </ScrollView>
 
     );
 }
+
+
 const mapStateToProps = (store) => ({
     userInfo: store.userData,
 });
@@ -87,5 +173,6 @@ const mapDispatchToProps = (dispatch) => ({
     changeIsSignedInStatusFunc: (status) => dispatch(changeIsSignedInStatus(status)),
     changeIsSignedInEmailFunc: (email) => dispatch(changeIsSignedInEmail(email))
 })
+
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);
 

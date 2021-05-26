@@ -10,11 +10,16 @@ import Charts from '../Charts'
 import NotificationList from '../Notifications/NotificationList'
 import Menu from '../MenuPage';
 import { styles ,headerStyle } from '../styles';
-import AutoActions from '../Menu/AutoActions';
 import Constraints from '../Menu/Constraints';
+import ChangePassword from '../Menu/changePassword';
+import Configuration from '../Menu/configuration'
 import Account from '../Menu/Account';
+
 import NotificationView from '../Notifications/NotificationView'
 const navigationRef = React.createRef();
+
+import TimeList from '../Menu/TimesList';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -60,9 +65,11 @@ function MenuStackScreen() {
             screenOptions={screenOptionsStyle}
         >
             <MenuStack.Screen name="Menu" component={Menu} />
-            <MenuStack.Screen name="AUTOACTIONS" component={AutoActions} options={{ title: 'Automation Actions' }} />
             <MenuStack.Screen name="CONSTRAINTS" component={Constraints} options={{ title: 'Constraints' }} />
             <MenuStack.Screen name="ACCOUNT" component={Account} options={{ title: 'Account' }} />
+            <MenuStack.Screen name="CHANGE_PASSWORD" component={ChangePassword} options={{ title: 'Password' }} />
+            <MenuStack.Screen name="CONFIGURATION" component={Configuration} options={{ title: 'Configuration' }} />
+            <MenuStack.Screen name="TIMES" component={TimeList} options={{ title: 'Times' }} />
         </MenuStack.Navigator>
     );
 }
