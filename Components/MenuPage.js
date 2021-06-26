@@ -9,7 +9,7 @@ import { styles } from './styles';
 import { changeIsSignedInStatus, changeIsSignedInEmail } from '../Redux/actions/IsSignedInActions/action';
 import {  userDataUpdateAutoactions } from '../Redux/actions/UserDataActions/action';
 import { UpdateUserActions } from '../common/api';
-import { Foundation, MaterialCommunityIcons, Feather,Fontisto, AntDesign, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
+import { Foundation, MaterialCommunityIcons, Feather,Fontisto, AntDesign, MaterialIcons, Ionicons, Entypo, } from '@expo/vector-icons';
 
 function Menu(props) {
     const [LightValue, setLightValue] = useState(false);

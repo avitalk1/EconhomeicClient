@@ -25,9 +25,9 @@ const awsconfigsclient = {
     }, 
     Analytics: {
         // OPTIONAL - disable Analytics if true
-        disabled: false,
+        disabled: true,
         // OPTIONAL - Allow recording session events. Default is true.
-        autoSessionRecord: true,
+        autoSessionRecord: false,
 
         AWSPinpoint: {
             // OPTIONAL -  Amazon Pinpoint App Client ID

@@ -5,12 +5,9 @@ import { UpdateUserSettings } from '../../common/api';
 import { Input, Button } from 'react-native-elements';
 import { styles } from '../styles';
 import Amplify from 'aws-amplify';
-import awsconfigsclient from '../../common/aws-configs'
 import { userDataUpdate, userDataUpdateConstraints} from '../../Redux/actions/UserDataActions/action';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Divider } from 'react-native-paper';
-
-Amplify.configure(awsconfigsclient);
 
 function Constraints(props) {
     const [constaints, setConstaints] = useState({

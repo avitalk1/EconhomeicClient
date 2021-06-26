@@ -27,9 +27,9 @@ function Charts(props) {
                 </View>
                 {
                     viewTypeIndex == 0 ?
-                        <MainCharts expenses={props.userInfo.data.Expenses}/>
+                        <MainCharts navigation={props.navigation} expenses={props.userInfo.data.Expenses}/>
                         :
-                        <CompareCharts expenses={props.userInfo.data.Expenses}/>
+                        <CompareCharts navigation={props.navigation} expenses={props.userInfo.data.Expenses}/>
 
                 }
 

@@ -16,6 +16,8 @@ import Configuration from '../Menu/configuration'
 import Account from '../Menu/Account';
 
 import NotificationView from '../Notifications/NotificationView'
+import PerDeviceViewMain from '../Charts/PerDeviceViewMain'
+import PerDeviceViewCompare from '../Charts/PerDeviceViewCompare'
 const navigationRef = React.createRef();
 
 import TimeList from '../Menu/TimesList';
@@ -55,6 +57,8 @@ function GraphStackScreen() {
             screenOptions={screenOptionsStyle}
         >
             <GraphsStack.Screen name="CHARTS" component={Charts} />
+            <GraphsStack.Screen name="PerDeviceViewMain" component={PerDeviceViewMain} />
+            <GraphsStack.Screen name="PerDeviceViewCompare" component={PerDeviceViewCompare} />
 
         </GraphsStack.Navigator>
     );

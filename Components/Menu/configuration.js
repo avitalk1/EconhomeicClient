@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, SafeAreaView, Slider } from 'react-native';
 import { Divider } from 'react-native-paper';
 import Amplify from 'aws-amplify'
-import awsconfigsclient from '../../common/aws-configs'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from '../styles';
@@ -10,8 +9,6 @@ import { fetchUserConfig , userConfigUpdate} from '../../Redux/actions/UserConfi
 import { AntDesign } from '@expo/vector-icons';
 import { ModalPicker } from './ModalPicker';
 import {updateUserConfig} from '../../common/api'
-
-Amplify.configure(awsconfigsclient);
 
 function Configuration(props) {
     const [isModalVisible, setisModalVisible] = useState(false)

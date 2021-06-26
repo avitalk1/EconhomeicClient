@@ -6,10 +6,8 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import Amplify, { Analytics, Auth } from 'aws-amplify';
 import awsconfigsclient from '../../common/aws-configs';
 import { styles } from '../styles';
-import { mainStatisticsFunction } from './statisticFunctions';
+import { getMainStatistics } from './statisticFunctions';
 import { fetchUserData } from '../../Redux/actions/UserDataActions/action';
-
-Amplify.configure(awsconfigsclient);
 
 function MainStatisticsPage(props) {
     const [progressView, setProgressView] = useState(1);
@@ -17,7 +15,7 @@ function MainStatisticsPage(props) {
     useEffect(() => {
         if (props.userInfo.data != null) {
             if ('Expenses' in props.userInfo.data) {
-                let result = mainStatisticsFunction(props.userInfo.data.Expenses, props.userInfo.data.UserConstraints)
+                let result = getMainStatistics(props.userInfo.data.Expenses, props.userInfo.data.UserConstraints)
                 setCurrentMonthStats(result)
             } else {
                 console.log("no expenses ")
@@ -51,7 +49,7 @@ function MainStatisticsPage(props) {
                                                         {`${currentMonthStats.expensesPercentageCalculation.value} %`}
                                                     </Text>
                                                     <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.totalExpenses} ₪/ ${currentMonthStats.totalBudget}₪`}
+                                                        {`${currentMonthStats.totalExpenses.toFixed(1)} ₪/ ${currentMonthStats.totalBudget}₪`}
                                                     </Text>
                                                 </View>
                                             )
