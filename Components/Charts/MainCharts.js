@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, } from 'react-native';
 import { ButtonGroup, Button } from 'react-native-elements'
-import { mainChartFunction, getOptions, MONTHS_NAMES, getInitCurrentView } from '../../common/chartsFunctions'
+import { mainChartFunction, getOptions, MONTHS_NAMES, getInitCurrentView , getPerDeviceDataMain} from '../../common/chartsFunctions'
 import DailyChart from './DailyChart'
 import MonthlyChart from './MonthlyChart'
 import DropDown from '../DropDown'
@@ -56,16 +56,25 @@ function MainCharts(props) {
     const handleExpendEventUI = (value) => {
         setIsDropDownExpended(value)
     }
-
+    const handleOnBarClick = (val) => {
+        let dateValues = {
+            year: currentView.year, 
+            month: chartType === "monthly"  ?  monthsOptions[val + 1].value: currentView.month, 
+            day: chartType ==="daily" ? val + 1 : null
+        }
+        let result = getPerDeviceDataMain(dateValues, breakdownViewType, props.expenses)
+        props.navigation.navigate('PerDeviceViewMain', {
+            params: { data: result, breakdown: breakdownViewType, chartType: chartType, viewType: "Main"},
+        });
+    }
     return (
-
         <View style={styles.container}>
             <View style={styles.chartContainer}>
                 {
                     chartType == "daily" ?
-                        <DailyChart data={data.data} viewType={breakdownViewType} maxValue={data.maxValues[breakdownViewType]} ticks={data.ticks} />
+                        <DailyChart data={data.data} viewType={breakdownViewType} maxValue={data.maxValues[breakdownViewType]} ticks={data.ticks} handleBarClick={handleOnBarClick}/>
                         :
-                        <MonthlyChart data={data.data} viewType={breakdownViewType} ticks={data.ticks} />
+                        <MonthlyChart data={data.data} viewType={breakdownViewType} ticks={data.ticks} handleBarClick={handleOnBarClick}/>
                 }
             </View>
             <View style={styles.buttonGroupContainer}>

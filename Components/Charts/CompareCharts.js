@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { ButtonGroup, Button } from 'react-native-elements'
-import { getInitCompareView, getCompareData, getOptions, MONTHS_NAMES } from '../../common/chartsFunctions'
+import { getInitCompareView, getCompareData, getOptions, MONTHS_NAMES, getPerDeviceDataCompare } from '../../common/chartsFunctions'
 import DailyChartCompare from './DailyChartCompare'
 import MonthlyChartCompare from './MonthlyChartCompare'
 
@@ -12,7 +12,7 @@ import {
 } from '../../common/styleColors'
 const BREAKDOWN_VIEW_TYPE_OPTIONS = ["total", "water", "electricity"]
 function CompareCharts(props) {
-    const [data, setData] = useState(getCompareData({ type: "init", expenses: props.expenses}))
+    const [data, setData] = useState(getCompareData({ type: "init", expenses: props.expenses }))
     const [breakdownViewType, setBreakdownViewType] = useState("total")
     const [breakdownViewTypeIndex, setBreakdownViewTypeIndex] = useState(0)
     const [chartType, setChartType] = useState("daily")
@@ -42,7 +42,7 @@ function CompareCharts(props) {
         let _type = futureChartView.first.month == 12 ? "monthly" : "daily"
         setChartType(_type)
         setCurrentView(JSON.parse(JSON.stringify(futureChartView)))
-        setData(getCompareData({ type: _type, year1: futureChartView.first.year, month1: futureChartView.first.month, year2: futureChartView.second.year, month2: futureChartView.second.month, expenses:props.expenses }))
+        setData(getCompareData({ type: _type, year1: futureChartView.first.year, month1: futureChartView.first.month, year2: futureChartView.second.year, month2: futureChartView.second.month, expenses: props.expenses }))
         setChangeChartView(false)
     }
     const handeCloseChangeChartView = () => {
@@ -86,15 +86,43 @@ function CompareCharts(props) {
     const handleExpendEventUI = (value) => {
         setIsDropDownExpended(value)
     }
-
+    const handleOnBarClick = (val) => {
+        let first = {
+            year: currentView.first.year,
+            month: chartType === "monthly" ? monthsOptionsFirst[val + 1].value : currentView.first.month,
+            day: chartType === "daily" ? val + 1 : null
+        }
+        let second = {
+            year: currentView.second.year,
+            month: chartType === "monthly" ? monthsOptionsSecond[val + 1].value : currentView.second.month,
+            day: chartType === "daily" ? val + 1 : null
+        }
+        let result = getPerDeviceDataCompare({ first, second }, breakdownViewType, props.expenses)
+        props.navigation.navigate('PerDeviceViewCompare', {
+            params: {
+                data: result, dates: {
+                    first: {
+                        year: currentView.first.year,
+                        month: chartType === "monthly" ? monthsOptionsFirst[val + 1].label : currentView.first.month,
+                        day: chartType === "daily" ? val + 1 : null
+                    }, 
+                    second:{
+                        year: currentView.second.year,
+                        month: chartType === "monthly" ? monthsOptionsSecond[val + 1].label : currentView.second.month,
+                        day: chartType === "daily" ? val + 1 : null
+                    }
+                }, breakdown: breakdownViewType, chartType: chartType, viewType: "Compare"
+            },
+        });
+    }
     return (
         <View style={styles.container}>
             <View style={styles.chartContainer}>
                 {
                     chartType == "daily" ?
-                        <DailyChartCompare data={data} viewType={breakdownViewType} />
+                        <DailyChartCompare data={data} viewType={breakdownViewType} handleBarClick={handleOnBarClick} />
                         :
-                        <MonthlyChartCompare data={data} viewType={breakdownViewType} />
+                        <MonthlyChartCompare data={data} viewType={breakdownViewType} handleBarClick={handleOnBarClick} />
                 }
             </View>
             <View style={styles.buttonGroupContainer}>

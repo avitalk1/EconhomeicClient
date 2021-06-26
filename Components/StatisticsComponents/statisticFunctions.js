@@ -1,85 +1,127 @@
-import {ProgressGreen, ProgressOrange, ProgressRed} from '../../common/styleColors'
+import { ProgressGreen, ProgressOrange, ProgressRed } from '../../common/styleColors'
 
-
-const formatUserExpenses = (expensesArray) => {
-    let today = new Date();
-    let year = today.getFullYear();
-    let monthsArray = [[], [], [], [], [], [], [], [], [], [], [], []]
-    for (let i = 0; i < expensesArray.length; i++) {
-        let expenseDate = new Date(expensesArray[i].Date);
-        if (expenseDate.getFullYear() === year) {
-            monthsArray[expenseDate.getMonth()].push(expensesArray[i])
-        }
-    }
-    return monthsArray
-}
+import { formatDateStrExpenses } from '../../common/utils'
 
 const pickColor = (value) => {
-    if(value <= 33){
+    if (value <= 33) {
         return ProgressGreen
-    }else if(value > 33 && value <=70){
+    } else if (value > 33 && value <= 70) {
         return ProgressOrange
-    }else{
+    } else {
         return ProgressRed
     }
 }
-const mainStatisticsFunction = (expensesArray, constraints) =>{
-    let formatedExpenses = formatUserExpenses(expensesArray);
+
+const getSumOfExepnses = (arr) => {
     let today = new Date();
-    let currentMonth = today.getMonth();
-    let currentMonthExpenses = formatedExpenses[currentMonth];
-    let todaysWaterExpenses = -1;
-    let todaysElectricityExpenses = -1;
-    let totalWaterExpenses = 0;
-    let totalElectricityExpenses = 0;
-    if(currentMonthExpenses.length === 0){
-        return false;
-    }
-    for(let i =0 ; i< currentMonthExpenses.length; i++){
-        let date = new Date(currentMonthExpenses[i].Date);
-        if(today.getDate() === date.getDate()){
-            todaysWaterExpenses = currentMonthExpenses[i].waterExpenses;
-            todaysElectricityExpenses = currentMonthExpenses[i].electricityExpenses
+    let sum = 0;
+    let todaySum = 0;
+    let currDateStr = null;
+    let currDate = null
+    for (let i = 0; i < arr.length; i++) {
+        currDateStr = formatDateStrExpenses(arr[i].startTime)
+        currDate = new Date(currDateStr);
+        if (currDate.getDate() == today.getDate() && currDate.getMonth() == today.getMonth()) {
+            todaySum += arr[i].consumption
+            sum += arr[i].consumption
+        } else if (currDate.getMonth() == today.getMonth()) {
+            sum += arr[i].consumption
         }
-        totalWaterExpenses += currentMonthExpenses[i].waterExpenses;
-        totalElectricityExpenses+= currentMonthExpenses[i].electricityExpenses;
     }
-    let epc = Math.round( (totalWaterExpenses + totalElectricityExpenses) / (constraints.waterBudget + constraints.electricityBudget) * 100 * 100) / 100
-    let water_epc = Math.round( totalWaterExpenses / constraints.waterBudget * 100 * 100) / 100
-    let electricity_epc =  Math.round( totalElectricityExpenses /  constraints.electricityBudget * 100 * 100) / 100
-    
+
+    let result = {
+        sum,
+        todaySum
+    }
+    return result
+}
+
+const getMainStatisticsSums = (data) => {
+
+    let sumWater = 0;
+    let sumElectricity = 0;
+    let todaySumWater = 0;
+    let todaySumElectricity = 0;
+
+    for (let i = 0; i < data.length; i++) {
+        let res = 0;
+        if (data[i].DeviceType == "water" || data[i].DeviceType == "combined") {
+            res = getSumOfExepnses(data[i].WaterExpenses)
+            sumWater += res.sum
+            todaySumWater += res.todaySum
+        }
+        if (data[i].DeviceType == "electricity" || data[i].DeviceType == "combined") {
+            res = getSumOfExepnses(data[i].ElectricityExpenses)
+            sumElectricity += res.sum
+            todaySumElectricity += res.todaySum
+        }
+    }
+    let result = {
+        sumWater,
+        sumElectricity,
+        todaySumWater,
+        todaySumElectricity
+    }
+    return result
+}
+
+const getCurrentDateData = () => {
+    /**
+     * todays day
+     * todays month 
+     * todays year
+     * number of days in current month
+     */
+    let today = new Date();
+    let result = {
+        day: today.getDate(),
+        month: today.toLocaleString('en-US', { month: 'long' }),
+        year: today.getFullYear(),
+        numberOfDaysInMonth: new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()
+    }
+    return result;
+}
+
+const getMainStatistics = (expenses, constraints) => {
+
+    let sumsResult = getMainStatisticsSums(expenses)
+
+    let currentDateDataResult = getCurrentDateData()
+    let epc = Math.round((sumsResult.sumWater + sumsResult.sumElectricity) / (constraints.waterBudget + constraints.electricityBudget) * 100 * 100) / 100
+    let water_epc = Math.round(sumsResult.sumWater / constraints.waterBudget * 100 * 100) / 100
+    let electricity_epc = Math.round(sumsResult.sumElectricity / constraints.electricityBudget * 100 * 100) / 100
+
     // calculate colors 
 
 
     let result = {
-        totalExpenses: totalWaterExpenses + totalElectricityExpenses,
-        totalWaterExpenses: totalWaterExpenses,
-        totalElectricityExpenses: totalElectricityExpenses,
-        todaysTotalExpenses: todaysWaterExpenses + todaysElectricityExpenses,
-        todaysWaterExpenses: todaysWaterExpenses, 
-        todaysElectricityExpenses: todaysElectricityExpenses,
-        expensesPercentageCalculation:  {
-            value:epc, 
+        totalExpenses: sumsResult.sumWater + sumsResult.sumElectricity,
+        totalWaterExpenses: sumsResult.sumWater,
+        totalElectricityExpenses: sumsResult.sumElectricity,
+        todaysTotalExpenses: sumsResult.todaySumWater + sumsResult.todaySumElectricity,
+        todaysWaterExpenses: sumsResult.todaySumWater,
+        todaysElectricityExpenses: sumsResult.todaySumElectricity,
+        expensesPercentageCalculation: {
+            value: epc,
             color: pickColor(epc)
         },
-        WaterExpensesPercentageCalculation:{
-            value:water_epc, 
+        WaterExpensesPercentageCalculation: {
+            value: water_epc,
             color: pickColor(water_epc)
         },
-        ElectricityExpensesPercentageCalculation:{
-            value:electricity_epc, 
+        ElectricityExpensesPercentageCalculation: {
+            value: electricity_epc,
             color: pickColor(electricity_epc)
         },
-        monthNumberOfDays: new Date(today.getFullYear(), today.getMonth() +1 , 0).getDate(), 
-        todaysDay:today.getDate(), 
-        monthName: today.toLocaleString('en-US', { month: 'long' }),
+        monthNumberOfDays: currentDateDataResult.numberOfDaysInMonth,
+        todaysDay: currentDateDataResult.day,
+        monthName: currentDateDataResult.month,
         totalBudget: constraints.waterBudget + constraints.electricityBudget,
-        currentYear: today.getFullYear()
+        currentYear: currentDateDataResult.year
 
     }
-        return result
+    return result
 }
 export {
-    formatUserExpenses, 
-    mainStatisticsFunction
+    getMainStatistics
 }

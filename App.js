@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Amplify, { Analytics, Auth } from 'aws-amplify';
+import Amplify, {  Auth } from 'aws-amplify';
 import awsconfigsclient from './common/aws-configs'
 import messaging from '@react-native-firebase/messaging';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,7 +9,7 @@ import store from './Redux/sagas/rootSaga'
 import AppNavigation from "./Components/AppNavigation"
 import { styles } from './Components/styles'
 
-Analytics.record({ name: "EconhomeicVisit" })
+// Analytics.record({ name: "EconhomeicVisit" })
 Amplify.configure(awsconfigsclient);
 const Stack = createStackNavigator();
 const navigationRef = React.createRef();

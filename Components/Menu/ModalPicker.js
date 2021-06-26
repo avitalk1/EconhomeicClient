@@ -11,7 +11,6 @@ const HEIGHT = Dimensions.get("window").height
 
 const ModalPicker = (props) => {
     let optionType =[]
-    console.log(props.modalType)
     const onPressItem = (option) => {
         props.changeModalVisibility(false)
         props.setData(option)

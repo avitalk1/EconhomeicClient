@@ -10,12 +10,7 @@ import { styles } from '../styles';
 import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
 import { Foundation, MaterialCommunityIcons, Feather,Fontisto, AntDesign, MaterialIcons, Ionicons, Entypo } from '@expo/vector-icons';
 
-
-Amplify.configure(awsconfigsclient);
-
 function TimeList(props) {
-    console.log(props.userInfo.data.UserConstraints)
-
     const updateTimes = () => {
         props.navigation.navigate('TIMES')
     }

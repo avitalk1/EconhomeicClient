@@ -7,7 +7,6 @@ import messaging from '@react-native-firebase/messaging';
 
 Amplify.configure(awsconfigsclient);
 const getUserByHouse = async (houseID) => {
-    console.log("house id", houseID)
     const myInit = {
         body: {
             houseID: houseID
@@ -15,7 +14,6 @@ const getUserByHouse = async (houseID) => {
     };
     try {
         const result = await API.post('LambdaSimpleProxy', '/presignupcheck', myInit);
-        console.log("getUserByHouse results", result)
         return result
     } catch (err) {
         console.log("err", err)
@@ -166,7 +164,6 @@ const getUserConfig = async (UserID) => {
 }
 
 const updateUserConfig = async (userID, values) => {
-    console.log(userID, values)
     const myInit = {
         body:{
             userID, 
