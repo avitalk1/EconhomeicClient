@@ -262,7 +262,21 @@ const styles = StyleSheet.create({
     },
     modalOption:{
         alignItems:'flex-start'
-    }
+    },
+    passwordInputContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'stretch',
+        borderColor: '#e3e3e3',
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      passwordIcons: {
+        backgroundColor: '#e3e3e3',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+      }
 });
 
 const headerStyle = {

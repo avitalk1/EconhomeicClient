@@ -1,51 +1,84 @@
 import React, { useState } from 'react';
-import { View, Text ,TextInput} from 'react-native';
+import { View, Text, TextInput, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux'
-import { UpdateUserSettings } from '../../common/api';
-import Amplify from 'aws-amplify';
-import awsconfigsclient from '../../common/aws-configs'
+import { Input, Icon, Label, Button } from 'react-native-elements';
 import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
+import { styles } from '../styles';
+import { Entypo } from '@expo/vector-icons';
 
 
-Amplify.configure(awsconfigsclient);
 
 function ChangePassword(props) {
+    console.log(JSON.stringify(props.route,null,2))
+    const [eyeIcon, seteyeIcon] = useState("eye")
+    const [passwordShow, setpasswordShow] = useState(false)
 
-    const [constaints, setConstaints] = useState({
-
-    })
-
-    const handleEdit = () => {
-        setedit(!edit)
+    const changeIcon = async () => {
+        let temp = eyeIcon === "eye" ? "eye-with-line" : "eye";
+        let pass= !passwordShow;
+        setpasswordShow(pass);
+        seteyeIcon(temp)
     }
-    const handelInputChange = (field, value) => {
-        let tempConstarints = constaints
-        tempConstarints[field] = value
-        setConstaints(tempConstarints);
-    }
+
     const handleSubmit = async () => {
-        try {
-            await UpdateUserSettings({
-                numberOfHouseMembers: constaints.numberOfHouseMembers,
-                electricityBudget: constaints.electricityBudget,
-                waterBudget: constaints.waterBudget,
-                UserID: props.userInfo.data.UserID
-            })
-            props.updateUserDataFunc({
-                numberOfHouseMembers: constaints.numberOfHouseMembers,
-                electricityBudget: constaints.electricityBudget,
-                waterBudget: constaints.waterBudget,
-                UserID: props.userInfo.data.UserID
-            })
-            handleEdit();
-        } catch (err) {
-            console.log(err)
-        }
+        props.navigation.goBack();
     }
     return (
-        <View>
-            <Text>Change Password page</Text>
-        </View>
+        <SafeAreaView style={styles.constrainsContainer}>
+            <View>
+                <Input
+                    placeholder='Enter current password'
+                    secureTextEntry={passwordShow}
+                    leftIcon={
+                        <Icon
+                            name='lock'
+                            size={24}
+                            color='black'
+                        />
+                    }
+                    rightIcon={
+                        <Entypo name={eyeIcon} size={24} color="black" onPress={() =>changeIcon()}/>
+                    }
+                />
+                <Input
+                    placeholder='Enter new password'
+                    secureTextEntry={passwordShow}
+                    leftIcon={
+                        <Icon
+                            name='lock'
+                            size={24}
+                            color='black'
+                        />
+                    }
+                    rightIcon={
+                        <Entypo name={eyeIcon} size={24} color="black" onPress={() =>changeIcon()}/>
+                    }
+                />
+                <Input
+                    placeholder='Confirm password'
+                    secureTextEntry={passwordShow}
+                    leftIcon={
+                        <Icon
+                            name='lock'
+                            size={24}
+                            color='black'
+                        />
+                    }
+                    rightIcon={
+                        <Entypo name={eyeIcon} size={24} color="black" onPress={() =>changeIcon()}/>
+                    }
+                />
+            </View>
+            <View style={styles.container}>
+                <View style={styles.buttonContainer}>
+                    <Button
+                        buttonStyle={styles.button}
+                        title="Submit"
+                        onPress={handleSubmit}
+                    />
+                </View>
+            </View>
+        </SafeAreaView>
     );
 }
 
