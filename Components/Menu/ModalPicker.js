@@ -40,7 +40,7 @@ const ModalPicker = (props) => {
     
     return (
         <TouchableOpacity
-            onPress={() => changeModalVisibility(false)}
+            onPress={() => props.changeModalVisibility(false)}
             style={styles.ModalPickerContainer}
         >
             <View style={[styles.Modal, { width: WIDTH - 40, height: HEIGHT / 4 }]}>
