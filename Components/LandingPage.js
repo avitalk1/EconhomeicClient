@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { styles } from './styles'
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify from 'aws-amplify';
 import awsconfigsclient from '../common/aws-configs'
-import { handleDeivceForNotifications } from '../common/api'
 import { Button } from 'react-native-elements';
 Amplify.configure(awsconfigsclient);
 function LandingPage(props) {
@@ -13,7 +12,7 @@ function LandingPage(props) {
     }
 
     const handlePreSignUp = () => {
-        props.navigation.navigate('PRESIGNUP')
+        props.navigation.navigate('SIGNUP')
     }
     
     return (

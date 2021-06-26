@@ -1,13 +1,26 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Auth } from 'aws-amplify'
-import { Input, Button} from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
+import { styles } from './styles'
+import { Entypo } from '@expo/vector-icons';
+
 function SignUp({ route, navigation }) {
   const [userInfo, setUserInfo] = useState({
     email: '',
     password: '',
     passswordConfirmation: ''
   })
+  const [eyeIcon, seteyeIcon] = useState("eye-with-line")
+  const [passwordShow, setpasswordShow] = useState(true)
+  const [inputInvaidMsg, setInputInvaidMsg] = useState(false)
+
+  const changeIcon = async () => {
+    let temp = eyeIcon === "eye-with-line" ? "eye" : "eye-with-line";
+    let pass = !passwordShow;
+    setpasswordShow(pass);
+    seteyeIcon(temp)
+  }
 
   const handelInputChange = (field, value) => {
     let tempUserInfo = userInfo;
@@ -15,56 +28,79 @@ function SignUp({ route, navigation }) {
     setUserInfo(tempUserInfo);
   }
 
-  const handleSubmit = async () => { 
-    try{
+  const handleSubmit = async () => {
+    try {
       const { user } = await Auth.signUp({
         username: userInfo.email,
         password: userInfo.password,
         attributes: {
-          email:userInfo.email
+          email: userInfo.email
         }
-    });
+      });
       navigation.navigate('SUCONFIRM', {
-        email: userInfo.email, 
-        password: userInfo.password, 
+        email: userInfo.email,
+        password: userInfo.password,
         houseID: route.params.houseID
       })
-    }catch(err){
+    } catch (err) {
       console.log(err)
+      setInputInvaidMsg(true)
     }
   }
 
 
   return (
-    <View style={styles.container}>
-      <Text>Sign up Screen</Text>
+    <View>
       <View>
-        <Input
-          placeholder="Email"
-          onChangeText={value => handelInputChange('email', value)}
-        />
-        <Input
-          placeholder="Password"
-          onChangeText={value => handelInputChange('password', value)}
-        />
-        <Input
-          placeholder="Password Confirmation"
-          onChangeText={value => handelInputChange('passswordConfirmation', value)}
-        />
+        <View style={[{ flexDirection: 'row', alignItems: 'center' }]}>
+          <View style={styles.triangleCorner} />
+          <View style={styles.triangleCornerTopRight} />
+        </View>
+        <View style={styles.container}>
+          <Text style={styles.welcomeText} >Sign Up</Text>
+          <View style={styles.InputContainer}>
+            <Input
+              placeholder="Email"
+              onChangeText={value => handelInputChange('email', value)}
+              rightIcon={
+                <Entypo name="mail" size={24} color="#8f8f8f" />
+            }
+            />
+            <Input
+              placeholder="Password"
+              secureTextEntry={passwordShow}
+              onChangeText={value => handelInputChange('password', value)}
+              rightIcon={
+                <Entypo name={eyeIcon} size={24} color="#8f8f8f" onPress={() => changeIcon()} />
+            }
+            />
+            <Input
+              placeholder="Password Confirmation"
+              secureTextEntry={passwordShow}
+              onChangeText={value => handelInputChange('passswordConfirmation', value)}
+              rightIcon={
+                <Entypo name={eyeIcon} size={24} color="#8f8f8f" onPress={() => changeIcon()} />
+            }
+            />
+          </View>
+          {
+          inputInvaidMsg ? 
+          <View style={styles.errorContainer}> 
+            <Text style={styles.errormsg}>You have entered an invalid email or password</Text>
+          </View> : <></>
+        }
+          <View style={styles.buttonContainer}>
+            <Button
+              buttonStyle={styles.button}
+              title="Submit"
+              onPress={handleSubmit}
+            />
+          </View>
+        </View>
       </View>
-      <Button
-        title="Submit"
-        onPress={handleSubmit}
-      />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 50
-  }
-  
-});
 
 export default SignUp

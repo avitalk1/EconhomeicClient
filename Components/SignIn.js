@@ -6,12 +6,22 @@ import { Input, Button } from 'react-native-elements';
 import { changeIsSignedInStatus, changeIsSignedInEmail } from '../Redux/actions/IsSignedInActions/action';
 import { styles } from './styles'
 import { handleDeivceForNotifications } from '../common/api'
+import { Entypo } from '@expo/vector-icons';
 
 function SignIn(props) {
   const [userInfo, setUserInfo] = useState({
     email: '',
     password: '',
   })
+  const [eyeIcon, seteyeIcon] = useState("eye-with-line")
+  const [passwordShow, setpasswordShow] = useState(true)
+  const [inputInvaidMsg, setInputInvaidMsg] = useState(false)
+  const changeIcon = async () => {
+    let temp = eyeIcon === "eye-with-line" ? "eye" : "eye-with-line";
+    let pass = !passwordShow;
+    setpasswordShow(pass);
+    seteyeIcon(temp)
+  }
 
   const handelInputChange = (field, value) => {
     let tempUserInfo = userInfo;
@@ -27,7 +37,7 @@ function SignIn(props) {
       props.changeIsSignedInEmailFunc(userInfo.email)
     } catch (err) {
       console.log(err)
-      props.navigation.navigate("LANDING_PAGE")
+      setInputInvaidMsg(true)
     }
   }
   return (
@@ -42,12 +52,25 @@ function SignIn(props) {
           <Input
             placeholder="Email"
             onChangeText={value => handelInputChange('email', value)}
+            rightIcon={
+              <Entypo name="mail" size={24} color="#8f8f8f" />
+            }
           />
           <Input
             placeholder="Password"
             onChangeText={value => handelInputChange('password', value)}
+            secureTextEntry={passwordShow}
+            rightIcon={
+              <Entypo name={eyeIcon} size={24} color="#8f8f8f" onPress={() => changeIcon()} />
+            }
           />
         </View>
+        {
+          inputInvaidMsg ? 
+          <View style={styles.errorContainer}> 
+            <Text style={styles.errormsg}>You have entered an invalid email or password</Text>
+          </View> : <></>
+        }
         <View style={styles.buttonContainer}>
           <Button
             buttonStyle={styles.button}
@@ -61,7 +84,7 @@ function SignIn(props) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  changeIsSignedInStatusFunc: (status) => dispatch(changeIsSignedInStatus(status)), 
+  changeIsSignedInStatusFunc: (status) => dispatch(changeIsSignedInStatus(status)),
   changeIsSignedInEmailFunc: (email) => dispatch(changeIsSignedInEmail(email))
 })
 export default connect(null, mapDispatchToProps)(SignIn);

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
     InputContainer: {
         width: "80%",
-        marginBottom: 50
+        marginBottom: 40
     },
     topContainer: {
         backgroundColor: "#10375C",
@@ -269,6 +269,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor:"rgba(0,0,0,0.3)"
+    }, 
+    SignUpButton:{
+    },
+    errorContainer:{
+        marginBottom: 20
+    },
+    errormsg:{
+        color:'red'
     }
 });
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux'
-import { Input, Icon, Label, Button } from 'react-native-elements';
+import { Input, Icon, Button } from 'react-native-elements';
 import { userDataUpdate } from '../../Redux/actions/UserDataActions/action';
 import { styles } from '../styles';
 import { Entypo } from '@expo/vector-icons';
