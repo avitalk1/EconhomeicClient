@@ -1,36 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, SafeAreaView, Slider } from 'react-native';
+import { Modal, View, Text, SafeAreaView, Slider , ScrollView} from 'react-native';
 import { Divider } from 'react-native-paper';
 import Amplify from 'aws-amplify'
 import { connect } from 'react-redux'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { styles } from '../styles';
-import { fetchUserConfig , userConfigUpdate} from '../../Redux/actions/UserConfigAction/action';
+import { fetchUserConfig, userConfigUpdate } from '../../Redux/actions/UserConfigAction/action';
 import { AntDesign } from '@expo/vector-icons';
 import { ModalPicker } from './ModalPicker';
-import {updateUserConfig} from '../../common/api'
+import { updateUserConfig } from '../../common/api'
 
 function Configuration(props) {
     const [isModalVisible, setisModalVisible] = useState(false)
-    const [modalType , setModalType] = useState('')
+    const [modalType, setModalType] = useState('')
     const [configTypeOptions, setConfigTypeOptions] = useState()
     const [lightLevel, setlightLevel] = useState('')
     const [timeData, settimeData] = useState({
         AC: '',
         Light: '',
-        Water:''
+        Water: ''
     })
     const [temperatureData, settemperatureData] = useState({
         AC: 0,
         Boiler: 0
     })
-    
-    useEffect(()=>{
-        if(props.userConfig.data!=null){
+
+    useEffect(() => {
+        if (props.userConfig.data != null) {
             settimeData({
                 AC: props.userConfig.data.ACTime,
                 Light: props.userConfig.data.LightTime,
-                Water:props.userConfig.data.WTTime  
+                Water: props.userConfig.data.WTTime
             })
             setlightLevel(props.userConfig.data.LightLevel)
             settemperatureData({
@@ -38,7 +38,7 @@ function Configuration(props) {
                 Boiler: props.userConfig.data.BoilerTemp
             })
         }
-    },[props.userConfig])
+    }, [props.userConfig])
 
     const changeModalVisibility = (bool, configType = null) => {
         if (configType != null) {
@@ -48,21 +48,21 @@ function Configuration(props) {
     }
 
     const setData = (option) => {
-        let temp ;
-        if(modalType =='time'){
+        let temp;
+        if (modalType == 'time') {
             temp = timeData
             temp[configTypeOptions] = option
             settimeData(temp)
             callUpdateUserConfig()
         }
-        else{
+        else {
             setlightLevel(option)
             callUpdateUserConfig()
         }
     }
-    const combinedFunctions = (bool,configType,value)=>{
-        changeModalVisibility (bool,configType)
-        setModalType (value)
+    const combinedFunctions = (bool, configType, value) => {
+        changeModalVisibility(bool, configType)
+        setModalType(value)
     }
     const setACTemperature = (value, configType = null) => {
         if (configType != null) {
@@ -85,30 +85,31 @@ function Configuration(props) {
 
     const callUpdateUserConfig = () => {
         let values = {
-            timeData, 
-            temperatureData, 
+            timeData,
+            temperatureData,
             lightLevel
         }
-        async function updateData() { 
-            try{
+        async function updateData() {
+            try {
                 await updateUserConfig(props.userInfo.data.UserID, values)
-                props.userConfigUpdateFunc({values})
+                props.userConfigUpdateFunc({ values })
 
-            } catch (err){
+            } catch (err) {
                 console.log(err)
             }
-        }updateData()
+        } updateData()
     }
-    useEffect(()=>{
+    useEffect(() => {
         props.fetchUserConfigFunc(props.userInfo.data.UserID)
-    },[])
+    }, [])
 
     return (
+        <ScrollView>
         <View>
             <Text style={styles.MenuTitels}>AC</Text>
             <SafeAreaView style={styles.boxContainer}>
                 <TouchableOpacity style={styles.MenuLine}
-                    onPress={() => combinedFunctions(true, "AC" , "time")}
+                    onPress={() => combinedFunctions(true, "AC", "time")}
                 >
                     <View style={styles.rowContainer}>
                         <Text style={styles.generalText}>Auto Action Time</Text>
@@ -138,7 +139,7 @@ function Configuration(props) {
             <Text style={styles.MenuTitels}>Light</Text>
             <SafeAreaView style={styles.boxContainer}>
                 <TouchableOpacity style={styles.MenuLine}
-                    onPress={() => combinedFunctions(true, "Light" , "time")}
+                    onPress={() => combinedFunctions(true, "Light", "time")}
                 >
                     <View style={styles.rowContainer}>
                         <Text style={styles.generalText}>Auto Action Time</Text>
@@ -149,7 +150,7 @@ function Configuration(props) {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.MenuLine}
-                    onPress={() => combinedFunctions(true, "Light" , "level")}
+                    onPress={() => combinedFunctions(true, "Light", "level")}
                 >
                     <View style={styles.rowContainer}>
                         <Text style={styles.generalText}>Light Level</Text>
@@ -181,7 +182,7 @@ function Configuration(props) {
             <Text style={styles.MenuTitels}>Water</Text>
             <SafeAreaView style={styles.boxContainer}>
                 <TouchableOpacity style={styles.MenuLine}
-                    onPress={() => combinedFunctions(true, "Water" , "time")}
+                    onPress={() => combinedFunctions(true, "Water", "time")}
                 >
                     <View style={styles.rowContainer}>
                         <Text style={styles.generalText}>Auto Action Time</Text>
@@ -193,20 +194,23 @@ function Configuration(props) {
                 </TouchableOpacity>
 
             </SafeAreaView>
+
             <Modal
-                style={styles.ModalPickerContiner}
-                transparent={true}
+                transparent
                 animationType='fade'
                 visible={isModalVisible}
                 onRequestClose={() => changeModalVisibility(false)}
             >
-                <ModalPicker
-                    changeModalVisibility={changeModalVisibility}
-                    setData={setData}
-                    modalType ={modalType}
-                />
+                <View style={styles.ModalPickerContiner}>
+                    <ModalPicker
+                        changeModalVisibility={changeModalVisibility}
+                        setData={setData}
+                        modalType={modalType}
+                    />
+                </View>
             </Modal>
         </View>
+        </ScrollView>
     );
 }
 

@@ -35,6 +35,8 @@ export default (
         AutomaticActions:{
           Light: data.Light,
           AirConditioner: data.AirConditioner,
+          Boiler:data.Boiler, 
+          WaterTap:data.WaterTap
         }
       }, error: null, loading: false }
     default:

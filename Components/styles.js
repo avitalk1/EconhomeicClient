@@ -262,6 +262,13 @@ const styles = StyleSheet.create({
     },
     modalOption:{
         alignItems:'flex-start'
+    }, 
+    ModalPickerContiner:{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor:"rgba(0,0,0,0.3)"
     }
 });
 
@@ -275,7 +282,9 @@ const headerStyle = {
         textAlign: 'center',
         fontSize: 20,
         flex: 4,
-    }
+    }, 
+    headerTitleAlign:"center"
 }
+
 
 export { styles, headerStyle };

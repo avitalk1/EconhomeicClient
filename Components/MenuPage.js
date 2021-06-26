@@ -14,6 +14,8 @@ import { Foundation, MaterialCommunityIcons, Feather,Fontisto, AntDesign, Materi
 function Menu(props) {
     const [LightValue, setLightValue] = useState(false);
     const [AirConditionerValue, setAirConditionerValue] = useState(false);
+    const [BoilerValue, setBoilerValue] = useState(false);
+    const [WaterTapValue, setWaterTapValue] = useState(false);
 
     const handleLogout = () => {
         Auth.currentAuthenticatedUser()
@@ -47,11 +49,15 @@ function Menu(props) {
                 await UpdateUserActions({
                     Light: !props.userInfo.data.AutomaticActions.Light,
                     AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                    Boiler: props.userInfo.data.AutomaticActions.Boiler,
+                    WaterTap:props.userInfo.data.AutomaticActions.WaterTap,
                     UserID: props.userInfo.data.UserID
                 })
                 props.userDataUpdateAutoactionsFunc({
                     Light: !props.userInfo.data.AutomaticActions.Light,
                     AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                    Boiler: props.userInfo.data.AutomaticActions.Boiler,
+                    WaterTap:props.userInfo.data.AutomaticActions.WaterTap,
                 })
                 setLightValue(!props.userInfo.data.AutomaticActions.Light)
             }
@@ -59,13 +65,49 @@ function Menu(props) {
                 await UpdateUserActions({
                     Light: props.userInfo.data.AutomaticActions.Light,
                     AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
+                    Boiler: props.userInfo.data.AutomaticActions.Boiler,
+                    WaterTap:props.userInfo.data.AutomaticActions.WaterTap,
                     UserID: props.userInfo.data.UserID
                 })
                 props.userDataUpdateAutoactionsFunc({
                     Light: props.userInfo.data.AutomaticActions.Light,
                     AirConditioner: !props.userInfo.data.AutomaticActions.AirConditioner,
+                    Boiler: props.userInfo.data.AutomaticActions.Boiler,
+                    WaterTap:props.userInfo.data.AutomaticActions.WaterTap,
                 })
                 setAirConditionerValue(!props.userInfo.data.AutomaticActions.AirConditioner)
+            }
+            if(val == "boiler"){
+                await UpdateUserActions({
+                    Light: props.userInfo.data.AutomaticActions.Light,
+                    AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                    Boiler: !props.userInfo.data.AutomaticActions.Boiler,
+                    WaterTap:props.userInfo.data.AutomaticActions.WaterTap,
+                    UserID: props.userInfo.data.UserID
+                })
+                props.userDataUpdateAutoactionsFunc({
+                    Light: props.userInfo.data.AutomaticActions.Light,
+                    AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                    Boiler: !props.userInfo.data.AutomaticActions.Boiler,
+                    WaterTap:props.userInfo.data.AutomaticActions.WaterTap,
+                })
+                setBoilerValue(!props.userInfo.data.AutomaticActions.Boiler)
+            }
+            if(val=="watertap"){
+                await UpdateUserActions({
+                    Light: props.userInfo.data.AutomaticActions.Light,
+                    AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                    Boiler: props.userInfo.data.AutomaticActions.Boiler,
+                    WaterTap:!props.userInfo.data.AutomaticActions.WaterTap,
+                    UserID: props.userInfo.data.UserID
+                })
+                props.userDataUpdateAutoactionsFunc({
+                    Light: props.userInfo.data.AutomaticActions.Light,
+                    AirConditioner: props.userInfo.data.AutomaticActions.AirConditioner,
+                    Boiler: props.userInfo.data.AutomaticActions.Boiler,
+                    WaterTap:!props.userInfo.data.AutomaticActions.WaterTap,
+                })
+                setWaterTapValue(!props.userInfo.data.AutomaticActions.WaterTap)
             }
         } catch (err) {
             console.log(err)
@@ -75,6 +117,8 @@ function Menu(props) {
         if(props.userInfo.data!=null){
             setLightValue(props.userInfo.data.AutomaticActions.Light)
             setAirConditionerValue(props.userInfo.data.AutomaticActions.AirConditioner);
+            setBoilerValue(props.userInfo.data.AutomaticActions.Boiler)
+            setWaterTapValue(props.userInfo.data.AutomaticActions.WaterTap);
         }
     }, [props.userInfo])
     return (
@@ -145,6 +189,30 @@ function Menu(props) {
                             style={styles.switchBtn}
                             onValueChange={() => toggleSwitch("ac")}
                             value={AirConditionerValue}
+                        />
+                    </View>
+                    <Divider />
+                    <View style={styles.MenuLine} >
+                        <View style={styles.rowContainer}>
+                            <Fontisto name="fire" size={24} color="white" style={{ backgroundColor: 'red' , borderRadius:5 ,opacity:0.6}} />
+                            <Text style={styles.generalText}>{BoilerValue ? 'Boiler Auto ON' : 'Boiler Auto OFF'}</Text>
+                        </View>
+                        <Switch
+                            style={styles.switchBtn}
+                            onValueChange={() => toggleSwitch("boiler")}
+                            value={BoilerValue}
+                        />
+                    </View>
+                    <Divider />
+                    <View style={styles.MenuLine} >
+                        <View style={styles.rowContainer}>
+                            <Entypo name="drop" size={24} color="white" style={{ backgroundColor: '#20a7d4' , borderRadius:5 ,opacity:0.6}} />
+                            <Text style={styles.generalText}>{WaterTapValue ? 'Water Tap Auto ON' : 'Water Tap Auto OFF'}</Text>
+                        </View>
+                        <Switch
+                            style={styles.switchBtn}
+                            onValueChange={() => toggleSwitch("watertap")}
+                            value={WaterTapValue}
                         />
                     </View>
                 </SafeAreaView>

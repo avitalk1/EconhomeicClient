@@ -1,11 +1,9 @@
-import React , {useState, useEffect} from 'react';
+import React , { useEffect} from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux'
 import { SimpleLineIcons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons'
 import MainStatisticsPage from '../StatisticsComponents/MainStatisticsPage'
-import StatisticsGraphs from '../StatisticsComponents/StatisticsGraphs'
 import Charts from '../Charts'
 import NotificationList from '../Notifications/NotificationList'
 import Menu from '../MenuPage';
@@ -18,11 +16,8 @@ import Account from '../Menu/Account';
 import NotificationView from '../Notifications/NotificationView'
 import PerDeviceViewMain from '../Charts/PerDeviceViewMain'
 import PerDeviceViewCompare from '../Charts/PerDeviceViewCompare'
-const navigationRef = React.createRef();
 
 import TimeList from '../Menu/TimesList';
-
-
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -56,9 +51,9 @@ function GraphStackScreen() {
         <GraphsStack.Navigator
             screenOptions={screenOptionsStyle}
         >
-            <GraphsStack.Screen name="CHARTS" component={Charts} />
-            <GraphsStack.Screen name="PerDeviceViewMain" component={PerDeviceViewMain} />
-            <GraphsStack.Screen name="PerDeviceViewCompare" component={PerDeviceViewCompare} />
+            <GraphsStack.Screen name="CHARTS" component={Charts}  options={{title:'Charts'}}/>
+            <GraphsStack.Screen name="PerDeviceViewMain" component={PerDeviceViewMain}  options={{title:'Per Device'}}/>
+            <GraphsStack.Screen name="PerDeviceViewCompare" component={PerDeviceViewCompare}  options={{title:'Per Device Compare'}}/>
 
         </GraphsStack.Navigator>
     );
@@ -69,7 +64,7 @@ function MenuStackScreen() {
             screenOptions={screenOptionsStyle}
         >
             <MenuStack.Screen name="Menu" component={Menu} />
-            <MenuStack.Screen name="CONSTRAINTS" component={Constraints} options={{ title: 'Constraints' }} />
+            <MenuStack.Screen name="CONSTRAINTS" component={Constraints} options={{title:'Constraints'}} />
             <MenuStack.Screen name="ACCOUNT" component={Account} options={{ title: 'Account' }} />
             <MenuStack.Screen name="CHANGE_PASSWORD" component={ChangePassword} options={{ title: 'Password' }} />
             <MenuStack.Screen name="CONFIGURATION" component={Configuration} options={{ title: 'Configuration' }} />
