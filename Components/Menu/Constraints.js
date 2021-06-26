@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView ,TextInput} from 'react-native';
 import { connect } from 'react-redux'
 import { UpdateUserSettings } from '../../common/api';
-import { Input, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { styles } from '../styles';
-import Amplify from 'aws-amplify';
 import { userDataUpdate, userDataUpdateConstraints} from '../../Redux/actions/UserDataActions/action';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Divider } from 'react-native-paper';
