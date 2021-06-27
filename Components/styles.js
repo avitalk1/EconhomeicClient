@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         height: windowHeight / 3,
         display: 'flex',
         alignItems: 'center',
-        marginTop: 30
+        marginTop: 20
     },
     dailyInfo: {
         width: windowWidth,
@@ -277,6 +277,20 @@ const styles = StyleSheet.create({
     },
     errormsg:{
         color:'red'
+    }, 
+    dailyInfoRefreshContainer:{
+        display:"flex", 
+        flexDirection:"row", 
+        justifyContent:"center", 
+        alignItems:"center", 
+        marginTop:5
+    }, 
+    mainStatisticsDateContainer:{
+        // backgroundColor:"green", 
+        marginTop:10
+    }, 
+    mainStatisticsDateText:{
+        fontSize: 20
     }
 });
 

@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import Amplify, { Analytics, Auth } from 'aws-amplify';
-import awsconfigsclient from '../../common/aws-configs';
 import { styles } from '../styles';
 import { getMainStatistics } from './statisticFunctions';
 import { fetchUserData } from '../../Redux/actions/UserDataActions/action';
+import { Ionicons } from '@expo/vector-icons';
+import { Button } from 'react-native-elements';
 
 function MainStatisticsPage(props) {
     const [progressView, setProgressView] = useState(1);
@@ -22,9 +22,18 @@ function MainStatisticsPage(props) {
             }
         }
     }, [props.userInfo])
+    const handleRefreshData = () => {
+        if( props.userInfo.data != null){
+            props.fetchUserDataFunc(props.userInfo.data.userDetails.email)
+        }
+        
+    }
     if (currentMonthStats) {
         return (
             <View style={styles.container}>
+                <View style={styles.mainStatisticsDateContainer}>
+                    <Text style={styles.mainStatisticsDateText}> {`${currentMonthStats.monthName} ${currentMonthStats.currentYear}`}</Text>
+                </View>
                 <View>
                     {
                         progressView === 1 ?
@@ -116,7 +125,19 @@ function MainStatisticsPage(props) {
                     }
                     <Text style={styles.daysText}>{`${currentMonthStats.monthNumberOfDays - currentMonthStats.todaysDay} Days left`}</Text>
                     <View style={styles.dailyInfo}>
-                        <Text style={{ color: "white", textAlign: "center", marginTop: 20 }}>{` ${currentMonthStats.monthName}`}</Text>
+                        <View style={styles.dailyInfoRefreshContainer}>
+                            <Text style={{ color: "white", textAlign: "center" }}>{` ${currentMonthStats.currentTimeStamp}`}</Text>
+                            <Button
+                            onPress={handleRefreshData}
+                                icon={
+                                    <Ionicons name="refresh" size={16} color="white" />
+                                }
+                                type="clear"
+                                width={100}
+                                style={{margin:0, padding:0 }}
+                            />
+                            
+                        </View>
                         <View style={styles.rowContainer}>
                             <View style={styles.squareInfo}>
                                 <Text style={styles.squareTitle} >Overall</Text>
