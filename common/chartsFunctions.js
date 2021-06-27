@@ -160,7 +160,6 @@ const sumDailyForMonthly = (data, month) =>{
         result.water += data[i].water
         result.electricity += data[i].electricity
     }
-
     return result
 }
 const getMonthlyData = (_year, data) => {

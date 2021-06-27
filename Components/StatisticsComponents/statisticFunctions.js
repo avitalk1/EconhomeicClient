@@ -1,7 +1,9 @@
 import { ProgressGreen, ProgressOrange, ProgressRed } from '../../common/styleColors'
 
 import { formatDateStrExpenses } from '../../common/utils'
-
+const MONTHS_NAMES = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 const pickColor = (value) => {
     if (value <= 33) {
         return ProgressGreen
@@ -37,7 +39,6 @@ const getSumOfExepnses = (arr) => {
 }
 
 const getMainStatisticsSums = (data) => {
-
     let sumWater = 0;
     let sumElectricity = 0;
     let todaySumWater = 0;
@@ -75,17 +76,17 @@ const getCurrentDateData = () => {
     let today = new Date();
     let result = {
         day: today.getDate(),
-        month: today.toLocaleString('en-US', { month: 'long' }),
+        month: MONTHS_NAMES[today.getMonth()],
         year: today.getFullYear(),
-        numberOfDaysInMonth: new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()
+        numberOfDaysInMonth: new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate(), 
+        currentTimeStamp: today.toLocaleString('en-US', { month: 'long' }),
     }
     return result;
 }
 
 const getMainStatistics = (expenses, constraints) => {
-
+   // console.log(JSON.stringify(expenses, null , 2))
     let sumsResult = getMainStatisticsSums(expenses)
-
     let currentDateDataResult = getCurrentDateData()
     let epc = Math.round((sumsResult.sumWater + sumsResult.sumElectricity) / (constraints.waterBudget + constraints.electricityBudget) * 100 * 100) / 100
     let water_epc = Math.round(sumsResult.sumWater / constraints.waterBudget * 100 * 100) / 100
@@ -117,8 +118,8 @@ const getMainStatistics = (expenses, constraints) => {
         todaysDay: currentDateDataResult.day,
         monthName: currentDateDataResult.month,
         totalBudget: constraints.waterBudget + constraints.electricityBudget,
-        currentYear: currentDateDataResult.year
-
+        currentYear: currentDateDataResult.year, 
+        currentTimeStamp: currentDateDataResult.currentTimeStamp
     }
     return result
 }

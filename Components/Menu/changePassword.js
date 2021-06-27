@@ -9,7 +9,6 @@ import { Entypo } from '@expo/vector-icons';
 
 
 function ChangePassword(props) {
-    console.log(JSON.stringify(props.route,null,2))
     const [eyeIcon, seteyeIcon] = useState("eye")
     const [passwordShow, setpasswordShow] = useState(false)
 
