@@ -50,7 +50,7 @@ function PerDeviceViewMain(props) {
                                                     <ListItem.Content>
                                                         <ListItem.Title>{`From: ${exp.startTime}`}</ListItem.Title>
                                                         <ListItem.Title>{`To: ${exp.endTime}`}</ListItem.Title>
-                                                        <ListItem.Title>{`Amount: ${exp.consumption}`}</ListItem.Title>
+                                                        <ListItem.Title>{`Amount: ${exp.consumption.toFixed(1)*43}`}</ListItem.Title>
                                                     </ListItem.Content>
                                                 </ListItem>
                                             )
@@ -93,7 +93,7 @@ function PerDeviceViewMain(props) {
                                                     <ListItem.Content>
                                                         <ListItem.Title>{`From: ${exp.startTime}`}</ListItem.Title>
                                                         <ListItem.Title>{`To: ${exp.endTime}`}</ListItem.Title>
-                                                        <ListItem.Title>{`Amount: ${exp.consumption}`}</ListItem.Title>
+                                                        <ListItem.Title>{`Amount: ${exp.consumption.toFixed(1)*43}`}</ListItem.Title>
                                                     </ListItem.Content>
                                                 </ListItem>
                                             )

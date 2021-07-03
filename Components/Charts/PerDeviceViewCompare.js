@@ -58,8 +58,8 @@ function PerDeviceViewCompare(props) {
 
                                         <ListItem containerStyle={{ width: 300 }} key={`${item.deviceName}-${index}-exp-w-compare`} bottomDivider>
                                             <ListItem.Content>
-                                                <ListItem.Title>{`Date: ${firstDate} - Amount: ${item.expenses1.toFixed(1)}`}</ListItem.Title>
-                                                <ListItem.Title>{`Date: ${secondDate} - Amount: ${item.expenses2.toFixed(1)}`}</ListItem.Title>
+                                                <ListItem.Title>{`Date: ${firstDate} - Amount: ${item.expenses1.toFixed(1)*43}`}</ListItem.Title>
+                                                <ListItem.Title>{`Date: ${secondDate} - Amount: ${item.expenses2.toFixed(1)*43}`}</ListItem.Title>
                                             </ListItem.Content>
                                         </ListItem>
                                     </ListItem.Accordion>
@@ -95,8 +95,8 @@ function PerDeviceViewCompare(props) {
 
                                         <ListItem containerStyle={{ width: 300 }} key={`${item.deviceName}-${index}-exp-e-compare`} bottomDivider>
                                             <ListItem.Content>
-                                            <ListItem.Title>{`Date: ${firstDate} - Amount: ${item.expenses1.toFixed(1)}`}</ListItem.Title>
-                                            <ListItem.Title>{`Date: ${secondDate} - Amount: ${item.expenses2.toFixed(1)}`}</ListItem.Title>
+                                            <ListItem.Title>{`Date: ${firstDate} - Amount: ${item.expenses1.toFixed(1)*43}`}</ListItem.Title>
+                                            <ListItem.Title>{`Date: ${secondDate} - Amount: ${item.expenses2.toFixed(1)*43}`}</ListItem.Title>
                                             </ListItem.Content>
                                         </ListItem>
                                     </ListItem.Accordion>

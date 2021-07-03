@@ -1,5 +1,6 @@
 const MONTHS_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "None"];
 import {formatDateStrExpenses, getDateAndTimeAsString} from './utils'
+const CURRENCY_CONST = 43
 const getDailyData = (_month, _year, data) => {
     let refDate = new Date(_year, _month + 1, 0)
     let numberOfDaysInMonth = refDate.getDate();
@@ -22,7 +23,7 @@ const getDailyData = (_month, _year, data) => {
                     dataResult[date.getDate() - 1] = {
                         date: dateStr,
                         dayNumber: date.getDate(),
-                        water: dataResult[date.getDate() - 1].water + data[i].WaterExpenses[j].consumption,
+                        water: dataResult[date.getDate() - 1].water + data[i].WaterExpenses[j].consumption * CURRENCY_CONST,
                         electricity: 0
                     }
                 }
@@ -37,7 +38,7 @@ const getDailyData = (_month, _year, data) => {
                         date: dateStr,
                         dayNumber: date.getDate(),
                         water: dataResult[date.getDate() - 1].water,
-                        electricity: dataResult[date.getDate() - 1].electricity + data[i].ElectricityExpenses[j].consumption
+                        electricity: dataResult[date.getDate() - 1].electricity + data[i].ElectricityExpenses[j].consumption * CURRENCY_CONST
                     }
                 }
             }
@@ -156,8 +157,8 @@ const sumDailyForMonthly = (data, month) =>{
     }
 
     for(let i = 0; i< data.length; i++ ){
-        result.total += data[i].total
-        result.water += data[i].water
+        result.total += data[i].total 
+        result.water += data[i].water 
         result.electricity += data[i].electricity
     }
     return result

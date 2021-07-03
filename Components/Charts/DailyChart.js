@@ -2,7 +2,7 @@ import React from 'react';
 
 import Svg from 'react-native-svg';
 
-import { VictoryZoomContainer, VictoryAxis, VictoryBar, VictoryChart ,} from "victory-native";
+import { VictoryZoomContainer, VictoryAxis, VictoryBar, VictoryChart} from "victory-native";
 import {
     FirstLegendColor
 } from '../../common/styleColors'

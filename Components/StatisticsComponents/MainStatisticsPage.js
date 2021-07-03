@@ -58,7 +58,7 @@ function MainStatisticsPage(props) {
                                                         {`${currentMonthStats.expensesPercentageCalculation.value} %`}
                                                     </Text>
                                                     <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.totalExpenses.toFixed(1)} ₪/ ${currentMonthStats.totalBudget}₪`}
+                                                        {`${currentMonthStats.totalExpenses} ₪/ ${currentMonthStats.totalBudget}₪`}
                                                     </Text>
                                                 </View>
                                             )
