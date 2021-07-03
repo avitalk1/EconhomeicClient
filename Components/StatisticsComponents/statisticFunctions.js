@@ -85,18 +85,16 @@ const getCurrentDateData = () => {
 }
 
 const getMainStatistics = (expenses, constraints) => {
-   // console.log(JSON.stringify(expenses, null , 2))
     let sumsResult = getMainStatisticsSums(expenses)
     let currentDateDataResult = getCurrentDateData()
     let epc = Math.round(((sumsResult.sumWater + sumsResult.sumElectricity)* CURRENCY_CONST)/ (constraints.waterBudget + constraints.electricityBudget) * 100 * 100) / 100
     let water_epc = Math.round((sumsResult.sumWater* CURRENCY_CONST) / constraints.waterBudget * 100 * 100) / 100
     let electricity_epc = Math.round((sumsResult.sumElectricity* CURRENCY_CONST) / constraints.electricityBudget * 100 * 100) / 100
 
-    // calculate colors 
-
+    let totalExpenses = (sumsResult.sumWater + sumsResult.sumElectricity) * CURRENCY_CONST
 
     let result = {
-        totalExpenses: (sumsResult.sumWater + sumsResult.sumElectricity).toFixed(1) * CURRENCY_CONST,
+        totalExpenses: totalExpenses.toFixed(1),
         totalWaterExpenses: sumsResult.sumWater.toFixed(1) * CURRENCY_CONST,
         totalElectricityExpenses: sumsResult.sumElectricity.toFixed(1) * CURRENCY_CONST,
         todaysTotalExpenses: (sumsResult.todaySumWater + sumsResult.todaySumElectricity).toFixed(1) * CURRENCY_CONST,

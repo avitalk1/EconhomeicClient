@@ -50,13 +50,14 @@ const getDailyData = (_month, _year, data) => {
     let maxElecticity = 0
     let maxTotal = 0
     let ticks = []
+   
     let cleanDataResult = dataResult.map(item => {
         if (item.date != null) {
             let date = new Date(item.date)
             let total = item.water + item.electricity
             ticks.push(date.getDate())
             minDay = minDay > date.getDate() - 1 ? date.getDate() - 1 : minDay
-            maxDay = maxDay < date.getDate() - 1 ? date.getDate() - 1 : maxDay
+            maxDay = maxDay <= date.getDate() - 1 ? date.getDate() - 1 : maxDay
             maxWater = maxWater < item.water ? item.water : maxWater
             maxElecticity = maxElecticity < item.electricity ? item.electricity : maxElecticity
             maxTotal = maxTotal < total ? total : maxTotal
@@ -65,9 +66,7 @@ const getDailyData = (_month, _year, data) => {
         }
 
     })
-    
-    cleanDataResult = cleanDataResult.slice(minDay, maxDay)
-   
+    cleanDataResult = cleanDataResult.slice(minDay, maxDay + 1)
     let result = {
         data: cleanDataResult,
         maxValues: {
