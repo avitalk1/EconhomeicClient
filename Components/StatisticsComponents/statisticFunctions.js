@@ -96,7 +96,7 @@ const getMainStatistics = (expenses, constraints) => {
     let result = {
         totalExpenses: totalExpenses.toFixed(1),
         totalWaterExpenses: sumsResult.sumWater.toFixed(1) * CURRENCY_CONST,
-        totalElectricityExpenses: sumsResult.sumElectricity.toFixed(1) * CURRENCY_CONST,
+        totalElectricityExpenses: (sumsResult.sumElectricity*CURRENCY_CONST).toFixed(1),
         todaysTotalExpenses: (sumsResult.todaySumWater + sumsResult.todaySumElectricity).toFixed(1) * CURRENCY_CONST,
         todaysWaterExpenses: sumsResult.todaySumWater.toFixed(1) * CURRENCY_CONST,
         todaysElectricityExpenses: sumsResult.todaySumElectricity.toFixed(1) * CURRENCY_CONST,

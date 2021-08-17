@@ -17,28 +17,25 @@ const getDailyData = (_month, _year, data) => {
         if (data[i].DeviceType == "water" || data[i].DeviceType == "combined") {
             for (let j = 0; j < data[i].WaterExpenses.length; j++) {
                 dateStr = formatDateStrExpenses(data[i].WaterExpenses[j].startTime)
-                
                 date = new Date(dateStr)
                 if (date.getMonth() == refDate.getMonth() && date.getFullYear() == refDate.getFullYear()) {
-                    dataResult[date.getDate() - 1] = {
-                        date: dateStr,
-                        dayNumber: date.getDate(),
-                        water: dataResult[date.getDate() - 1].water + data[i].WaterExpenses[j].consumption * CURRENCY_CONST,
-                        electricity: 0
-                    }
+                    dataResult[date.getDate() - 1].date = dateStr
+                    dataResult[date.getDate() - 1].dayNumber = date.getDate()
+                    dataResult[date.getDate() - 1].water =dataResult[date.getDate() - 1].water + data[i].WaterExpenses[j].consumption * CURRENCY_CONST
                 }
             }
         }
         if (data[i].DeviceType == "electricity" || data[i].DeviceType == "combined") {
             for (let j = 0; j < data[i].ElectricityExpenses.length; j++) {
                 dateStr = formatDateStrExpenses(data[i].ElectricityExpenses[j].startTime)
-                date = new Date(dateStr)
-                if (date.getMonth() == refDate.getMonth() && date.getFullYear() == refDate.getFullYear()) {
+                date = new Date(dateStr)         
+                if (date.getMonth() == refDate.getMonth() && date.getFullYear() == refDate.getFullYear()) { 
                     dataResult[date.getDate() - 1] = {
                         date: dateStr,
                         dayNumber: date.getDate(),
                         water: dataResult[date.getDate() - 1].water,
                         electricity: dataResult[date.getDate() - 1].electricity + data[i].ElectricityExpenses[j].consumption * CURRENCY_CONST
+                    
                     }
                 }
             }

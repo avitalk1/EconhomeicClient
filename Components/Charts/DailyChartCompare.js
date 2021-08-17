@@ -10,8 +10,8 @@ function DailyChartCompare(props) {
   return (
     <Svg>
       <VictoryChart
-        domain={{ y: [0, props.data.maxValues[props.viewType]] }}
-        containerComponent={<VictoryZoomContainer zoomDomain={{ x: [1, props.data.ticks[props.data.ticks.length - 1] / 2], y: [0, 30] }} />}
+         domain={{ y: [0, props.data.maxValues[props.viewType]] }}
+        containerComponent={<VictoryZoomContainer zoomDomain={{ x: [1, props.data.ticks[props.data.ticks.length - 1] / 2], y: [0, 15] }} />}
       >
         <VictoryGroup offset={7}
           colorScale={"qualitative"}

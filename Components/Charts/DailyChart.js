@@ -7,10 +7,11 @@ import {
     FirstLegendColor
 } from '../../common/styleColors'
 function DailyChart(props) {
+
     return (
         <Svg>
         <VictoryChart
-            domain={{ y: [0, props.maxValue] }}
+            //domain={{ y: [0, props.maxValue] }}
             // containerComponent={<VictoryZoomContainer zoomDomain={{ x: [1, 15], y: [0, 40] }} />}
         >
             <VictoryBar
