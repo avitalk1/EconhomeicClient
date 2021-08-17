@@ -1,5 +1,5 @@
 import { ProgressGreen, ProgressOrange, ProgressRed } from '../../common/styleColors'
-
+const CURRENCY_CONST = 43
 import { formatDateStrExpenses } from '../../common/utils'
 const MONTHS_NAMES = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -85,23 +85,21 @@ const getCurrentDateData = () => {
 }
 
 const getMainStatistics = (expenses, constraints) => {
-   // console.log(JSON.stringify(expenses, null , 2))
     let sumsResult = getMainStatisticsSums(expenses)
     let currentDateDataResult = getCurrentDateData()
-    let epc = Math.round((sumsResult.sumWater + sumsResult.sumElectricity) / (constraints.waterBudget + constraints.electricityBudget) * 100 * 100) / 100
-    let water_epc = Math.round(sumsResult.sumWater / constraints.waterBudget * 100 * 100) / 100
-    let electricity_epc = Math.round(sumsResult.sumElectricity / constraints.electricityBudget * 100 * 100) / 100
+    let epc = Math.round(((sumsResult.sumWater + sumsResult.sumElectricity)* CURRENCY_CONST)/ (constraints.waterBudget + constraints.electricityBudget) * 100 * 100) / 100
+    let water_epc = Math.round((sumsResult.sumWater* CURRENCY_CONST) / constraints.waterBudget * 100 * 100) / 100
+    let electricity_epc = Math.round((sumsResult.sumElectricity* CURRENCY_CONST) / constraints.electricityBudget * 100 * 100) / 100
 
-    // calculate colors 
-
+    let totalExpenses = (sumsResult.sumWater + sumsResult.sumElectricity) * CURRENCY_CONST
 
     let result = {
-        totalExpenses: sumsResult.sumWater + sumsResult.sumElectricity,
-        totalWaterExpenses: sumsResult.sumWater,
-        totalElectricityExpenses: sumsResult.sumElectricity,
-        todaysTotalExpenses: sumsResult.todaySumWater + sumsResult.todaySumElectricity,
-        todaysWaterExpenses: sumsResult.todaySumWater,
-        todaysElectricityExpenses: sumsResult.todaySumElectricity,
+        totalExpenses: totalExpenses.toFixed(1),
+        totalWaterExpenses: sumsResult.sumWater.toFixed(1) * CURRENCY_CONST,
+        totalElectricityExpenses: (sumsResult.sumElectricity*CURRENCY_CONST).toFixed(1),
+        todaysTotalExpenses: (sumsResult.todaySumWater + sumsResult.todaySumElectricity).toFixed(1) * CURRENCY_CONST,
+        todaysWaterExpenses: sumsResult.todaySumWater.toFixed(1) * CURRENCY_CONST,
+        todaysElectricityExpenses: sumsResult.todaySumElectricity.toFixed(1) * CURRENCY_CONST,
         expensesPercentageCalculation: {
             value: epc,
             color: pickColor(epc)

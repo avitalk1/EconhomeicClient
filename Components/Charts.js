@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { ButtonGroup } from 'react-native-elements'
 import { connect } from 'react-redux'
 import MainCharts from './Charts/MainCharts'
 import CompareCharts from './Charts/CompareCharts'
 const VIEW_TYPE_OPTIONS = ["Main", "Compare"]
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 function Charts(props) {
     const [viewType, setViewType] = useState("Main")
     const [viewTypeIndex, setViewTypeIndex] = useState(0)
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
     ButtonGroupContainer: {
         width: "100%",
         // height:"100%",
-        height:30
+        height:windowHeight/20
 
     }
 });

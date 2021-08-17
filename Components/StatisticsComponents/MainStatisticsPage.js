@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { connect } from 'react-redux'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { styles } from '../styles';
@@ -8,7 +8,8 @@ import { getMainStatistics } from './statisticFunctions';
 import { fetchUserData } from '../../Redux/actions/UserDataActions/action';
 import { Ionicons } from '@expo/vector-icons';
 import { Button } from 'react-native-elements';
-
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 function MainStatisticsPage(props) {
     const [progressView, setProgressView] = useState(1);
     const [currentMonthStats, setCurrentMonthStats] = useState(null)
@@ -40,7 +41,7 @@ function MainStatisticsPage(props) {
                             <View style={styles.progressContainer}>
                                 <TouchableOpacity onPress={() => { setProgressView(2) }}>
                                     <AnimatedCircularProgress
-                                        size={250}
+                                        size={windowWidth/2}
                                         width={15}
                                         fill={currentMonthStats.expensesPercentageCalculation.value}
                                         tintColor="#00ff00"
@@ -58,7 +59,7 @@ function MainStatisticsPage(props) {
                                                         {`${currentMonthStats.expensesPercentageCalculation.value} %`}
                                                     </Text>
                                                     <Text style={styles.numbersTextStyle}>
-                                                        {`${currentMonthStats.totalExpenses.toFixed(1)} ₪/ ${currentMonthStats.totalBudget}₪`}
+                                                        {`${currentMonthStats.totalExpenses} ₪/ ${currentMonthStats.totalBudget}₪`}
                                                     </Text>
                                                 </View>
                                             )
@@ -75,7 +76,7 @@ function MainStatisticsPage(props) {
                                         <View style={styles.smallProgressContainer}>
                                             <Text style={styles.numbersTextStyle}>Water</Text>
                                             <AnimatedCircularProgress
-                                                size={150}
+                                                size={windowWidth/2.5}
                                                 width={7.5}
                                                 fill={currentMonthStats.WaterExpensesPercentageCalculation.value}
                                                 tintColor={currentMonthStats.WaterExpensesPercentageCalculation.color}
@@ -100,7 +101,7 @@ function MainStatisticsPage(props) {
                                         <View style={styles.smallProgressContainer}>
                                             <Text style={styles.numbersTextStyle}>Electricity</Text>
                                             <AnimatedCircularProgress
-                                                size={150}
+                                                size={windowWidth/2.5}
                                                 width={7.5}
                                                 fill={currentMonthStats.ElectricityExpensesPercentageCalculation.value}
                                                 tintColor={currentMonthStats.ElectricityExpensesPercentageCalculation.color}

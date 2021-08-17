@@ -1,5 +1,6 @@
 const MONTHS_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "None"];
 import {formatDateStrExpenses, getDateAndTimeAsString} from './utils'
+const CURRENCY_CONST = 43
 const getDailyData = (_month, _year, data) => {
     let refDate = new Date(_year, _month + 1, 0)
     let numberOfDaysInMonth = refDate.getDate();
@@ -16,28 +17,25 @@ const getDailyData = (_month, _year, data) => {
         if (data[i].DeviceType == "water" || data[i].DeviceType == "combined") {
             for (let j = 0; j < data[i].WaterExpenses.length; j++) {
                 dateStr = formatDateStrExpenses(data[i].WaterExpenses[j].startTime)
-                
                 date = new Date(dateStr)
                 if (date.getMonth() == refDate.getMonth() && date.getFullYear() == refDate.getFullYear()) {
-                    dataResult[date.getDate() - 1] = {
-                        date: dateStr,
-                        dayNumber: date.getDate(),
-                        water: dataResult[date.getDate() - 1].water + data[i].WaterExpenses[j].consumption,
-                        electricity: 0
-                    }
+                    dataResult[date.getDate() - 1].date = dateStr
+                    dataResult[date.getDate() - 1].dayNumber = date.getDate()
+                    dataResult[date.getDate() - 1].water =dataResult[date.getDate() - 1].water + data[i].WaterExpenses[j].consumption * CURRENCY_CONST
                 }
             }
         }
         if (data[i].DeviceType == "electricity" || data[i].DeviceType == "combined") {
             for (let j = 0; j < data[i].ElectricityExpenses.length; j++) {
                 dateStr = formatDateStrExpenses(data[i].ElectricityExpenses[j].startTime)
-                date = new Date(dateStr)
-                if (date.getMonth() == refDate.getMonth() && date.getFullYear() == refDate.getFullYear()) {
+                date = new Date(dateStr)         
+                if (date.getMonth() == refDate.getMonth() && date.getFullYear() == refDate.getFullYear()) { 
                     dataResult[date.getDate() - 1] = {
                         date: dateStr,
                         dayNumber: date.getDate(),
                         water: dataResult[date.getDate() - 1].water,
-                        electricity: dataResult[date.getDate() - 1].electricity + data[i].ElectricityExpenses[j].consumption
+                        electricity: dataResult[date.getDate() - 1].electricity + data[i].ElectricityExpenses[j].consumption * CURRENCY_CONST
+                    
                     }
                 }
             }
@@ -49,13 +47,14 @@ const getDailyData = (_month, _year, data) => {
     let maxElecticity = 0
     let maxTotal = 0
     let ticks = []
+   
     let cleanDataResult = dataResult.map(item => {
         if (item.date != null) {
             let date = new Date(item.date)
             let total = item.water + item.electricity
             ticks.push(date.getDate())
             minDay = minDay > date.getDate() - 1 ? date.getDate() - 1 : minDay
-            maxDay = maxDay < date.getDate() - 1 ? date.getDate() - 1 : maxDay
+            maxDay = maxDay <= date.getDate() - 1 ? date.getDate() - 1 : maxDay
             maxWater = maxWater < item.water ? item.water : maxWater
             maxElecticity = maxElecticity < item.electricity ? item.electricity : maxElecticity
             maxTotal = maxTotal < total ? total : maxTotal
@@ -64,9 +63,7 @@ const getDailyData = (_month, _year, data) => {
         }
 
     })
-    
-    cleanDataResult = cleanDataResult.slice(minDay, maxDay)
-   
+    cleanDataResult = cleanDataResult.slice(minDay, maxDay + 1)
     let result = {
         data: cleanDataResult,
         maxValues: {
@@ -156,8 +153,8 @@ const sumDailyForMonthly = (data, month) =>{
     }
 
     for(let i = 0; i< data.length; i++ ){
-        result.total += data[i].total
-        result.water += data[i].water
+        result.total += data[i].total 
+        result.water += data[i].water 
         result.electricity += data[i].electricity
     }
     return result

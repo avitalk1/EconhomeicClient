@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     rowContainer: {
         display: "flex",
         flexDirection: 'row',
+        justifyContent:"space-between"
     },
     smallProgressContainer: {
         display: 'flex',
@@ -108,8 +109,11 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     squareInfo: {
-        height: 110,
-        width: 100,
+        height: (windowHeight / 4)*0.6,
+        width: windowWidth/4,
+        display:"flex", 
+        justifyContent:"center", 
+        alignItems:"center", 
         backgroundColor: "white",
         borderRadius: 20,
         margin: 15

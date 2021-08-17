@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, View, Text, StyleSheet, } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet, Dimensions} from 'react-native';
 import { ButtonGroup, Button } from 'react-native-elements'
 import { mainChartFunction, getOptions, MONTHS_NAMES, getInitCurrentView , getPerDeviceDataMain} from '../../common/chartsFunctions'
 import DailyChart from './DailyChart'
 import MonthlyChart from './MonthlyChart'
 import DropDown from '../DropDown'
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const BREAKDOWN_VIEW_TYPE_OPTIONS = ["total", "water", "electricity"]
 function MainCharts(props) {
     const [data, setData] = useState(mainChartFunction({ type: "init", expenses: props.expenses }))
@@ -166,12 +168,12 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     chartContainer: {
-        height: 300,
+        height: windowHeight/2.3,
     },
     chartViewContainer: {
         width: "100%",
         backgroundColor: '#10375C',
-        height: 100,
+        height:windowHeight/6,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         justifyContent: 'center',
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     chartViewChangeContainer: {
         width: "100%",
         backgroundColor: '#10375C',
-        height: 200,
+        height: windowHeight/2,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         flex: 1,
